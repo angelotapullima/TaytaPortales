@@ -16,7 +16,7 @@ class CarritoModel{
     this.estado,
   });
 
-  String idCarrito;
+  int idCarrito;
   String idProducto;
   String nombreProducto;
   String precioVenta;

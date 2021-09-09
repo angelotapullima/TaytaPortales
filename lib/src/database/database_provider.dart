@@ -69,13 +69,15 @@ class DatabaseProvider {
           ')');
 
            await db.execute('CREATE TABLE CarritoMesa ('
-          ' idCarrito TEXT  PRIMARY KEY,'
+          ' idCarrito INTEGER PRIMARY KEY AUTOINCREMENT,'
           ' idProducto TEXT ,'
           ' nombreProducto TEXT ,'
           ' precioVenta TEXT ,'
           ' precioLlevar TEXT ,'
           ' cantidad TEXT ,'
           ' observacion TEXT ,'
+          ' paraLLevar TEXT ,' //1 = si es true x 0 = si es false
+          ' nroCuenta TEXT ,'
           ' idMesa TEXT ,'
           ' idLocacion TEXT ,'
           ' estado TEXT'
