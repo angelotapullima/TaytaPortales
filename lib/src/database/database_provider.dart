@@ -80,6 +80,7 @@ class DatabaseProvider {
           ' nroCuenta TEXT ,'
           ' idMesa TEXT ,'
           ' idLocacion TEXT ,'
+          ' llevar TEXT ,'
           ' estado TEXT'
           ')');
     });

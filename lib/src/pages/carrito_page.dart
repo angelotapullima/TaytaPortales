@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tayta_restaurant/src/bloc/provider.dart';
 import 'package:tayta_restaurant/src/models/carrtito_model.dart';
 import 'package:tayta_restaurant/src/models/mesas_model.dart';
-import 'package:tayta_restaurant/src/pages/categorias_productos_page.dart';
+import 'package:tayta_restaurant/src/pages/categoriasProducto/categorias_productos_page.dart';
 import 'package:tayta_restaurant/src/utils/responsive.dart';
 
 class CarritoPage extends StatefulWidget {

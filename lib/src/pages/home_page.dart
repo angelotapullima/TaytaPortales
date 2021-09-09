@@ -49,7 +49,7 @@ class HomePage extends StatelessWidget {
                                   // torneosBloc.obtenerCategoriaXIDCategoria(snapshot.data[0].categoriaTorneo[index].idTorneoCategoria);
                                 },
                                 child: Container(
-                                  width: responsive.wp(40),
+                                  width: (snapshot.data.length == 1) ? responsive.wp(100) : responsive.wp(40),
                                   height: responsive.hp(10),
                                   margin: EdgeInsets.symmetric(horizontal: responsive.wp(5)),
                                   child: AnimatedBuilder(
@@ -65,6 +65,7 @@ class HomePage extends StatelessWidget {
                                                 children: [
                                                   Text(
                                                     snapshot.data[i].nombre,
+                                                    textAlign: TextAlign.center,
                                                     style: GoogleFonts.poppins(
                                                       fontSize: responsive.ip(2.5),
                                                       color: Colors.black,
@@ -77,13 +78,13 @@ class HomePage extends StatelessWidget {
                                                           snapshot.data[i].nombre,
                                                           style: GoogleFonts.poppins(
                                                               height: responsive.hp(0),
-                                                              fontSize: responsive.ip(1),
+                                                              fontSize: responsive.ip(2.5),
                                                               color: Colors.transparent,
                                                               fontWeight: FontWeight.w500,
                                                               letterSpacing: responsive.ip(.5),
                                                               decoration: TextDecoration.underline,
                                                               decorationColor: Colors.blue,
-                                                              decorationThickness: responsive.hp(1)),
+                                                              decorationThickness: responsive.hp(.5)),
                                                         )
                                                       : Container(),
                                                 ],

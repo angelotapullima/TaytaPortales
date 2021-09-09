@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:tayta_restaurant/src/database/carrito_database.dart';
+import 'package:tayta_restaurant/src/models/carrtito_model.dart';
 import 'package:tayta_restaurant/src/models/mesas_model.dart';
 import 'package:tayta_restaurant/src/models/productos_model.dart';
 import 'package:tayta_restaurant/src/utils/responsive.dart';
@@ -14,6 +16,16 @@ class AgregarAlCarrito extends StatefulWidget {
 }
 
 class _AgregarAlCarritoState extends State<AgregarAlCarrito> {
+  TextEditingController observacionController = TextEditingController();
+  TextEditingController nroCuentaController = TextEditingController();
+
+  @override
+  void dispose() {
+    observacionController.dispose();
+    nroCuentaController.dispose();
+    super.dispose();
+  }
+
   int _counter = 1;
 
   bool val = false;
@@ -228,7 +240,7 @@ class _AgregarAlCarritoState extends State<AgregarAlCarrito> {
                             ),
                             hintText: 'Ingresar Observaciones'),
                         enableInteractiveSelection: false,
-                        //controller: telefonoController,
+                        controller: observacionController,
                       ),
                     ),
                     CheckboxListTile(
@@ -267,7 +279,7 @@ class _AgregarAlCarritoState extends State<AgregarAlCarrito> {
                             ),
                             hintText: 'Ingresar número de cuenta'),
                         enableInteractiveSelection: false,
-                        //controller: telefonoController,
+                        controller: nroCuentaController,
                       ),
                     ),
                     SizedBox(
@@ -280,7 +292,32 @@ class _AgregarAlCarritoState extends State<AgregarAlCarrito> {
                       child: SizedBox(
                         width: double.infinity,
                         child: MaterialButton(
-                          onPressed: () {},
+                          onPressed: () async {
+                            final carritoDatabase = CarritoDatabase();
+
+                            CarritoModel carrito = CarritoModel();
+                            carrito.idProducto = widget.productosModel.idProducto;
+                            carrito.nombreProducto = widget.productosModel.nombreProducto;
+                            carrito.precioVenta = widget.productosModel.precioVenta;
+                            carrito.precioLlevar = widget.productosModel.precioLlevar;
+                            carrito.cantidad = _counter.toString();
+                            carrito.observacion = observacionController.text;
+                            carrito.idMesa = widget.mesas.idMesa;
+                            carrito.idLocacion = widget.mesas.locacionId;
+                            carrito.estado = '0';  
+                            //estado  == 0 -> enviado
+                            //estado  == 1 -> preparado
+                            carrito.llevar = (val)?'1':'0';
+
+                            //llevar = true -> ==== 1  producto para llevar
+                            //llevar = false -> ==== 0  producto para local
+
+
+
+                            await carritoDatabase.insertarCarito(carrito);
+
+                            Navigator.pop(context);
+                          },
                           child: Text(
                             'Agregar',
                             style: TextStyle(
