@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tayta_restaurant/src/bloc/provider.dart';
 import 'package:tayta_restaurant/src/database/carrito_database.dart';
 import 'package:tayta_restaurant/src/models/carrtito_model.dart';
 import 'package:tayta_restaurant/src/models/mesas_model.dart';
@@ -304,17 +305,17 @@ class _AgregarAlCarritoState extends State<AgregarAlCarrito> {
                             carrito.observacion = observacionController.text;
                             carrito.idMesa = widget.mesas.idMesa;
                             carrito.idLocacion = widget.mesas.locacionId;
-                            carrito.estado = '0';  
+                            carrito.estado = '0';
                             //estado  == 0 -> enviado
                             //estado  == 1 -> preparado
-                            carrito.llevar = (val)?'1':'0';
+                            carrito.llevar = (val) ? '1' : '0';
 
                             //llevar = true -> ==== 1  producto para llevar
                             //llevar = false -> ==== 0  producto para local
 
-
-
                             await carritoDatabase.insertarCarito(carrito);
+                            final carritoBloc = ProviderBloc.carrito(context);
+                            carritoBloc.obtenercarrito(widget.mesas.idMesa, widget.mesas.locacionId);
 
                             Navigator.pop(context);
                           },

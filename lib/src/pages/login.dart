@@ -338,7 +338,7 @@ class _LoginPageState extends State<LoginPage> {
   _submit(BuildContext context, LoginBloc bloc) async {
     print(codTienda);
 
-    if (codTienda.length > 0) {
+    //if (codTienda.length > 0) {
       _cargando.value = true;
       final bool code = await bloc.login('${bloc.usuario}', '${bloc.password}');
 
@@ -353,8 +353,8 @@ class _LoginPageState extends State<LoginPage> {
       }
 
       _cargando.value = false;
-    } else {
+   /*  } else {
       showToast2('Seleccione tienda', Colors.black);
-    }
+    } */
   }
 }

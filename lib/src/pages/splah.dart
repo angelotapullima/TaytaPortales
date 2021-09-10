@@ -14,8 +14,8 @@ class _SplashState extends State<Splash> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      final tiendadBloc = ProviderBloc.tiendas(context);
-      tiendadBloc.obtenerTiendas();
+      /* final tiendadBloc = ProviderBloc.tiendas(context);
+      tiendadBloc.obtenerTiendas(); */
 
       final preferences = Preferences();
 

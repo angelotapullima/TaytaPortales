@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tayta_restaurant/src/bloc/provider.dart';
+import 'package:tayta_restaurant/src/models/carrtito_model.dart';
 import 'package:tayta_restaurant/src/models/familias_model.dart';
 import 'package:tayta_restaurant/src/models/mesas_model.dart';
 import 'package:tayta_restaurant/src/models/productos_model.dart';
@@ -8,7 +9,6 @@ import 'package:tayta_restaurant/src/pages/agregar_al_carrito.dart';
 import 'package:tayta_restaurant/src/pages/categoriasProducto/categorias_bloc.dart';
 import 'package:tayta_restaurant/src/utils/responsive.dart';
 
-const cartBarheight = 100.0;
 const _panelTransition = Duration(milliseconds: 500);
 
 class CategoriasProductopage extends StatefulWidget {
@@ -33,6 +33,8 @@ class _CategoriasProductopageState extends State<CategoriasProductopage> {
     final productosBloc = ProviderBloc.prod(context);
     final responsive = Responsive.of(context);
 
+    var cartBarheight = responsive.hp(17);
+
     void _onVerticalGesture(DragUpdateDetails details) {
       if (details.primaryDelta < -7) {
         bloc.changeToCarrito();
@@ -47,6 +49,8 @@ class _CategoriasProductopageState extends State<CategoriasProductopage> {
       } else if (state == CategoryProductState.carrito) {
         return -(size.height - kToolbarHeight - cartBarheight / 2);
       }
+
+      return 0;
     }
 
     double _getTopForBlackPanel(CategoryProductState state, Size size) {
@@ -55,9 +59,13 @@ class _CategoriasProductopageState extends State<CategoriasProductopage> {
       } else if (state == CategoryProductState.carrito) {
         return cartBarheight / 2;
       }
+      return 0;
     }
 
     final size = MediaQuery.of(context).size;
+
+    final carritoBloc = ProviderBloc.carrito(context);
+    carritoBloc.obtenercarrito(widget.mesa.idMesa, widget.mesa.locacionId);
 
     return AnimatedBuilder(
       animation: bloc,
@@ -244,41 +252,174 @@ class _CategoriasProductopageState extends State<CategoriasProductopage> {
                 child: GestureDetector(
                   onVerticalDragUpdate: _onVerticalGesture,
                   child: Container(
-                      color: Colors.black,
-                      child: Column(
-                        children: [
-                          SizedBox(
-                            height: responsive.hp(3),
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
+                    color: Colors.black,
+                    child: StreamBuilder(
+                      stream: carritoBloc.carritoStream,
+                      builder: (context, AsyncSnapshot<List<CarritoModel>> carrito) {
+                        if (carrito.hasData && carrito.data != null) {
+                          double total = 0;
+                          double precio = 0;
+
+                          for (var i = 0; i < carrito.data.length; i++) {
+                            int cantidad = int.parse(carrito.data[i].cantidad);
+                            precio = (carrito.data[i].llevar == '1') ? double.parse(carrito.data[i].precioVenta) : double.parse(carrito.data[i].precioLlevar);
+                            total = total + (cantidad * precio);
+                          }
+                          return Padding(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: responsive.wp(3),
+                            ),
+                            child: Column(
+                              children: [
+                                SizedBox(
+                                  height: responsive.hp(1),
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    (bloc.categoryProductState == CategoryProductState.normal)
+                                        ? Icon(
+                                            Icons.arrow_upward,
+                                            color: Colors.white,
+                                          )
+                                        : Icon(
+                                            Icons.arrow_downward_rounded,
+                                            color: Colors.white,
+                                          )
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    Text(
+                                      (carrito.data.length > 1) ? '${carrito.data.length} Productos' : '${carrito.data.length} Producto',
+                                      style: TextStyle(
+                                        color: Colors.red,
+                                        fontSize: responsive.ip(2.5),
+                                      ),
+                                    ),
+                                    Spacer(),
+                                    Text(
+                                      'S/. ${total.toString()}',
+                                      style: TextStyle(
+                                        color: Colors.red,
+                                        fontSize: responsive.ip(3),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Expanded(
+                                  child: Container(
+                                    padding: EdgeInsets.only(
+                                      top: responsive.hp(6),
+                                    ),
+                                    child: ListView.builder(
+                                      itemCount: carrito.data.length,
+                                      itemBuilder: (context, i) {
+                                        double totelx = 0;
+                                        int cantidad = int.parse(carrito.data[i].cantidad);
+                                        precio = (carrito.data[i].llevar == '1') ? double.parse(carrito.data[i].precioVenta) : double.parse(carrito.data[i].precioLlevar);
+
+                                        totelx = cantidad * precio;
+
+                                        return Container(
+                                          margin: EdgeInsets.symmetric(
+                                            vertical: responsive.hp(1),
+                                            horizontal: responsive.wp(2),
+                                          ),
+                                          child: Column(
+                                            children: [
+                                              Row(
+                                                children: [
+                                                  Expanded(
+                                                    child: Text(
+                                                      '${carrito.data[i].nombreProducto} x ${carrito.data[i].cantidad}',
+                                                      style: TextStyle(color: Colors.white),
+                                                    ),
+                                                  ),
+                                                  SizedBox(
+                                                    width: responsive.wp(8),
+                                                  ),
+                                                  Text(
+                                                    'S/. $totelx',
+                                                    style: TextStyle(color: Colors.white),
+                                                  ),
+                                                ],
+                                              ),
+                                              Row(
+                                                children: [
+                                                  Text(
+                                                    'Observación :',
+                                                    style: TextStyle(color: Colors.white),
+                                                  ),
+                                                  SizedBox(
+                                                    width: responsive.wp(8),
+                                                  ),
+                                                  Expanded(
+                                                    child: Text(
+                                                      ' ${carrito.data[i].observacion}',
+                                                      style: TextStyle(color: Colors.white),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              Divider(
+                                                color: Colors.white,
+                                              )
+                                            ],
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
+                          );
+                        } else {
+                          return Column(
                             children: [
-                              (bloc.categoryProductState == CategoryProductState.normal)
-                                  ? Icon(
-                                      Icons.arrow_upward,
-                                      color: Colors.white,
-                                    )
-                                  : Icon(
-                                      Icons.arrow_downward_rounded,
-                                      color: Colors.white,
-                                    )
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Text(
-                                '3 Productos',
-                                style: TextStyle(color: Colors.white),
+                              SizedBox(
+                                height: responsive.hp(3),
                               ),
-                              Spacer(),
-                              Text(
-                                'S/. 30.00',
-                                style: TextStyle(color: Colors.white),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  (bloc.categoryProductState == CategoryProductState.normal)
+                                      ? Icon(
+                                          Icons.arrow_upward,
+                                          color: Colors.white,
+                                        )
+                                      : Icon(
+                                          Icons.arrow_downward_rounded,
+                                          color: Colors.white,
+                                        )
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  Text(
+                                    '0 Productos',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: responsive.ip(3),
+                                    ),
+                                  ),
+                                  Spacer(),
+                                  Text(
+                                    'S/. 30.00',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: responsive.ip(3),
+                                    ),
+                                  ),
+                                ],
                               ),
                             ],
-                          ),
-                        ],
-                      )),
+                          );
+                        }
+                      },
+                    ),
+                  ),
                 ),
                 height: responsive.hp(100),
                 top: _getTopForBlackPanel(bloc.categoryProductState, size),

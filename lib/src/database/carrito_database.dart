@@ -9,20 +9,20 @@ class CarritoDatabase {
     try {
       final db = await dbprovider.database;
 
-      final res = await db.rawInsert("INSERT OR REPLACE INTO CarritoMesa (idCarrito,idProducto,nombreProducto,"
-          "precioVenta,precioLlevar,cantidad,observacion,idMesa,idLocacion,estado) "
+      final res = await db.rawInsert("INSERT OR REPLACE INTO CarritoMesa (idProducto,nombreProducto,"
+          "precioVenta,precioLlevar,cantidad,observacion,idMesa,idLocacion,llevar,estado) "
           "VALUES ('${carrito.idProducto}','${carrito.nombreProducto}',"
           "'${carrito.precioVenta}','${carrito.precioLlevar}','${carrito.cantidad}','${carrito.observacion}','${carrito.idMesa}','${carrito.idLocacion}',"
-          "'${carrito.estado}')");
+          "'${carrito.llevar}','${carrito.estado}')");
       return res;
     } catch (exception) {
       print(exception);
     }
   }
 
-  Future<List<CarritoModel>> obtenerCarritoPorIdCarrito(String idCarrito) async {
+  Future<List<CarritoModel>> obtenerCarritoPorIdCarrito(String idMesa, String idLocacion) async {
     final db = await dbprovider.database;
-    final res = await db.rawQuery("SELECT * FROM CarritoMesa where idCarrito = '$idCarrito' ");
+    final res = await db.rawQuery("SELECT * FROM CarritoMesa where idMesa = '$idMesa' and idLocacion= '$idLocacion' ");
 
     List<CarritoModel> list = res.isNotEmpty ? res.map((c) => CarritoModel.fromJson(c)).toList() : [];
 

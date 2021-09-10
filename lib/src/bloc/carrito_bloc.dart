@@ -13,9 +13,9 @@ class CarritoBloc {
     _carritoController?.close();
   }
 
-  void obtenercarrito(String idCarrito) async {
+  void obtenercarrito(String idMesa,String idLocacion) async {
     _carritoController.sink.add(
-      await carritoDatabase.obtenerCarritoPorIdCarrito(idCarrito),
+      await carritoDatabase.obtenerCarritoPorIdCarrito(idMesa,idLocacion),
     );
   }
 }
