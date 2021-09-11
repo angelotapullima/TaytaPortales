@@ -12,6 +12,7 @@ class CarritoModel{
     this.cantidad,
     this.observacion,
     this.idMesa,
+    this.nombreMesa,
     this.idLocacion,
     this.estado,
     this.llevar,
@@ -25,6 +26,7 @@ class CarritoModel{
   String cantidad;
   String observacion;
   String idMesa;
+  String nombreMesa;
   String idLocacion;
   String estado;
   String llevar;
@@ -38,6 +40,7 @@ class CarritoModel{
         cantidad: json["cantidad"],
         observacion: json["observacion"],
         idMesa: json["idMesa"],
+        nombreMesa: json["nombreMesa"],
         idLocacion: json["idLocacion"],
         estado: json["estado"],
         llevar: json["llevar"],

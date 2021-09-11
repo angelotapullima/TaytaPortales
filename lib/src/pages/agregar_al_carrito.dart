@@ -304,6 +304,7 @@ class _AgregarAlCarritoState extends State<AgregarAlCarrito> {
                             carrito.cantidad = _counter.toString();
                             carrito.observacion = observacionController.text;
                             carrito.idMesa = widget.mesas.idMesa;
+                            carrito.nombreMesa = widget.mesas.nombreCompleto;
                             carrito.idLocacion = widget.mesas.locacionId;
                             carrito.estado = '0';
                             //estado  == 0 -> enviado

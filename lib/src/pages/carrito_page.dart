@@ -161,16 +161,19 @@ class _MesaPageState extends State<CarritoPage> {
                       Expanded(
                         child: Container(
                           child: ListView.builder(
-                            itemCount: snapshot.data.length,
+                            itemCount: snapshot.data.length + 1,
                             shrinkWrap: true,
                             itemBuilder: (context, i) {
                               double totelx = 0;
-                              int cantidad = int.parse(snapshot.data[i].cantidad);
-                              precio = (snapshot.data[i].llevar == '0') ? double.parse(snapshot.data[i].precioVenta) : double.parse(snapshot.data[i].precioLlevar);
 
-                              totelx = cantidad * precio;
+                              if (i != snapshot.data.length) {
+                                int cantidad = int.parse(snapshot.data[i].cantidad);
+                                precio = (snapshot.data[i].llevar == '0') ? double.parse(snapshot.data[i].precioVenta) : double.parse(snapshot.data[i].precioLlevar);
 
-                              if (i == snapshot.data.length - 1) {
+                                totelx = cantidad * precio;
+                              }
+
+                              if (i == snapshot.data.length) {
                                 return Padding(
                                   padding: EdgeInsets.symmetric(
                                     horizontal: responsive.wp(2),
