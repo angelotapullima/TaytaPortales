@@ -27,8 +27,7 @@ class _CategoriasProductopageState extends State<CategoriasProductopage> {
   Widget build(BuildContext context) {
     final bloc = CategoriasProductosBloc();
     final familiasBloc = ProviderBloc.familias(context);
-
-    familiasBloc.obtenerFamilias();
+ 
 
     final productosBloc = ProviderBloc.prod(context);
     final responsive = Responsive.of(context);

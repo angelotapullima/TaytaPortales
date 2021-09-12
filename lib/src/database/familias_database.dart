@@ -10,17 +10,17 @@ class FamiliasDatabase {
     try {
       final db = await dbprovider.database;
 
-      final res = await db.rawInsert("INSERT OR REPLACE INTO Familias (idFamilia,nombre,color) "
-          "VALUES ('${familiasModel.idFamilia}','${familiasModel.nombre}','${familiasModel.color}')");
+      final res = await db.rawInsert("INSERT OR REPLACE INTO Familias (idFamiliaLocal,idFamilia,nombre,idLocacion,color) "
+          "VALUES ('${familiasModel.idFamiliaLocal}','${familiasModel.idFamilia}','${familiasModel.nombre}','${familiasModel.idLocacion}','${familiasModel.color}')");
       return res;
     } catch (exception) {
       print(exception);
     }
   }
 
-  Future<List<FamiliasModel>> obtenerFamilias() async {
+  Future<List<FamiliasModel>> obtenerFamilias(String idLocacion) async {
     final db = await dbprovider.database;
-    final res = await db.rawQuery("SELECT * FROM Familias");
+    final res = await db.rawQuery("SELECT * FROM Familias where idLocacion = '$idLocacion'");
 
     List<FamiliasModel> list = res.isNotEmpty ? res.map((c) => FamiliasModel.fromJson(c)).toList() : [];
 

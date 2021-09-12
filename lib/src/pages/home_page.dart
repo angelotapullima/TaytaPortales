@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+import 'package:tayta_restaurant/src/bloc/index_bloc.dart';
 import 'package:tayta_restaurant/src/bloc/provider.dart';
 import 'package:tayta_restaurant/src/models/locacion_model.dart';
 import 'package:tayta_restaurant/src/models/mesas_model.dart';
 import 'package:tayta_restaurant/src/pages/carrito_page.dart';
-import 'package:tayta_restaurant/src/pages/tablet/carrito.dart';
+import 'package:tayta_restaurant/src/pages/tablet/carrito_por_mesa.dart';
+import 'package:tayta_restaurant/src/pages/tablet/familiasItem.dart';
+import 'package:tayta_restaurant/src/pages/tablet/header_locacion.dart';
 import 'package:tayta_restaurant/src/pages/tablet/mesas.dart';
+import 'package:tayta_restaurant/src/pages/tablet/productosItem.dart';
 import 'package:tayta_restaurant/src/pages/tablet/side_menu.dart';
 import 'package:tayta_restaurant/src/preferences/preferences.dart';
 import 'package:tayta_restaurant/src/utils/responsive.dart';
 import 'package:tayta_restaurant/src/utils/responsive_builder.dart';
-import 'package:tayta_restaurant/src/utils/utils.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key key}) : super(key: key);
@@ -25,6 +29,8 @@ class HomePage extends StatelessWidget {
     final mesabloc = ProviderBloc.mesas(context);
 
     final responsive = Responsive.of(context);
+
+    final provider = Provider.of<IndexBlocListener>(context, listen: false);
 
     return Scaffold(
       body: ResponsiveBuilder(
@@ -305,29 +311,80 @@ class HomePage extends StatelessWidget {
             ),
           ],
         ),
-        desktop: Row(
-          children: [
-            Expanded(
-              flex: 3,
-              child: Container(color: Color(0xfff3f2f2), child: SideMenu()),
-            ),
-            Expanded(
-              flex: 10,
-              child: Container(color: Colors.white, child: MesasWidget()),
-            ),
-            Expanded(
-              flex: 5,
-              child: Container(
-                color: Color(0xFFF9F9FA),
-                child: CarritoTablet(),
-              ),
-            ),
-          ],
+        desktop: SafeArea(
+          bottom: false,
+          child: ValueListenableBuilder(
+            valueListenable: provider.page,
+            builder: (BuildContext context, EnumIndex data, Widget child) {
+              return Row(
+                children: [
+                  Expanded(
+                    flex: 3,
+                    child: Container(color: Color(0xfff3f2f2), child: SideMenu()),
+                  ),
+                  (data == EnumIndex.mesas)
+                      ? Expanded(
+                          flex: 15,
+                          child: Row(
+                            children: [
+                              Expanded(
+                                flex: 10,
+                                child: Container(color: Colors.white, child: MesasWidget()),
+                              ),
+                              Expanded(
+                                flex: 5,
+                                child: Container(
+                                  color: Color(0xFFF9F9FA),
+                                  child: CarritoTablet(),
+                                ),
+                              ),
+                            ],
+                          ),
+                        )
+                      : (data == EnumIndex.productos)
+                          ? Expanded(
+                              flex: 15,
+                              child: Column(
+                                children: [
+                                  Container(color: Colors.white, child: HeaderLocacion()),
+                                  Expanded(
+                                    child: Row(
+                                      children: [
+                                        Expanded(
+                                          flex: 5,
+                                          child: Container(
+                                            color: Color(0xFFF9F9FA),
+                                            child: Familiasitem(),
+                                          ),
+                                        ),
+                                        Expanded(
+                                          flex: 10,
+                                          child: Container(
+                                            color: Colors.white,
+                                            child: ProductosItem(),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            )
+                          : Container()
+                ],
+              );
+            },
+          ),
         ),
       ),
     );
   }
 }
+
+
+
+
+
 class CategoryController extends ChangeNotifier {
   int index = 0;
   String idCategoria = '0';

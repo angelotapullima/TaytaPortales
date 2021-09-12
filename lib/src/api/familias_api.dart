@@ -11,7 +11,7 @@ import 'package:tayta_restaurant/src/utils/constants.dart';
 class FamiliasApi {
   final familiasDatabase = FamiliasDatabase();
   final preferences = Preferences();
-  Future<bool> obtenerFamilias() async {
+  Future<bool> obtenerFamilias(String idLocacion) async {
     try {
       final url = Uri.parse('$apiBaseURL/api/Familia');
       Map<String, String> headers = {'Content-Type': 'application/json', 'Authorization': ' Bearer ${preferences.token}'};
@@ -30,8 +30,10 @@ class FamiliasApi {
       if (decodedData.length > 0) {
         for (var i = 0; i < decodedData.length; i++) {
           FamiliasModel familiasModel = FamiliasModel();
+          familiasModel.idFamiliaLocal = '${decodedData[i]['idFamilia'].toString()}$idLocacion';
           familiasModel.idFamilia = decodedData[i]['idFamilia'].toString();
           familiasModel.nombre = decodedData[i]['nombre'].toString();
+          familiasModel.idLocacion = idLocacion;
           familiasModel.color = decodedData[i]['color'].toString();
           
 

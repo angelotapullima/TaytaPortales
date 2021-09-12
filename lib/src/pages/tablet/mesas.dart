@@ -5,6 +5,8 @@ import 'package:tayta_restaurant/src/bloc/provider.dart';
 import 'package:tayta_restaurant/src/models/locacion_model.dart';
 import 'package:tayta_restaurant/src/models/mesas_model.dart';
 import 'package:tayta_restaurant/src/pages/categoriasProducto/categorias_productos_page.dart';
+import 'package:tayta_restaurant/src/pages/home_page.dart';
+import 'package:tayta_restaurant/src/pages/tablet/header_locacion.dart';
 import 'package:tayta_restaurant/src/preferences/preferences.dart';
 import 'package:tayta_restaurant/src/utils/responsive.dart';
 
@@ -14,7 +16,6 @@ class MesasWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _catController = CategoryController();
     final prefs = Preferences();
 
     final locacionBloc = ProviderBloc.locacion(context);
@@ -26,7 +27,9 @@ class MesasWidget extends StatelessWidget {
     return SafeArea(
       child: Column(
         children: [
-          Container(
+
+          HeaderLocacion(),
+         /*  Container(
             height: responsive.hp(8),
             child: StreamBuilder(
                 stream: locacionBloc.locacionStream,
@@ -108,7 +111,7 @@ class MesasWidget extends StatelessWidget {
                   }
                 }),
           ),
-          StreamBuilder(
+          */ StreamBuilder(
             stream: mesabloc.mesasStream,
             builder: (BuildContext context, AsyncSnapshot<List<MesasModel>> mesas) {
               if (mesas.hasData) {

@@ -35,7 +35,7 @@ class SideMenuItem extends StatelessWidget {
             Expanded(
               child: Container(
                 padding: EdgeInsets.only(bottom:10,top:10, right: 10),
-                decoration: showBorder
+                decoration: isActive
                     ? BoxDecoration(
                         border: Border.all(color: kPrimaryColor),borderRadius: BorderRadius.circular(10),
                       )

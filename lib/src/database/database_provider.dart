@@ -20,7 +20,7 @@ class DatabaseProvider {
   initDB() async {
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
 
-    final path = join(documentsDirectory.path, 'tayta1.db');
+    final path = join(documentsDirectory.path, 'tayta.db');
 
     Future _onConfigure(Database db) async {
       await db.execute('PRAGMA foreign_keys = ON');
@@ -53,8 +53,10 @@ class DatabaseProvider {
           ')');
 
       await db.execute('CREATE TABLE Familias ('
-          ' idFamilia TEXT  PRIMARY KEY,'
+          ' idFamiliaLocal TEXT  PRIMARY KEY,'
+          ' idFamilia TEXT ,'
           ' nombre TEXT ,'
+          ' idLocacion TEXT ,'
           ' color TEXT'
           ')');
       await db.execute('CREATE TABLE Productos ('

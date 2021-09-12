@@ -20,4 +20,5 @@ class ProductosBloc {
     await productoApi.obtenerProductosPorFamilia(idFamilia, idLocacion);
     _productoController.sink.add(await productosDatabase.obtenerProductosPorFamiliaLocacion(idFamilia, idLocacion));
   }
+
 }
