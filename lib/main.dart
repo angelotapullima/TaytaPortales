@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:tayta_restaurant/src/bloc/index_bloc.dart';
@@ -34,7 +35,9 @@ class MyApp extends StatelessWidget {
         ),
         
       ],
-        child: MaterialApp(
+        child: ScreenUtilInit(
+            designSize: Size(1024, 768),
+            builder: () =>MaterialApp(
           builder: (BuildContext context, Widget child) {
             final MediaQueryData data = MediaQuery.of(context);
             return MediaQuery(
@@ -58,7 +61,7 @@ class MyApp extends StatelessWidget {
             "login": (BuildContext context) => LoginPage(),
           },
         ),
-      ),
+      ),)
     );
   }
 }

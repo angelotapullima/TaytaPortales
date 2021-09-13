@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:tayta_restaurant/src/bloc/index_bloc.dart';
@@ -33,6 +34,7 @@ class HomePage extends StatelessWidget {
     final provider = Provider.of<IndexBlocListener>(context, listen: false);
 
     return Scaffold(
+      backgroundColor: Color(0xfff7f7f7),
       body: ResponsiveBuilder(
         mobile: SafeArea(
           bottom: false,
@@ -312,62 +314,80 @@ class HomePage extends StatelessWidget {
           ],
         ),
         desktop: SafeArea(
-          bottom: false,
           child: ValueListenableBuilder(
             valueListenable: provider.page,
             builder: (BuildContext context, EnumIndex data, Widget child) {
               return Row(
                 children: [
-                  Expanded(
-                    flex: 3,
-                    child: Container(color: Color(0xfff3f2f2), child: SideMenu()),
+                  Container(
+                    width: ScreenUtil().setWidth(83),
+                    child: Container(color: Color(0xffff7f7f7), child: SideMenu()),
                   ),
                   (data == EnumIndex.mesas)
                       ? Expanded(
                           flex: 15,
-                          child: Row(
-                            children: [
-                              Expanded(
-                                flex: 10,
-                                child: Container(color: Colors.white, child: MesasWidget()),
-                              ),
-                              Expanded(
-                                flex: 5,
-                                child: Container(
-                                  color: Color(0xFFF9F9FA),
-                                  child: CarritoTablet(),
+                          child: Container(
+                            color: Color(0xfff7f7f7),
+                            margin: EdgeInsets.only(
+                              bottom: responsive.hp(2),
+                            ),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  flex: 10,
+                                  child: Container(
+                                    color: Color(0xfff7f7f7),
+                                    child: MesasWidget(),
+                                  ),
                                 ),
-                              ),
-                            ],
+                                Expanded(
+                                  flex: 5,
+                                  child: Container(
+                                    color: Color(0xffff7f7f7),
+                                    child: CarritoTablet(),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         )
                       : (data == EnumIndex.productos)
                           ? Expanded(
                               flex: 15,
-                              child: Column(
-                                children: [
-                                  Container(color: Colors.white, child: HeaderLocacion()),
-                                  Expanded(
-                                    child: Row(
-                                      children: [
-                                        Expanded(
-                                          flex: 5,
-                                          child: Container(
-                                            color: Color(0xFFF9F9FA),
+                              child: Container(
+                                margin: EdgeInsets.only(
+                                  bottom: responsive.hp(2),
+                                ),
+                                child: Column(
+                                  children: [
+                                    Container(
+                                      color: Color(0xfff7f7f7),
+                                      child: HeaderLocacion(),
+                                    ),
+                                    Expanded(
+                                      child: Row(
+                                        children: [
+                                          Container(
+                                            width: ScreenUtil().setWidth(280),
+                                            color: Color(0xffff7f7f7),
                                             child: Familiasitem(),
                                           ),
-                                        ),
-                                        Expanded(
-                                          flex: 10,
-                                          child: Container(
+                                          SizedBox(
+                                            width: ScreenUtil().setWidth(10),
+                                          ),
+                                          Container(
+                                            width: ScreenUtil().setWidth(640),
                                             color: Colors.white,
                                             child: ProductosItem(),
                                           ),
-                                        ),
-                                      ],
+                                          SizedBox(
+                                            width: ScreenUtil().setWidth(10),
+                                          ),
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                             )
                           : Container()
@@ -380,10 +400,6 @@ class HomePage extends StatelessWidget {
     );
   }
 }
-
-
-
-
 
 class CategoryController extends ChangeNotifier {
   int index = 0;

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tayta_restaurant/src/bloc/provider.dart';
 import 'package:tayta_restaurant/src/models/productos_model.dart';
 import 'package:tayta_restaurant/src/utils/responsive.dart';
+import 'package:tayta_restaurant/src/utils/utils.dart';
 
 class ProductosItem extends StatelessWidget {
   const ProductosItem({Key key}) : super(key: key);
@@ -10,69 +12,108 @@ class ProductosItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final responsive = Responsive.of(context);
     final productosBloc = ProviderBloc.prod(context);
+    Offset offset = const Offset(5, 5);
     return StreamBuilder(
       stream: productosBloc.productoStream,
       builder: (BuildContext context, AsyncSnapshot<List<ProductosModel>> productos) {
         if (productos.hasData) {
           if (productos.data.length > 0) {
-            return GridView.builder(
-              padding: EdgeInsets.symmetric(
-                horizontal: responsive.wp(2),
+            return Container(decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: Colors.white,
+                boxShadow: [
+                  BoxShadow(
+                    offset: offset,
+                    blurRadius: 10.0,
+                    color: Color(0x26234395),
+                  ),
+                  BoxShadow(offset: Offset(-offset.dx, -offset.dx), blurRadius: 20.0, color: Colors.grey.withOpacity(.5)),
+                ],
               ),
-              itemCount: productos.data.length,
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 3,
-                childAspectRatio: 1.4,
-                mainAxisSpacing: responsive.hp(.5),
-                crossAxisSpacing: responsive.wp(.2),
-              ),
-              scrollDirection: Axis.vertical,
-              itemBuilder: (BuildContext context, int i) {
-                return InkWell(
-                  onTap: () {
-                    /*  Navigator.push(
-                      context,
-                      PageRouteBuilder(
-                        opaque: false,
-                        pageBuilder: (context, animation, secondaryAnimation) {
-                          return AgregarAlCarrito(mesas: widget.mesa, productosModel: productos.data[i]);
-                        },
-                        transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                          var begin = Offset(0.0, 1.0);
-                          var end = Offset.zero;
-                          var curve = Curves.ease;
-
-                          var tween = Tween(begin: begin, end: end).chain(
-                            CurveTween(curve: curve),
-                          );
-
-                          return SlideTransition(
-                            position: animation.drive(tween),
-                            child: child,
-                          );
-                        },
-                      ),
-                    ); */
-
-                    //AgregarAlCarrito
-                  },
-                  child: Container(
-                    color: Colors.red,
-                    padding: EdgeInsets.symmetric(
-                      horizontal: responsive.wp(1),
-                      vertical: responsive.hp(1),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('${productos.data[i].nombreProducto}'),
-                        Spacer(),
-                        Text('S/.${productos.data[i].precioVenta}'),
-                      ],
+              child: Column(
+                children: [
+                  Text(
+                    'Productos',
+                    style: TextStyle(
+                      fontSize: responsive.ip(1.5),
+                      color: Colors.blue,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
-                );
-              },
+                  Expanded(
+                    child: GridView.builder(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: responsive.wp(2),
+                      ),
+                      itemCount: productos.data.length,
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        childAspectRatio: 3,
+                        mainAxisSpacing: responsive.hp(.5),
+                        crossAxisSpacing: responsive.wp(.2),
+                      ),
+                      scrollDirection: Axis.vertical,
+                      itemBuilder: (BuildContext context, int i) {
+                        return LayoutBuilder(
+                          builder: (_, constraints) {
+                            print(constraints.maxWidth);
+                            print('hello');
+                            print(constraints.maxHeight);
+                            return InkWell(
+                              onTap: () {
+                                //AgregarAlCarrito
+                              },
+                              child: Container(
+                                height: constraints.maxWidth / 3,
+                                width: double.infinity,
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: responsive.wp(1),
+                                  vertical: responsive.hp(1),
+                                ),
+                                child: Row(
+                                  children: [
+                                    Container(
+                                      width: constraints.maxWidth / 3.5,
+                                      height: constraints.maxWidth / 3.5,
+                                      color: Colors.grey,
+                                      child: Icon(
+                                        Icons.chair_alt_outlined,
+                                        color: Colors.white,
+                                        size: constraints.maxWidth / 6.5,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: ScreenUtil().setWidth(10),
+                                    ),
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            '${productos.data[i].nombreProducto}',
+                                            style: TextStyle(fontSize: ScreenUtil().setSp(14), color: Colors.black),
+                                          ),
+                                          Text(
+                                            'S/.${dosDecimales(
+                                              double.parse(productos.data[i].precioVenta),
+                                            )}',
+                                            style: TextStyle(fontSize: ScreenUtil().setSp(14), color: Colors.grey[400]),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              ),
             );
           } else {
             return Center(

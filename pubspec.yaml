@@ -38,6 +38,7 @@ dependencies:
   google_fonts: ^2.0.0
   flutter_svg: ^0.21.0+1
   provider:
+  flutter_screenutil: ^5.0.0+2
 
 dev_dependencies:
   flutter_test:

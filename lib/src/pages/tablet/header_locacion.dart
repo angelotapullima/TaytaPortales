@@ -46,9 +46,8 @@ class _WidgetLocacionState extends State<HeaderLocacion> {
                           mesabloc.obtenerMesasPorLocacion(snapshot.data[i].idLocacion);
 
                           familiasBloc.obtenerFamilias(snapshot.data[i].idLocacion);
-                          //equiposTorneoBloc.obtenerEquiposPorCategoria(snapshot.data[index].idTorneoCategoria);
-                          // torneosBloc.obtenerCategoriaXIDCategoria(snapshot.data[0].categoriaTorneo[index].idTorneoCategoria);
-                        },
+                         
+                          },
                         child: Container(
                           // responsive.wp(100) : responsive.wp(40),
 
@@ -70,8 +69,8 @@ class _WidgetLocacionState extends State<HeaderLocacion> {
                                             textAlign: TextAlign.center,
                                             style: GoogleFonts.poppins(
                                               fontSize: responsive.ip(1.5),
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.w500,
+                                              color:    (_catController.index == i)?Colors.blue[700]:Colors.grey,
+                                              fontWeight: FontWeight.w600,
                                               letterSpacing: responsive.ip(.2),
                                             ),
                                           ),
@@ -82,10 +81,10 @@ class _WidgetLocacionState extends State<HeaderLocacion> {
                                                       height: responsive.hp(0),
                                                       fontSize: responsive.ip(1.5),
                                                       color: Colors.transparent,
-                                                      fontWeight: FontWeight.w500,
+                                                      fontWeight: FontWeight.w600,
                                                       letterSpacing: responsive.ip(.5),
                                                       decoration: TextDecoration.underline,
-                                                      decorationColor: Colors.blue,
+                                                      decorationColor:  (_catController.index == i)?Colors.blue[700]:Colors.grey,
                                                       decorationThickness: responsive.hp(.5)),
                                                 )
                                               : Container(),
