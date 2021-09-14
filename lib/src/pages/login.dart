@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tayta_restaurant/src/bloc/login_bloc.dart';
 import 'package:tayta_restaurant/src/bloc/provider.dart';
 import 'package:tayta_restaurant/src/models/tienda_model.dart';
@@ -132,7 +133,7 @@ class _LoginPageState extends State<LoginPage> {
         isExpanded: true,
         style: TextStyle(
           color: Colors.black,
-          fontSize: responsive.ip(1.5),
+          fontSize: ScreenUtil().setSp(16),
         ),
         underline: Container(),
         onChanged: (String data) {
@@ -150,7 +151,7 @@ class _LoginPageState extends State<LoginPage> {
               child: Text(
                 value,
                 maxLines: 2,
-                style: TextStyle(color: Colors.blue[900], fontSize: responsive.ip(1.8), fontWeight: FontWeight.w500),
+                style: TextStyle(color: Colors.blue[900], fontSize:  ScreenUtil().setSp(16), fontWeight: FontWeight.w500),
                 overflow: TextOverflow.ellipsis,
               ),
             );
@@ -180,20 +181,20 @@ class _LoginPageState extends State<LoginPage> {
           child: Column(
             children: <Widget>[
               FlutterLogo(
-                size: responsive.ip(20),
+                size: ScreenUtil().setHeight(150),
               ),
               Text(
                 "Bienvenido",
-                style: TextStyle(fontSize: responsive.ip(3), fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize:  ScreenUtil().setSp(50), fontWeight: FontWeight.bold),
               ),
               Padding(
                 padding: EdgeInsets.symmetric(
-                  vertical: responsive.ip(2),
+                  vertical:  ScreenUtil().setHeight(10),
                 ),
                 child: Text(
                   "Inicie Sesión",
                   style: TextStyle(
-                    fontSize: responsive.ip(2.5),
+                    fontSize:  ScreenUtil().setSp(24)
                   ),
                 ),
               ),
@@ -214,7 +215,7 @@ class _LoginPageState extends State<LoginPage> {
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         return Padding(
           padding: EdgeInsets.only(
-            bottom: responsive.hp(2),
+            bottom:  ScreenUtil().setHeight(20),
             left: responsive.wp(6),
             right: responsive.wp(6),
           ),
@@ -225,7 +226,7 @@ class _LoginPageState extends State<LoginPage> {
               fillColor: Theme.of(context).dividerColor,
               hintText: 'Ingrese su usuario',
               hintStyle: TextStyle(
-                fontSize: responsive.ip(1.8),
+                fontSize:  ScreenUtil().setSp(16),
                 color: Colors.black54,
               ),
               border: OutlineInputBorder(
@@ -269,7 +270,7 @@ class _LoginPageState extends State<LoginPage> {
             decoration: InputDecoration(
               fillColor: Theme.of(context).dividerColor,
               hintText: 'Ingrese su contraseña',
-              hintStyle: TextStyle(fontSize: responsive.ip(1.8), fontFamily: 'Montserrat', color: Colors.black54),
+              hintStyle: TextStyle(fontSize: ScreenUtil().setSp(16), fontFamily: 'Montserrat', color: Colors.black54),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(30),
                 borderSide: BorderSide(

@@ -40,7 +40,7 @@ class _MesaPageState extends State<CarritoPage> {
 
                 for (var i = 0; i < snapshot.data.length; i++) {
                   int cantidad = int.parse(snapshot.data[i].cantidad);
-                  precio = (snapshot.data[i].llevar == '1') ? double.parse(snapshot.data[i].precioVenta) : double.parse(snapshot.data[i].precioLlevar);
+                  precio = (snapshot.data[i].paraLLevar == '1') ? double.parse(snapshot.data[i].precioVenta) : double.parse(snapshot.data[i].precioLlevar);
                   total = total + (cantidad * precio);
                 }
                 return Padding(
@@ -168,7 +168,7 @@ class _MesaPageState extends State<CarritoPage> {
 
                               if (i != snapshot.data.length) {
                                 int cantidad = int.parse(snapshot.data[i].cantidad);
-                                precio = (snapshot.data[i].llevar == '0') ? double.parse(snapshot.data[i].precioVenta) : double.parse(snapshot.data[i].precioLlevar);
+                                precio = (snapshot.data[i].paraLLevar == '0') ? double.parse(snapshot.data[i].precioVenta) : double.parse(snapshot.data[i].precioLlevar);
 
                                 totelx = cantidad * precio;
                               }
@@ -225,7 +225,7 @@ class _MesaPageState extends State<CarritoPage> {
                                         ),
                                       ],
                                     ),
-                                    (snapshot.data[i].llevar == '0')
+                                    (snapshot.data[i].paraLLevar == '0')
                                         ? Container(
                                             padding: EdgeInsets.symmetric(horizontal: responsive.wp(2)),
                                             decoration: BoxDecoration(

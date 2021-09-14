@@ -83,7 +83,6 @@ class DatabaseProvider {
           ' idMesa TEXT ,'
           ' nombreMesa TEXT ,'
           ' idLocacion TEXT ,'
-          ' llevar TEXT ,'
           ' estado TEXT'
           ')');
     });

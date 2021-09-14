@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tayta_restaurant/src/bloc/provider.dart';
 import 'package:tayta_restaurant/src/models/productos_model.dart';
 import 'package:tayta_restaurant/src/utils/responsive.dart';
@@ -18,26 +19,36 @@ class ProductosItem extends StatelessWidget {
       builder: (BuildContext context, AsyncSnapshot<List<ProductosModel>> productos) {
         if (productos.hasData) {
           if (productos.data.length > 0) {
-            return Container(decoration: BoxDecoration(
+            return Container(
+              decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
                 color: Colors.white,
                 boxShadow: [
                   BoxShadow(
                     offset: offset,
                     blurRadius: 10.0,
-                    color: Color(0x26234395),
+                    color: Colors.grey,
                   ),
-                  BoxShadow(offset: Offset(-offset.dx, -offset.dx), blurRadius: 20.0, color: Colors.grey.withOpacity(.5)),
+                  BoxShadow(
+                    offset: Offset(-offset.dx, -offset.dx),
+                    blurRadius: 20.0,
+                    color: Colors.grey.withOpacity(.5),
+                  ),
                 ],
               ),
               child: Column(
                 children: [
-                  Text(
-                    'Productos',
-                    style: TextStyle(
-                      fontSize: responsive.ip(1.5),
-                      color: Colors.blue,
-                      fontWeight: FontWeight.bold,
+                  Container(
+                    padding: EdgeInsets.symmetric(
+                      vertical: ScreenUtil().setHeight(15),
+                    ),
+                    child: Text(
+                      'Productos',
+                      style: TextStyle(
+                        fontSize: responsive.ip(1.5),
+                        color: Colors.blue,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                   Expanded(
@@ -75,11 +86,13 @@ class ProductosItem extends StatelessWidget {
                                     Container(
                                       width: constraints.maxWidth / 3.5,
                                       height: constraints.maxWidth / 3.5,
-                                      color: Colors.grey,
-                                      child: Icon(
-                                        Icons.chair_alt_outlined,
-                                        color: Colors.white,
-                                        size: constraints.maxWidth / 6.5,
+                                      color: Color(0xffe5e5e5),
+                                      child: Container(
+                                        height: constraints.maxWidth / 5,
+                                        width: double.infinity,
+                                        child: SvgPicture.asset(
+                                          'assets/platos.svg',
+                                        ),
                                       ),
                                     ),
                                     SizedBox(
@@ -92,13 +105,19 @@ class ProductosItem extends StatelessWidget {
                                         children: [
                                           Text(
                                             '${productos.data[i].nombreProducto}',
-                                            style: TextStyle(fontSize: ScreenUtil().setSp(14), color: Colors.black),
+                                            style: TextStyle(
+                                              fontSize: ScreenUtil().setSp(14),
+                                              color: Colors.black,
+                                            ),
                                           ),
                                           Text(
                                             'S/.${dosDecimales(
                                               double.parse(productos.data[i].precioVenta),
                                             )}',
-                                            style: TextStyle(fontSize: ScreenUtil().setSp(14), color: Colors.grey[400]),
+                                            style: TextStyle(
+                                              fontSize: ScreenUtil().setSp(14),
+                                              color: Colors.grey[400],
+                                            ),
                                           ),
                                         ],
                                       ),

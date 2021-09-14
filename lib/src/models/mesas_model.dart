@@ -2,6 +2,7 @@
 
 
 import 'package:tayta_restaurant/src/models/carrtito_model.dart';
+import 'package:tayta_restaurant/src/models/cuenta_model.dart';
 
 class MesasModel {
   MesasModel({
@@ -18,6 +19,7 @@ class MesasModel {
     this.nombreCompleto,
     this.locacionId,
     this.carrito,
+    this.cuentas,
   });
 
   String idMesa;
@@ -31,9 +33,10 @@ class MesasModel {
   String idUsuario;
   String codigoUsuario;
   String nombreCompleto;
-  String locacionId;
+  String locacionId; 
 
   List<CarritoModel> carrito;
+  List<CuentaModel> cuentas;
 
   factory MesasModel.fromJson(Map<String, dynamic> json) => MesasModel(
         idMesa: json["idMesa"],

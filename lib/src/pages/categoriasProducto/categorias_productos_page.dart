@@ -261,7 +261,7 @@ class _CategoriasProductopageState extends State<CategoriasProductopage> {
 
                           for (var i = 0; i < carrito.data.length; i++) {
                             int cantidad = int.parse(carrito.data[i].cantidad);
-                            precio = (carrito.data[i].llevar == '1') ? double.parse(carrito.data[i].precioVenta) : double.parse(carrito.data[i].precioLlevar);
+                            precio = (carrito.data[i].paraLLevar == '0') ? double.parse(carrito.data[i].precioVenta) : double.parse(carrito.data[i].precioLlevar);
                             total = total + (cantidad * precio);
                           }
                           return Padding(
@@ -316,7 +316,7 @@ class _CategoriasProductopageState extends State<CategoriasProductopage> {
                                       itemBuilder: (context, i) {
                                         double totelx = 0;
                                         int cantidad = int.parse(carrito.data[i].cantidad);
-                                        precio = (carrito.data[i].llevar == '1') ? double.parse(carrito.data[i].precioVenta) : double.parse(carrito.data[i].precioLlevar);
+                                        precio = (carrito.data[i].paraLLevar == '1') ? double.parse(carrito.data[i].precioVenta) : double.parse(carrito.data[i].precioLlevar);
 
                                         totelx = cantidad * precio;
 

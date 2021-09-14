@@ -29,8 +29,9 @@ class _FamiliasitemState extends State<Familiasitem> {
       builder: (BuildContext context, AsyncSnapshot<List<FamiliasModel>> snapshot) {
         if (snapshot.hasData) {
           if (snapshot.data.length > 0) {
+            productosBloc.obtenerProductosPorFamilia(snapshot.data[0].idFamilia, snapshot.data[0].idLocacion);
+
             return Container(
-              
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
                 color: Colors.white,
@@ -46,12 +47,17 @@ class _FamiliasitemState extends State<Familiasitem> {
               width: responsive.wp(20),
               child: Column(
                 children: [
-                  Text(
-                    'Categorías',
-                    style: TextStyle(
-                      fontSize: responsive.ip(1.5),
-                      color: Colors.blue,
-                      fontWeight: FontWeight.bold,
+                  Container(
+                    padding: EdgeInsets.symmetric(
+                      vertical: ScreenUtil().setHeight(15),
+                    ),
+                    child: Text(
+                      'Categorías',
+                      style: TextStyle(
+                        fontSize: responsive.ip(1.5),
+                        color: Colors.blue,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                   Expanded(

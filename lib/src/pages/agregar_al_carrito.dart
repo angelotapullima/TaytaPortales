@@ -307,9 +307,10 @@ class _AgregarAlCarritoState extends State<AgregarAlCarrito> {
                             carrito.nombreMesa = widget.mesas.nombreCompleto;
                             carrito.idLocacion = widget.mesas.locacionId;
                             carrito.estado = '0';
+                            carrito.nroCuenta = (nroCuentaController.text.length>0)?nroCuentaController.text:'1';
                             //estado  == 0 -> enviado
                             //estado  == 1 -> preparado
-                            carrito.llevar = (val) ? '1' : '0';
+                            carrito.paraLLevar = (val) ? '1' : '0';
 
                             //llevar = true -> ==== 1  producto para llevar
                             //llevar = false -> ==== 0  producto para local

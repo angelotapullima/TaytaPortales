@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tayta_restaurant/src/bloc/provider.dart';
 import 'package:tayta_restaurant/src/models/locacion_model.dart';
@@ -25,7 +26,7 @@ class _WidgetLocacionState extends State<HeaderLocacion> {
     final familiasBloc = ProviderBloc.familias(context);
     final responsive = Responsive.of(context);
     return Container(
-      height: responsive.hp(8),
+      height:ScreenUtil().setHeight(80),
       child: StreamBuilder(
           stream: locacionBloc.locacionStream,
           builder: (context, AsyncSnapshot<List<LocacionModel>> snapshot) {
@@ -46,8 +47,7 @@ class _WidgetLocacionState extends State<HeaderLocacion> {
                           mesabloc.obtenerMesasPorLocacion(snapshot.data[i].idLocacion);
 
                           familiasBloc.obtenerFamilias(snapshot.data[i].idLocacion);
-                         
-                          },
+                        },
                         child: Container(
                           // responsive.wp(100) : responsive.wp(40),
 
@@ -69,7 +69,7 @@ class _WidgetLocacionState extends State<HeaderLocacion> {
                                             textAlign: TextAlign.center,
                                             style: GoogleFonts.poppins(
                                               fontSize: responsive.ip(1.5),
-                                              color:    (_catController.index == i)?Colors.blue[700]:Colors.grey,
+                                              color: (_catController.index == i) ? Colors.blue[700] : Colors.grey,
                                               fontWeight: FontWeight.w600,
                                               letterSpacing: responsive.ip(.2),
                                             ),
@@ -84,7 +84,7 @@ class _WidgetLocacionState extends State<HeaderLocacion> {
                                                       fontWeight: FontWeight.w600,
                                                       letterSpacing: responsive.ip(.5),
                                                       decoration: TextDecoration.underline,
-                                                      decorationColor:  (_catController.index == i)?Colors.blue[700]:Colors.grey,
+                                                      decorationColor: (_catController.index == i) ? Colors.blue[700] : Colors.grey,
                                                       decorationThickness: responsive.hp(.5)),
                                                 )
                                               : Container(),

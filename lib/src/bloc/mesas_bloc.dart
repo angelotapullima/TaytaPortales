@@ -3,6 +3,8 @@ import 'package:tayta_restaurant/src/api/mesas_api.dart';
 import 'package:tayta_restaurant/src/database/carrito_database.dart';
 
 import 'package:tayta_restaurant/src/database/mesas_database.dart';
+import 'package:tayta_restaurant/src/models/carrtito_model.dart';
+import 'package:tayta_restaurant/src/models/cuenta_model.dart';
 import 'package:tayta_restaurant/src/models/mesas_model.dart';
 
 class MesasBloc {
@@ -33,7 +35,7 @@ class MesasBloc {
     final mesaList = await mesasDatabase.obtenerMesaPorId(idMesa);
 
     if (mesaList.length > 0) {
-     // final List<CarritoModel> carris = [];
+       final List<CuentaModel> cuenta = [];
 
       MesasModel mesasModel = MesasModel();
 
@@ -52,6 +54,48 @@ class MesasBloc {
 
       final carritoList = await carritoDatabase.obtenerCarritoPorIdCarrito(mesaList[0].idMesa, mesaList[0].locacionId);
 
+      final nroCuentas = await carritoDatabase.obtenerCarritoPorAgrupadoPorCuentas(mesaList[0].idMesa, mesaList[0].locacionId);
+
+      if (nroCuentas.length > 0) {
+        for (var i = 0; i < nroCuentas.length; i++) {
+          double montex = 0.0;
+
+          CuentaModel cuentaModel = CuentaModel();
+          cuentaModel.cuenta = nroCuentas[i].nroCuenta;
+
+          final carritoList2 = await carritoDatabase.obtenerCarritoPorIdCuenta(mesaList[0].idMesa, mesaList[0].locacionId, nroCuentas[i].nroCuenta);
+
+          if (carritoList2.length > 0) {
+            for (var x = 0; x < carritoList2.length; x++) {
+              CarritoModel carritoModel = CarritoModel();
+              carritoModel.idCarrito = carritoList2[x].idCarrito;
+              carritoModel.idProducto = carritoList2[x].idProducto;
+              carritoModel.nombreProducto = carritoList2[x].nombreProducto;
+              carritoModel.precioVenta = carritoList2[x].precioVenta;
+              carritoModel.precioLlevar = carritoList2[x].precioLlevar;
+              carritoModel.cantidad = carritoList2[x].cantidad;
+              carritoModel.observacion = carritoList2[x].observacion;
+              carritoModel.nroCuenta = carritoList2[x].nroCuenta;
+              carritoModel.idMesa = carritoList2[x].idMesa;
+              carritoModel.nombreMesa = carritoList2[x].nombreMesa;
+              carritoModel.idLocacion = carritoList2[x].idLocacion;
+              carritoModel.estado = carritoList2[x].estado;
+              carritoModel.paraLLevar = carritoList2[x].paraLLevar;
+
+              if ('${carritoList2[x].paraLLevar}' == '0') {
+                montex = montex + (double.parse(carritoList2[x].precioLlevar) * double.parse(carritoList2[x].cantidad));
+              } else {
+                montex = montex + (double.parse(carritoList2[x].precioVenta) * double.parse(carritoList2[x].cantidad));
+              }
+            }
+          }
+          cuentaModel.monto = montex.toString();
+          cuentaModel.carrito = carritoList2;
+          cuenta.add(cuentaModel);
+        }
+      }
+
+      mesasModel.cuentas = cuenta;
       mesasModel.carrito = carritoList;
       mesis.add(mesasModel);
     }
