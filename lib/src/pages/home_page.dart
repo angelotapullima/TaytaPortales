@@ -26,8 +26,6 @@ class HomePage extends StatelessWidget {
     final locacionBloc = ProviderBloc.locacion(context);
     locacionBloc.obtenerLocacionesPorIdTienda(prefs.tiendaId);
 
-
-
     return Scaffold(
       backgroundColor: Color(0xfff7f7f7),
       body: ResponsiveBuilder(
@@ -41,17 +39,16 @@ class HomePage extends StatelessWidget {
 
 class VistaTablet extends StatelessWidget {
   const VistaTablet({
-    Key key, 
+    Key key,
   }) : super(key: key);
- 
 
   @override
   Widget build(BuildContext context) {
-
-
     final responsive = Responsive.of(context);
     final provider = Provider.of<IndexBlocListener>(context, listen: false);
 
+    final mesasBloc = ProviderBloc.mesas(context);
+    final familiasBloc = ProviderBloc.familias(context);
     return SafeArea(
       child: ValueListenableBuilder(
         valueListenable: provider.page,
@@ -107,7 +104,7 @@ class VistaTablet extends StatelessWidget {
                                         //transform: Matrix4.translationValues(-ScreenUtil().setWidth(20), 0, 0),
                                         width: ScreenUtil().setWidth(325),
                                         child: Container(
-                                          child: CarritoTablet(),
+                                          child: CarritoTabletDisgregar(),
                                         ),
                                       ),
                                     ],
@@ -146,7 +143,7 @@ class VistaTablet extends StatelessWidget {
                                       Container(
                                         width: ScreenUtil().setWidth(640),
                                         color: Colors.white,
-                                        child: ProductosItem(),
+                                        child: ProductosItem(tipo:'2'),
                                       ),
                                       SizedBox(
                                         width: ScreenUtil().setWidth(10),
@@ -158,7 +155,93 @@ class VistaTablet extends StatelessWidget {
                             ),
                           ),
                         )
-                      : Container()
+                      : (data == EnumIndex.familiaMesa)
+                          ? Expanded(
+                              flex: 15,
+                              child: StreamBuilder(
+                                  stream: mesasBloc.mesaIdStream,
+                                  builder: (context, AsyncSnapshot<List<MesasModel>> snapshot) {
+                                    if (snapshot.hasData) {
+                                      if (snapshot.data.length > 0) {
+                                        familiasBloc.obtenerFamilias(snapshot.data[0].locacionId);
+                                        return SafeArea(
+                                          child: Container(
+                                            margin: EdgeInsets.only(
+                                              bottom: responsive.hp(2),
+                                            ),
+                                            child: Column(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: [
+                                                Padding(
+                                                  padding: EdgeInsets.symmetric(
+                                                    vertical: ScreenUtil().setHeight(10),
+                                                  ),
+                                                  child: Text(
+                                                    'Mesa ${snapshot.data[0].mesa}',
+                                                    style: TextStyle(
+                                                      fontSize: responsive.ip(1.5),
+                                                      color: Colors.blue,
+                                                      fontWeight: FontWeight.bold,
+                                                    ),
+                                                  ),
+                                                ),
+                                                Expanded(
+                                                  child: Stack(
+                                                    children: [
+                                                      Row(
+                                                        children: [
+                                                          Container(
+                                                            width: ScreenUtil().setWidth(500),
+                                                            child: Container(),
+                                                          ),
+                                                          Container(
+                                                            decoration: BoxDecoration(
+                                                              color: Color(0xffCFD7E8),
+                                                              borderRadius: BorderRadius.only(
+                                                                topRight: Radius.circular(20),
+                                                                bottomRight: Radius.circular(20),
+                                                              ),
+                                                            ),
+                                                            width: ScreenUtil().setWidth(420),
+                                                            child: Container(),
+                                                          )
+                                                        ],
+                                                      ),
+                                                      Row(
+                                                        children: [
+                                                          Container(
+                                                            width: ScreenUtil().setWidth(300),
+                                                            child: Familiasitem(),
+                                                          ),
+                                                          SizedBox(
+                                                            width: ScreenUtil().setWidth(15),
+                                                          ),
+                                                          Container(
+                                                            width: ScreenUtil().setWidth(300),
+                                                            child: ProductosItem(tipo:'1'),
+                                                          ),
+                                                          Container(
+                                                            width: ScreenUtil().setWidth(300),
+                                                            child: CarritoTabletAgregar(),
+                                                          )
+                                                        ],
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        );
+                                      } else {
+                                        return Container();
+                                      }
+                                    } else {
+                                      return Container();
+                                    }
+                                  }),
+                            )
+                          : Container()
             ],
           );
         },

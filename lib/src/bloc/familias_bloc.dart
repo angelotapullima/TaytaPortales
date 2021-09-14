@@ -19,5 +19,5 @@ class FamiliasBloc {
     _familiasController.sink.add(await familiasDatabase.obtenerFamilias(idLocacion));
     await familiasApi.obtenerFamilias(idLocacion);
     _familiasController.sink.add(await familiasDatabase.obtenerFamilias(idLocacion));
-  }
+  }  
 }

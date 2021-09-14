@@ -78,7 +78,7 @@ class SideMenu extends StatelessWidget {
                                   isActive: (data == EnumIndex.mesas) ? true : false,
                                 ),
                               ),
-                              (data == EnumIndex.mesas)
+                              (data == EnumIndex.mesas  || data == EnumIndex.familiaMesa)
                                   ? Center(
                                       child: Column(
                                         mainAxisAlignment: MainAxisAlignment.center,
@@ -86,7 +86,7 @@ class SideMenu extends StatelessWidget {
                                           Container(
                                             transform: Matrix4.translationValues(-ScreenUtil().setWidth(10), 0, 0),
                                             child: CircleAvatar(
-                                              backgroundColor: (data == EnumIndex.mesas) ? Colors.blue : Colors.white,
+                                              backgroundColor: (data == EnumIndex.mesas || data == EnumIndex.familiaMesa) ? Colors.blue : Colors.white,
                                               radius: ScreenUtil().setHeight(60),
                                               child: Column(
                                                 mainAxisAlignment: MainAxisAlignment.center,

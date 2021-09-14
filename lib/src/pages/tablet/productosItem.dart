@@ -3,11 +3,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tayta_restaurant/src/bloc/provider.dart';
 import 'package:tayta_restaurant/src/models/productos_model.dart';
+import 'package:tayta_restaurant/src/pages/tablet/agregar_producto.dart';
 import 'package:tayta_restaurant/src/utils/responsive.dart';
 import 'package:tayta_restaurant/src/utils/utils.dart';
 
 class ProductosItem extends StatelessWidget {
-  const ProductosItem({Key key}) : super(key: key);
+  const ProductosItem({Key key,@required this.tipo}) : super(key: key);
+
+  final String tipo;
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +61,7 @@ class ProductosItem extends StatelessWidget {
                       ),
                       itemCount: productos.data.length,
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
+                        crossAxisCount: (tipo=='1')?1:2,
                         childAspectRatio: 3,
                         mainAxisSpacing: responsive.hp(.5),
                         crossAxisSpacing: responsive.wp(.2),
@@ -67,11 +70,36 @@ class ProductosItem extends StatelessWidget {
                       itemBuilder: (BuildContext context, int i) {
                         return LayoutBuilder(
                           builder: (_, constraints) {
-                            print(constraints.maxWidth);
-                            print('hello');
-                            print(constraints.maxHeight);
+                            
                             return InkWell(
                               onTap: () {
+
+                                if(tipo=='1'){
+                                  Navigator.push(
+                                    
+                                  context,
+                                  PageRouteBuilder(
+                                    opaque: false,
+                                    pageBuilder: (context, animation, secondaryAnimation) {
+                                      return AgregarProductTablet(productos: productos.data[i],);
+                                    },
+                                    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                                      var begin = Offset(0.0, 1.0);
+                                      var end = Offset.zero;
+                                      var curve = Curves.ease;
+
+                                      var tween = Tween(begin: begin, end: end).chain(
+                                        CurveTween(curve: curve),
+                                      );
+
+                                      return SlideTransition(
+                                        position: animation.drive(tween),
+                                        child: child,
+                                      );
+                                    },
+                                  ),
+                                );
+                                }
                                 //AgregarAlCarrito
                               },
                               child: Container(

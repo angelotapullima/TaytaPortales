@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tayta_restaurant/src/bloc/provider.dart';
 import 'package:tayta_restaurant/src/models/familias_model.dart';
 import 'package:tayta_restaurant/src/pages/categoriasProducto/categorias_productos_page.dart';
@@ -89,16 +90,23 @@ class _FamiliasitemState extends State<Familiasitem> {
                                     child: Row(
                                       children: [
                                         Container(
-                                            width: ScreenUtil().setWidth(40),
-                                            height: ScreenUtil().setWidth(40),
-                                            decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.circular(10),
-                                              color: color[700],
+                                          width: ScreenUtil().setWidth(40),
+                                          height: ScreenUtil().setWidth(40),
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(10),
+                                            color: color[700],
+                                          ),
+                                          child: Container(
+                                            padding: EdgeInsets.all(
+                                              ScreenUtil().setWidth(8),
                                             ),
-                                            child: Icon(
-                                              Icons.mark_as_unread,
-                                              color: Colors.white,
-                                            )),
+                                            height: ScreenUtil().setWidth(10),
+                                            width: ScreenUtil().setWidth(10),
+                                            child: SvgPicture.asset(
+                                              'assets/flame.svg',
+                                            ),
+                                          ),
+                                        ),
                                         SizedBox(
                                           width: responsive.wp(2),
                                         ),
