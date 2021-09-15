@@ -53,11 +53,13 @@ class VistaTablet extends StatelessWidget {
       child: ValueListenableBuilder(
         valueListenable: provider.page,
         builder: (BuildContext context, EnumIndex data, Widget child) {
+
+                  MesasModel mesas = MesasModel();
           return Row(
             children: [
               Container(
                 width: ScreenUtil().setWidth(83),
-                child: Container(color: Color(0xffff7f7f7), child: SideMenu()),
+                child: Container(color: Color(0xfff7f7f7), child: SideMenu()),
               ),
               (data == EnumIndex.mesas)
                   ? Expanded(
@@ -143,7 +145,7 @@ class VistaTablet extends StatelessWidget {
                                       Container(
                                         width: ScreenUtil().setWidth(640),
                                         color: Colors.white,
-                                        child: ProductosItem(tipo:'2'),
+                                        child: ProductosItem(tipo:'2',mesas:mesas),
                                       ),
                                       SizedBox(
                                         width: ScreenUtil().setWidth(10),
@@ -218,7 +220,7 @@ class VistaTablet extends StatelessWidget {
                                                           ),
                                                           Container(
                                                             width: ScreenUtil().setWidth(300),
-                                                            child: ProductosItem(tipo:'1'),
+                                                            child: ProductosItem(tipo:'1',mesas:snapshot.data[0]),
                                                           ),
                                                           Container(
                                                             width: ScreenUtil().setWidth(300),

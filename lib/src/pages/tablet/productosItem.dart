@@ -1,16 +1,19 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tayta_restaurant/src/bloc/provider.dart';
+import 'package:tayta_restaurant/src/models/mesas_model.dart';
 import 'package:tayta_restaurant/src/models/productos_model.dart';
 import 'package:tayta_restaurant/src/pages/tablet/agregar_producto.dart';
 import 'package:tayta_restaurant/src/utils/responsive.dart';
 import 'package:tayta_restaurant/src/utils/utils.dart';
 
 class ProductosItem extends StatelessWidget {
-  const ProductosItem({Key key,@required this.tipo}) : super(key: key);
+  const ProductosItem({Key key,@required this.tipo, @required this.mesas}) : super(key: key);
 
   final String tipo;
+  final MesasModel mesas;
 
   @override
   Widget build(BuildContext context) {
@@ -62,8 +65,8 @@ class ProductosItem extends StatelessWidget {
                       itemCount: productos.data.length,
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: (tipo=='1')?1:2,
-                        childAspectRatio: 3,
-                        mainAxisSpacing: responsive.hp(.5),
+                        childAspectRatio: 2.5,
+                         
                         crossAxisSpacing: responsive.wp(.2),
                       ),
                       scrollDirection: Axis.vertical,
@@ -81,7 +84,7 @@ class ProductosItem extends StatelessWidget {
                                   PageRouteBuilder(
                                     opaque: false,
                                     pageBuilder: (context, animation, secondaryAnimation) {
-                                      return AgregarProductTablet(productos: productos.data[i],);
+                                      return AgregarProductTablet(productos: productos.data[i],mesas: mesas,);
                                     },
                                     transitionsBuilder: (context, animation, secondaryAnimation, child) {
                                       var begin = Offset(0.0, 1.0);
@@ -164,12 +167,12 @@ class ProductosItem extends StatelessWidget {
             );
           } else {
             return Center(
-              child: CircularProgressIndicator(),
+              child: Center(child: CupertinoActivityIndicator()),
             );
           }
         } else {
           return Center(
-            child: CircularProgressIndicator(),
+            child: Center(child: CupertinoActivityIndicator()),
           );
         }
       },

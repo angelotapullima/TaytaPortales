@@ -211,13 +211,21 @@ class CarritoTabletDisgregar extends StatelessWidget {
                                               ],
                                             ),
                                             SizedBox(
-                                              height: ScreenUtil().setHeight(15),
+                                              height: ScreenUtil().setHeight(10),
+                                            ),
+                                            SizedBox(
+                                              height: ScreenUtil().setHeight(40),
                                               width: ScreenUtil().setWidth(200),
                                               child: MaterialButton(
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius: BorderRadius.circular(10),
+                                                ),
+                                                color: Colors.blue,
+                                                textColor: Colors.white,
                                                 child: Text('Agregar mas productos'),
                                                 onPressed: () {},
                                               ),
-                                            )
+                                            ),
                                           ],
                                         ),
                                       );
@@ -264,7 +272,7 @@ class CarritoTabletDisgregar extends StatelessWidget {
                                                             ),
                                                           )
                                                         : Container(),
-                                                    (snapshot.data[0].carrito[i].paraLLevar == '0')
+                                                    (snapshot.data[0].carrito[i].paraLLevar == '1')
                                                         ? Container(
                                                             padding: EdgeInsets.symmetric(horizontal: responsive.wp(.5)),
                                                             decoration: BoxDecoration(
@@ -449,7 +457,9 @@ class CarritoTabletAgregar extends StatelessWidget {
                           ), */
                         ],
                       ),
-                      SizedBox(height: responsive.hp(4)),
+                      SizedBox(
+                        height: responsive.hp(4),
+                      ),
                       (snapshot.data[0].carrito.length > 0)
                           ? Expanded(
                               child: ListView.builder(
@@ -592,13 +602,18 @@ class CarritoTabletAgregar extends StatelessWidget {
                                               ],
                                             ),
                                             SizedBox(
-                                              height: ScreenUtil().setHeight(15),
+                                              height: ScreenUtil().setHeight(40),
                                               width: ScreenUtil().setWidth(200),
                                               child: MaterialButton(
-                                                child: Text('Agregar mas productos'),
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius: BorderRadius.circular(10),
+                                                ),
+                                                color: Colors.blue,
+                                                textColor: Colors.white,
+                                                child: Text('Enviar pedidos'),
                                                 onPressed: () {},
                                               ),
-                                            )
+                                            ),
                                           ],
                                         ),
                                       );
@@ -645,7 +660,7 @@ class CarritoTabletAgregar extends StatelessWidget {
                                                             ),
                                                           )
                                                         : Container(),
-                                                    (snapshot.data[0].carrito[i].paraLLevar == '0')
+                                                    (snapshot.data[0].carrito[i].paraLLevar == '1')
                                                         ? Container(
                                                             padding: EdgeInsets.symmetric(horizontal: responsive.wp(.5)),
                                                             decoration: BoxDecoration(

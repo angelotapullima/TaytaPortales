@@ -63,76 +63,80 @@ class _FamiliasitemState extends State<Familiasitem> {
                   ),
                   Expanded(
                     child: ListView.builder(
-                        itemCount: snapshot.data.length,
-                        itemBuilder: (context, index) {
-                          var color = Colors.primaries[Random().nextInt(Colors.primaries.length)];
-                          return InkWell(
-                            onTap: () {
-                              _catController.changeIndex(index, snapshot.data[index].idFamilia);
-                              productosBloc.obtenerProductosPorFamilia(snapshot.data[index].idFamilia, snapshot.data[index].idLocacion);
+                      itemCount: snapshot.data.length,
+                      itemBuilder: (context, index) {
+                        var color = Colors.primaries[Random().nextInt(Colors.primaries.length)];
+                        return InkWell(
+                          onTap: () {
+                            _catController.changeIndex(index, snapshot.data[index].idFamilia);
+                            productosBloc.obtenerProductosPorFamilia(snapshot.data[index].idFamilia, snapshot.data[index].idLocacion);
+                          },
+                          child: AnimatedBuilder(
+                            animation: _catController,
+                            builder: (_, s) {
+                              return Container(
+                                margin: EdgeInsets.symmetric(
+                                  horizontal: ScreenUtil().setWidth(24),
+                                  vertical: ScreenUtil().setHeight(5),
+                                ),
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: ScreenUtil().setWidth(12),
+                                ),
+                                decoration: BoxDecoration(
+                                  color: (_catController.index == index) ? color[200] : Colors.transparent,
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                height: ScreenUtil().setHeight(74),
+                                child: Row(
+                                  children: [
+                                    Container(
+                                      width: ScreenUtil().setWidth(40),
+                                      height: ScreenUtil().setWidth(40),
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10),
+                                        color: color[700],
+                                      ),
+                                      child: Container(
+                                        padding: EdgeInsets.all(
+                                          ScreenUtil().setWidth(8),
+                                        ),
+                                        height: ScreenUtil().setWidth(10),
+                                        width: ScreenUtil().setWidth(10),
+                                        child: SvgPicture.asset(
+                                          'assets/flame.svg',
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: responsive.wp(2),
+                                    ),
+                                    Expanded(
+                                      child: Text(
+                                        '${snapshot.data[index].nombre}',
+                                        style: TextStyle(
+                                          color: (_catController.index == index) ? Colors.white : Colors.black,
+                                          fontWeight: FontWeight.w800,
+                                        ),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
                             },
-                            child: AnimatedBuilder(
-                                animation: _catController,
-                                builder: (_, s) {
-                                  return Container(
-                                    margin: EdgeInsets.symmetric(
-                                      horizontal: ScreenUtil().setWidth(24),
-                                      vertical: ScreenUtil().setHeight(5),
-                                    ),
-                                    padding: EdgeInsets.symmetric(
-                                      horizontal: ScreenUtil().setWidth(12),
-                                    ),
-                                    decoration: BoxDecoration(
-                                      color: (_catController.index == index) ? color[200] : Colors.transparent,
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                    height: ScreenUtil().setHeight(74),
-                                    child: Row(
-                                      children: [
-                                        Container(
-                                          width: ScreenUtil().setWidth(40),
-                                          height: ScreenUtil().setWidth(40),
-                                          decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(10),
-                                            color: color[700],
-                                          ),
-                                          child: Container(
-                                            padding: EdgeInsets.all(
-                                              ScreenUtil().setWidth(8),
-                                            ),
-                                            height: ScreenUtil().setWidth(10),
-                                            width: ScreenUtil().setWidth(10),
-                                            child: SvgPicture.asset(
-                                              'assets/flame.svg',
-                                            ),
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          width: responsive.wp(2),
-                                        ),
-                                        Text(
-                                          '${snapshot.data[index].nombre}',
-                                          style: TextStyle(
-                                            color: (_catController.index == index) ? Colors.white : Colors.black,
-                                            fontWeight: FontWeight.w800,
-                                          ),
-                                          textAlign: TextAlign.center,
-                                        ),
-                                      ],
-                                    ),
-                                  );
-                                }),
-                          );
-                        }),
+                          ),
+                        );
+                      },
+                    ),
                   ),
                 ],
               ),
             );
           } else {
-            return CupertinoActivityIndicator();
+            return Center(child: CupertinoActivityIndicator());
           }
         } else {
-          return CupertinoActivityIndicator();
+          return Center(child: CupertinoActivityIndicator());
         }
       },
     );

@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tayta_restaurant/src/bloc/provider.dart';
 import 'package:tayta_restaurant/src/models/mesas_model.dart';
@@ -198,10 +199,10 @@ class MesasWidget extends StatelessWidget {
                  ),
                );
              } else {
-               return CircularProgressIndicator();
+               return Center(child: CupertinoActivityIndicator());
              }
            } else {
-             return CircularProgressIndicator();
+             return Center(child: CupertinoActivityIndicator());
            }
          },
        ),
