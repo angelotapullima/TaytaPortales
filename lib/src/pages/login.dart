@@ -45,7 +45,7 @@ class _LoginPageState extends State<LoginPage> {
                         margin: EdgeInsets.symmetric(horizontal: responsive.wp(10)),
                         padding: EdgeInsets.symmetric(horizontal: responsive.wp(10)),
                         width: double.infinity,
-                        height: responsive.hp(16),
+                        height: responsive.hp(50),
                         decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(10)),
                         child: Column(
                           children: [

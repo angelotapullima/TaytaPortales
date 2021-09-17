@@ -182,7 +182,7 @@ class VistaTablet extends StatelessWidget {
                                                     'Mesa ${snapshot.data[0].mesa}',
                                                     style: TextStyle(
                                                       fontSize: responsive.ip(1.5),
-                                                      color: Colors.blue,
+                                                      color: Color(0xff3783f5),
                                                       fontWeight: FontWeight.bold,
                                                     ),
                                                   ),

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:tayta_restaurant/src/utils/constants.dart';
 import 'package:tayta_restaurant/src/utils/responsive.dart';
 
 class SideMenuItem extends StatelessWidget {
@@ -22,23 +21,23 @@ class SideMenuItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final responsive = Responsive.of(context);
     return InkWell(
-        onTap: press,
-        child: RotatedBox(
-          quarterTurns: 3,
-          child: Container(
-            child: Center(
-              child: Text(
-                title,
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.button.copyWith(
-                      fontSize: responsive.ip(1.2),
-                      
-                      fontWeight: FontWeight.bold,
-                      color: color  ,
-                    ),
-              ),
+      onTap: press,
+      child: RotatedBox(
+        quarterTurns: 3,
+        child: Container(
+          child: Center(
+            child: Text(
+              title,
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.button.copyWith(
+                    fontSize: responsive.ip(1.2),
+                    fontWeight: FontWeight.bold,
+                    color: color,
+                  ),
             ),
           ),
-        ));
+        ),
+      ),
+    );
   }
 }

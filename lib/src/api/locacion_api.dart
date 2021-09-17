@@ -13,7 +13,10 @@ class LocacionApi {
   Future<bool> obtenerLocacionesPorTienda(String idTienda) async {
     try {
       final url = Uri.parse('$apiBaseURL/api/Locacion/$idTienda');
-      Map<String, String> headers = {'Content-Type': 'application/json', 'Authorization': ' Bearer ${preferences.token}'};
+      Map<String, String> headers = {
+        'Content-Type': 'application/json',
+        'Authorization': ' Bearer ${preferences.token}',
+      };
 
       final resp = await http.get(
         url,

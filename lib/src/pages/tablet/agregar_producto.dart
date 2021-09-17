@@ -7,7 +7,6 @@ import 'package:tayta_restaurant/src/models/carrtito_model.dart';
 import 'package:tayta_restaurant/src/models/mesas_model.dart';
 import 'package:tayta_restaurant/src/models/productos_model.dart';
 import 'package:tayta_restaurant/src/utils/circle.dart';
-import 'package:tayta_restaurant/src/utils/responsive.dart';
 import 'package:tayta_restaurant/src/utils/utils.dart';
 
 class AgregarProductTablet extends StatefulWidget {

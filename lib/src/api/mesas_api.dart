@@ -1,11 +1,9 @@
-
-
-
-
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:tayta_restaurant/src/database/carrito_database.dart';
 import 'package:tayta_restaurant/src/database/mesas_database.dart';
+import 'package:tayta_restaurant/src/models/carrtito_model.dart';
 import 'package:tayta_restaurant/src/models/mesas_model.dart';
 import 'package:tayta_restaurant/src/preferences/preferences.dart';
 
@@ -13,6 +11,7 @@ import 'package:tayta_restaurant/src/utils/constants.dart';
 
 class MesasApi {
   final mesasDatabase = MesasDatabase();
+  final carritoDatabase = CarritoDatabase();
   final preferences = Preferences();
   Future<bool> obtenerMesasPorLocacion(String idLocacion) async {
     try {
@@ -45,8 +44,34 @@ class MesasApi {
           mesasModel.codigoUsuario = decodedData[i]['codigoUsuario'].toString();
           mesasModel.nombreCompleto = decodedData[i]['nombresCompletos'].toString();
           mesasModel.locacionId = idLocacion.toString();
-          
+
           await mesasDatabase.insertarMesas(mesasModel);
+
+          if (decodedData[i]['detalles'] != null) {
+            if (decodedData[i]['detalles'].length > 0) {
+
+              await carritoDatabase.eliminarPedidosPorMesa(decodedData[i]['mesaId'].toString(),idLocacion.toString());
+              for (var x = 0; x < decodedData[i]['detalles'].length; x++) {
+                CarritoModel carritoModel = CarritoModel();
+                carritoModel.idProducto = decodedData[i]['detalles'][x]['idProducto'].toString();
+                carritoModel.idComandaDetalle = decodedData[i]['detalles'][x]['idComandaDetalle'].toString();
+                carritoModel.nombreProducto = decodedData[i]['detalles'][x]['nombreProducto'].toString();
+                carritoModel.precioLlevar = (decodedData[i]['detalles'][x]['paraLlevar'].toString() == 'true') ? decodedData[i]['detalles'][x]['precioUnitario'].toString() : '0';
+                carritoModel.precioVenta = (decodedData[i]['detalles'][x]['paraLlevar'].toString() == 'false') ? decodedData[i]['detalles'][x]['precioUnitario'].toString() : '0';
+                carritoModel.cantidad = decodedData[i]['detalles'][x]['cantidad'].toString();
+                carritoModel.observacion = decodedData[i]['detalles'][x]['observacion'].toString();
+                carritoModel.nroCuenta = decodedData[i]['detalles'][x]['nroCuenta'].toString();
+                carritoModel.paraLLevar = decodedData[i]['detalles'][x]['paraLlevar'].toString();
+                carritoModel.idMesa = decodedData[i]['mesaId'].toString();
+                carritoModel.idLocacion = idLocacion.toString();
+                carritoModel.estado = '1';
+
+                await carritoDatabase.insertarCarito(carritoModel);
+              }
+            }
+          }else{
+            await carritoDatabase.eliminarPedidosPorMesa(decodedData[i]['mesaId'].toString(),idLocacion.toString());
+          }
         }
       }
 
