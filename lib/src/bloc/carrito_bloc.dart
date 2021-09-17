@@ -17,7 +17,7 @@ class CarritoBloc {
 
     
     _carritoController.sink.add(
-      await carritoDatabase.obtenerCarritoPorIdCarrito(idMesa,idLocacion),
+      await carritoDatabase.obtenerCarritoPorIdCarritoAgregar(idMesa,idLocacion),
     );
   }
 }

@@ -327,10 +327,10 @@ class _AgregarProductTabletState extends State<AgregarProductTablet> {
                               carrito.idMesa = widget.mesas.idMesa;
                               carrito.nombreMesa = widget.mesas.nombreCompleto;
                               carrito.idLocacion = widget.mesas.locacionId;
-                              carrito.estado = '0';
+                             
                               carrito.nroCuenta = '1';
-                              //estado  == 0 -> enviado
-                              //estado  == 1 -> preparado
+                              carrito.estado = '0';
+                              carrito.idComandaDetalle = '0';
                               carrito.paraLLevar = (val) ? '1' : '0';
 
                               //llevar = true -> ==== 1  producto para llevar
@@ -339,7 +339,8 @@ class _AgregarProductTabletState extends State<AgregarProductTablet> {
                               await carritoDatabase.insertarCarito(carrito);
 
                               final mesasBloc = ProviderBloc.mesas(context);
-                              mesasBloc.obtenerMesasPorId(widget.mesas.idMesa);
+                              mesasBloc.obtenerMesasPorIdAgregar(widget.mesas.idMesa);
+                              mesasBloc.obtenerMesasPorIdDisgregar(widget.mesas.idMesa);
 
                               Navigator.pop(context);
                             },

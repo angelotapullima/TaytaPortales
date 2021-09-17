@@ -6,6 +6,13 @@ class IndexBlocListener with ChangeNotifier {
   ValueNotifier<EnumIndex> _page = ValueNotifier(EnumIndex.mesas);
   ValueNotifier<EnumIndex> get page => this._page;
 
+
+  ValueNotifier<bool> _cargando = ValueNotifier(false);
+  ValueNotifier<bool> get cargando => this._cargando; 
+
+
+
+
   BuildContext context;
 
   IndexBlocListener({this.context}) {
@@ -32,6 +39,19 @@ class IndexBlocListener with ChangeNotifier {
 
   void changeToFamiliaMesa() {
     _page.value  = EnumIndex.familiaMesa;
+    notifyListeners();
+  }
+
+
+
+
+  void changeCargandoTrue() {
+    _cargando.value = true;
+    notifyListeners();
+  }
+
+  void changeCargandoFalse() {
+    _cargando.value = false;
     notifyListeners();
   }
 }

@@ -30,6 +30,9 @@ class ProductoApi {
         }), */
       );
 
+
+      print('productos Familia');
+
       final decodedData = json.decode(resp.body);
 
       if (decodedData.length > 0) {

@@ -14,13 +14,16 @@ class MesasBloc {
   final carritoDatabase = CarritoDatabase();
 
   final _locacionController = BehaviorSubject<List<MesasModel>>();
-  final _mesaPorID = BehaviorSubject<List<MesasModel>>();
+  final _mesaPorIDAgregar = BehaviorSubject<List<MesasModel>>();
+  final _mesaPorIDDisgregar = BehaviorSubject<List<MesasModel>>();
 
   Stream<List<MesasModel>> get mesasStream => _locacionController.stream;
-  Stream<List<MesasModel>> get mesaIdStream => _mesaPorID.stream;
+  Stream<List<MesasModel>> get mesaIdAgregarStream => _mesaPorIDAgregar.stream;
+  Stream<List<MesasModel>> get mesaIdDisgregarStream => _mesaPorIDDisgregar.stream;
 
   dispose() {
-    _mesaPorID?.close();
+    _mesaPorIDAgregar?.close();
+    _mesaPorIDDisgregar?.close();
     _locacionController?.close();
   }
 
@@ -30,7 +33,7 @@ class MesasBloc {
     _locacionController.sink.add(await mesasDatabase.obtenerMesasPorLocacion(idLocacion));
   }
 
-  void obtenerMesasPorId(String idMesa) async {
+  void obtenerMesasPorIdAgregar(String idMesa) async {
     final List<MesasModel> mesis = [];
     final mesaList = await mesasDatabase.obtenerMesaPorId(idMesa);
 
@@ -52,7 +55,7 @@ class MesasBloc {
       mesasModel.nombreCompleto = mesaList[0].nombreCompleto;
       mesasModel.locacionId = mesaList[0].locacionId;
 
-      final carritoList = await carritoDatabase.obtenerCarritoPorIdCarrito(mesaList[0].idMesa, mesaList[0].locacionId);
+      final carritoList = await carritoDatabase.obtenerCarritoPorIdCarritoAgregar(mesaList[0].idMesa, mesaList[0].locacionId);
 
       final nroCuentas = await carritoDatabase.obtenerCarritoPorAgrupadoPorCuentas(mesaList[0].idMesa, mesaList[0].locacionId);
 
@@ -100,6 +103,83 @@ class MesasBloc {
       mesis.add(mesasModel);
     }
 
-    _mesaPorID.sink.add(mesis);
+    _mesaPorIDAgregar.sink.add(mesis);
   }
+
+
+
+  void obtenerMesasPorIdDisgregar(String idMesa) async {
+    final List<MesasModel> mesis = [];
+    final mesaList = await mesasDatabase.obtenerMesaPorId(idMesa);
+
+    if (mesaList.length > 0) {
+       final List<CuentaModel> cuenta = [];
+
+      MesasModel mesasModel = MesasModel();
+
+      mesasModel.idMesa = mesaList[0].idMesa;
+      mesasModel.idComanda = mesaList[0].idComanda;
+      mesasModel.cantidadPersonas = mesaList[0].cantidadPersonas;
+      mesasModel.horaIngreso = mesaList[0].horaIngreso;
+      mesasModel.mesa = mesaList[0].mesa;
+      mesasModel.total = mesaList[0].total;
+      mesasModel.estado = mesaList[0].estado;
+      mesasModel.paraLlevar = mesaList[0].paraLlevar;
+      mesasModel.idUsuario = mesaList[0].idUsuario;
+      mesasModel.codigoUsuario = mesaList[0].codigoUsuario;
+      mesasModel.nombreCompleto = mesaList[0].nombreCompleto;
+      mesasModel.locacionId = mesaList[0].locacionId;
+
+      final carritoList = await carritoDatabase.obtenerCarritoPorIdCarritoDisgregar(mesaList[0].idMesa, mesaList[0].locacionId);
+
+      final nroCuentas = await carritoDatabase.obtenerCarritoPorAgrupadoPorCuentas(mesaList[0].idMesa, mesaList[0].locacionId);
+
+      if (nroCuentas.length > 0) {
+        for (var i = 0; i < nroCuentas.length; i++) {
+          double montex = 0.0;
+
+          CuentaModel cuentaModel = CuentaModel();
+          cuentaModel.cuenta = nroCuentas[i].nroCuenta;
+
+          final carritoList2 = await carritoDatabase.obtenerCarritoPorIdCuenta(mesaList[0].idMesa, mesaList[0].locacionId, nroCuentas[i].nroCuenta);
+
+          if (carritoList2.length > 0) {
+            for (var x = 0; x < carritoList2.length; x++) {
+              CarritoModel carritoModel = CarritoModel();
+              carritoModel.idCarrito = carritoList2[x].idCarrito;
+              carritoModel.idProducto = carritoList2[x].idProducto;
+              carritoModel.nombreProducto = carritoList2[x].nombreProducto;
+              carritoModel.precioVenta = carritoList2[x].precioVenta;
+              carritoModel.precioLlevar = carritoList2[x].precioLlevar;
+              carritoModel.cantidad = carritoList2[x].cantidad;
+              carritoModel.observacion = carritoList2[x].observacion;
+              carritoModel.nroCuenta = carritoList2[x].nroCuenta;
+              carritoModel.idMesa = carritoList2[x].idMesa;
+              carritoModel.nombreMesa = carritoList2[x].nombreMesa;
+              carritoModel.idLocacion = carritoList2[x].idLocacion;
+              carritoModel.estado = carritoList2[x].estado;
+              carritoModel.paraLLevar = carritoList2[x].paraLLevar;
+
+              if ('${carritoList2[x].paraLLevar}' == '0') {
+                montex = montex + (double.parse(carritoList2[x].precioLlevar) * double.parse(carritoList2[x].cantidad));
+              } else {
+                montex = montex + (double.parse(carritoList2[x].precioVenta) * double.parse(carritoList2[x].cantidad));
+              }
+            }
+          }
+          cuentaModel.monto = montex.toString();
+          cuentaModel.carrito = carritoList2;
+          cuenta.add(cuentaModel);
+        }
+      }
+
+      mesasModel.cuentas = cuenta;
+      mesasModel.carrito = carritoList;
+      mesis.add(mesasModel);
+    }
+
+    _mesaPorIDDisgregar.sink.add(mesis);
+  }
+
+
 }

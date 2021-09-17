@@ -27,6 +27,8 @@ class LocacionApi {
         }), */
       );
 
+      print('locacionApi');
+
       final decodedData = json.decode(resp.body);
 
       if (decodedData.length > 0) {

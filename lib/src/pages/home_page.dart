@@ -53,8 +53,7 @@ class VistaTablet extends StatelessWidget {
       child: ValueListenableBuilder(
         valueListenable: provider.page,
         builder: (BuildContext context, EnumIndex data, Widget child) {
-
-                  MesasModel mesas = MesasModel();
+          MesasModel mesas = MesasModel();
           return Row(
             children: [
               Container(
@@ -145,7 +144,7 @@ class VistaTablet extends StatelessWidget {
                                       Container(
                                         width: ScreenUtil().setWidth(640),
                                         color: Colors.white,
-                                        child: ProductosItem(tipo:'2',mesas:mesas),
+                                        child: ProductosItem(tipo: '2', mesas: mesas),
                                       ),
                                       SizedBox(
                                         width: ScreenUtil().setWidth(10),
@@ -160,88 +159,129 @@ class VistaTablet extends StatelessWidget {
                       : (data == EnumIndex.familiaMesa)
                           ? Expanded(
                               flex: 15,
-                              child: StreamBuilder(
-                                  stream: mesasBloc.mesaIdStream,
-                                  builder: (context, AsyncSnapshot<List<MesasModel>> snapshot) {
-                                    if (snapshot.hasData) {
-                                      if (snapshot.data.length > 0) {
-                                        familiasBloc.obtenerFamilias(snapshot.data[0].locacionId);
-                                        return SafeArea(
-                                          child: Container(
-                                            margin: EdgeInsets.only(
-                                              bottom: responsive.hp(2),
-                                            ),
-                                            child: Column(
-                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                              children: [
-                                                Padding(
-                                                  padding: EdgeInsets.symmetric(
-                                                    vertical: ScreenUtil().setHeight(10),
-                                                  ),
-                                                  child: Text(
-                                                    'Mesa ${snapshot.data[0].mesa}',
-                                                    style: TextStyle(
-                                                      fontSize: responsive.ip(1.5),
-                                                      color: Color(0xff3783f5),
-                                                      fontWeight: FontWeight.bold,
-                                                    ),
-                                                  ),
+                              child: Stack(
+                                children: [
+                                  StreamBuilder(
+                                      stream: mesasBloc.mesaIdAgregarStream,
+                                      builder: (context, AsyncSnapshot<List<MesasModel>> snapshot) {
+                                        if (snapshot.hasData) {
+                                          if (snapshot.data.length > 0) {
+                                            familiasBloc.obtenerFamilias(snapshot.data[0].locacionId);
+                                            return SafeArea(
+                                              child: Container(
+                                                margin: EdgeInsets.only(
+                                                  bottom: responsive.hp(2),
                                                 ),
-                                                Expanded(
-                                                  child: Stack(
-                                                    children: [
-                                                      Row(
+                                                child: Column(
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  children: [
+                                                    Padding(
+                                                      padding: EdgeInsets.symmetric(
+                                                        vertical: ScreenUtil().setHeight(10),
+                                                      ),
+                                                      child: Text(
+                                                        'Mesa ${snapshot.data[0].mesa}',
+                                                        style: TextStyle(
+                                                          fontSize: responsive.ip(1.5),
+                                                          color: Color(0xff3783f5),
+                                                          fontWeight: FontWeight.bold,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    Expanded(
+                                                      child: Stack(
                                                         children: [
-                                                          Container(
-                                                            width: ScreenUtil().setWidth(500),
-                                                            child: Container(),
-                                                          ),
-                                                          Container(
-                                                            decoration: BoxDecoration(
-                                                              color: Color(0xffCFD7E8),
-                                                              borderRadius: BorderRadius.only(
-                                                                topRight: Radius.circular(20),
-                                                                bottomRight: Radius.circular(20),
+                                                          Row(
+                                                            children: [
+                                                              Container(
+                                                                width: ScreenUtil().setWidth(500),
+                                                                child: Container(),
                                                               ),
-                                                            ),
-                                                            width: ScreenUtil().setWidth(420),
-                                                            child: Container(),
-                                                          )
+                                                              Container(
+                                                                decoration: BoxDecoration(
+                                                                  color: Color(0xffCFD7E8),
+                                                                  borderRadius: BorderRadius.only(
+                                                                    topRight: Radius.circular(20),
+                                                                    bottomRight: Radius.circular(20),
+                                                                  ),
+                                                                ),
+                                                                width: ScreenUtil().setWidth(420),
+                                                                child: Container(),
+                                                              )
+                                                            ],
+                                                          ),
+                                                          Row(
+                                                            children: [
+                                                              Container(
+                                                                width: ScreenUtil().setWidth(300),
+                                                                child: Familiasitem(),
+                                                              ),
+                                                              SizedBox(
+                                                                width: ScreenUtil().setWidth(15),
+                                                              ),
+                                                              Container(
+                                                                width: ScreenUtil().setWidth(300),
+                                                                child: ProductosItem(tipo: '1', mesas: snapshot.data[0]),
+                                                              ),
+                                                              Container(
+                                                                width: ScreenUtil().setWidth(300),
+                                                                child: CarritoTabletAgregar(),
+                                                              )
+                                                            ],
+                                                          ),
                                                         ],
                                                       ),
-                                                      Row(
-                                                        children: [
-                                                          Container(
-                                                            width: ScreenUtil().setWidth(300),
-                                                            child: Familiasitem(),
-                                                          ),
-                                                          SizedBox(
-                                                            width: ScreenUtil().setWidth(15),
-                                                          ),
-                                                          Container(
-                                                            width: ScreenUtil().setWidth(300),
-                                                            child: ProductosItem(tipo:'1',mesas:snapshot.data[0]),
-                                                          ),
-                                                          Container(
-                                                            width: ScreenUtil().setWidth(300),
-                                                            child: CarritoTabletAgregar(),
-                                                          )
-                                                        ],
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            );
+                                          } else {
+                                            return Container();
+                                          }
+                                        } else {
+                                          return Container();
+                                        }
+                                      }),
+                                  ValueListenableBuilder(
+                                      valueListenable: provider.cargando,
+                                      builder: (context, data, widget) {
+                                        return (data)
+                                            ? Center(
+                                                child: Container(
+                                                  margin: EdgeInsets.symmetric(horizontal: responsive.wp(10)),
+                                                  padding: EdgeInsets.symmetric(horizontal: responsive.wp(15)),
+                                                  width: double.infinity,
+                                                  height: responsive.hp(50),
+                                                  decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(10)),
+                                                  child: Column(
+                                                    mainAxisAlignment: MainAxisAlignment.center,
+                                                    children: [
+                                                      Container(
+                                                        margin: EdgeInsets.symmetric(
+                                                          horizontal: responsive.wp(10),
+                                                        ),
+                                                        height: responsive.ip(4),
+                                                        width: responsive.ip(4),
+                                                        child: CircularProgressIndicator(),
                                                       ),
+                                                      SizedBox(
+                                                        height: responsive.hp(4),
+                                                      ),
+                                                      Text(
+                                                        'Cargando',
+                                                        style: TextStyle(
+                                                          fontSize: responsive.ip(2),
+                                                        ),
+                                                      )
                                                     ],
                                                   ),
                                                 ),
-                                              ],
-                                            ),
-                                          ),
-                                        );
-                                      } else {
-                                        return Container();
-                                      }
-                                    } else {
-                                      return Container();
-                                    }
-                                  }),
+                                              )
+                                            : Container();
+                                      })
+                                ],
+                              ),
                             )
                           : Container()
             ],

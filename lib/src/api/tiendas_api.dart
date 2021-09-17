@@ -30,6 +30,10 @@ class TiendaApi {
 
       final decodedData = json.decode(resp.body);
 
+
+      print('tienda Familia');
+
+
       if (decodedData.length > 0) {
         for (var i = 0; i < decodedData.length; i++) {
           TiendaModel tiendaModel = TiendaModel();

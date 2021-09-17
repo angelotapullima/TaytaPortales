@@ -64,7 +64,7 @@ class DatabaseProvider {
           ' idProducto TEXT ,'
           ' nombreProducto TEXT ,'
           ' precioVenta TEXT ,'
-          ' precioLlevar TEXT ,'
+          ' precioLlevar TEXT ,' 
           ' idFamilia TEXT ,'
           ' idLocacion TEXT ,'
           ' saldo TEXT'
@@ -84,7 +84,7 @@ class DatabaseProvider {
           ' idMesa TEXT ,'
           ' nombreMesa TEXT ,'
           ' idLocacion TEXT ,'
-          ' estado TEXT'
+          ' estado TEXT' //1 = si ya esta en la comando <> 2 = si solo esta en bd interna
           ')');
     });
   }

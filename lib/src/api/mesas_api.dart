@@ -27,6 +27,7 @@ class MesasApi {
         }), */
       );
 
+      print('mesasApi');
       final decodedData = json.decode(resp.body);
 
       if (decodedData.length > 0) {
@@ -61,13 +62,17 @@ class MesasApi {
                 carritoModel.cantidad = decodedData[i]['detalles'][x]['cantidad'].toString();
                 carritoModel.observacion = decodedData[i]['detalles'][x]['observacion'].toString();
                 carritoModel.nroCuenta = decodedData[i]['detalles'][x]['nroCuenta'].toString();
-                carritoModel.paraLLevar = decodedData[i]['detalles'][x]['paraLlevar'].toString();
+                carritoModel.paraLLevar = (decodedData[i]['detalles'][x]['paraLlevar'].toString() == 'true')?'1':'0';
                 carritoModel.idMesa = decodedData[i]['mesaId'].toString();
                 carritoModel.idLocacion = idLocacion.toString();
                 carritoModel.estado = '1';
 
                 await carritoDatabase.insertarCarito(carritoModel);
               }
+            }else{
+            await carritoDatabase.eliminarPedidosPorMesa(decodedData[i]['mesaId'].toString(),idLocacion.toString());
+          
+
             }
           }else{
             await carritoDatabase.eliminarPedidosPorMesa(decodedData[i]['mesaId'].toString(),idLocacion.toString());

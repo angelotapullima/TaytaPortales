@@ -19,11 +19,23 @@ class CarritoDatabase {
     } catch (exception) {
       print(exception);
     }
-  }  
-
-  Future<List<CarritoModel>> obtenerCarritoPorIdCarrito(String idMesa, String idLocacion) async {
+  } 
+  
+  Future<List<CarritoModel>> obtenerCarritoPorIdCarritoAgregar(String idMesa, String idLocacion) async {
     final db = await dbprovider.database;
-    final res = await db.rawQuery("SELECT * FROM CarritoMesa where idMesa = '$idMesa' and idLocacion= '$idLocacion' ");
+    final res = await db.rawQuery("SELECT * FROM CarritoMesa where idMesa = '$idMesa' and idLocacion= '$idLocacion'");
+
+    List<CarritoModel> list = res.isNotEmpty ? res.map((c) => CarritoModel.fromJson(c)).toList() : [];
+
+    return list;
+  }
+
+
+
+
+  Future<List<CarritoModel>> obtenerCarritoPorIdCarritoDisgregar(String idMesa, String idLocacion) async {
+    final db = await dbprovider.database;
+    final res = await db.rawQuery("SELECT * FROM CarritoMesa where idMesa = '$idMesa' and idLocacion= '$idLocacion' group by idComandaDetalle");
 
     List<CarritoModel> list = res.isNotEmpty ? res.map((c) => CarritoModel.fromJson(c)).toList() : [];
 
@@ -52,6 +64,8 @@ class CarritoDatabase {
 
 
   eliminarPedidosPorMesa(String idMesa, String idLocacion) async {
+
+    print('borrando carrito $idMesa');
     final db = await dbprovider.database;
 
     final res = await db.rawDelete("DELETE FROM CarritoMesa where idMesa = '$idMesa' and idLocacion= '$idLocacion' " );

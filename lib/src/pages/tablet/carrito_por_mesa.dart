@@ -9,8 +9,6 @@ import 'package:tayta_restaurant/src/models/mesas_model.dart';
 import 'package:tayta_restaurant/src/utils/responsive.dart';
 import 'package:tayta_restaurant/src/utils/utils.dart';
 
-
-
 class CarritoTabletDisgregar extends StatelessWidget {
   const CarritoTabletDisgregar({Key key}) : super(key: key);
 
@@ -25,7 +23,7 @@ class CarritoTabletDisgregar extends StatelessWidget {
     //carritoBloc.obtenercarrito(widget.mesa.idMesa, widget.mesa.locacionId);
     return Container(
       child: StreamBuilder(
-        stream: mesasBloc.mesaIdStream,
+        stream: mesasBloc.mesaIdDisgregarStream,
         builder: (context, AsyncSnapshot<List<MesasModel>> snapshot) {
           if (snapshot.hasData) {
             if (snapshot.data.length > 0) {
@@ -138,8 +136,8 @@ class CarritoTabletDisgregar extends StatelessWidget {
                                                     textColor: Colors.white,
                                                     child: Text('Agregar mas productos'),
                                                     onPressed: () {
-
-                                      provider.changeToFamiliaMesa();},
+                                                      provider.changeToFamiliaMesa();
+                                                    },
                                                   ),
                                                 ),
                                                 SizedBox(
@@ -229,8 +227,7 @@ class CarritoTabletDisgregar extends StatelessWidget {
                                               textColor: Colors.white,
                                               child: Text('Agregar más productos'),
                                               onPressed: () {
-
-                                      provider.changeToFamiliaMesa();
+                                                provider.changeToFamiliaMesa();
                                               },
                                             ),
                                           ),
@@ -257,7 +254,7 @@ class CarritoTabletDisgregar extends StatelessWidget {
                                               child: SvgPicture.asset(
                                                 'assets/platos.svg',
                                               ),
-                                             ),
+                                            ),
                                             Container(
                                               width: constraints.maxWidth * .52,
                                               child: Column(
@@ -404,7 +401,7 @@ class CarritoTabletDisgregar extends StatelessWidget {
       ),
     );
   }
-}  
+}
 
 class CarritoTabletAgregar extends StatelessWidget {
   const CarritoTabletAgregar({Key key}) : super(key: key);
@@ -420,7 +417,7 @@ class CarritoTabletAgregar extends StatelessWidget {
     //carritoBloc.obtenercarrito(widget.mesa.idMesa, widget.mesa.locacionId);
     return Container(
       child: StreamBuilder(
-          stream: mesasBloc.mesaIdStream,
+          stream: mesasBloc.mesaIdAgregarStream,
           builder: (context, AsyncSnapshot<List<MesasModel>> snapshot) {
             if (snapshot.hasData) {
               if (snapshot.data.length > 0) {
@@ -454,16 +451,6 @@ class CarritoTabletAgregar extends StatelessWidget {
                             ),
                           ),
                           Spacer(),
-                          /* Text(
-                            'S/.${dosDecimales(
-                              total,
-                            )}',
-                            style: TextStyle(
-                              fontSize: ScreenUtil().setSp(24),
-                              fontWeight: FontWeight.bold,
-                              color: Colors.blue,
-                            ),
-                          ), */
                         ],
                       ),
                       SizedBox(
@@ -534,10 +521,12 @@ class CarritoTabletAgregar extends StatelessWidget {
                                                       color: Colors.blue,
                                                       textColor: Colors.white,
                                                       child: Text('enviar pedido'),
-                                                      onPressed: () async{final comandaApi = ComandaApi();
-
-                                                  final res = await comandaApi.enviarComanda(snapshot.data[0].idMesa);
-                                               },
+                                                      onPressed: () async {
+                                                        final comandaApi = ComandaApi();
+                                                        provider.changeCargandoTrue();
+                                                        final res = await comandaApi.enviarComanda(snapshot.data[0].idMesa);
+                                                        provider.changeCargandoFalse(); provider.changeToMesa();
+                                                      },
                                                     ),
                                                   ),
                                                   SizedBox(
@@ -625,11 +614,16 @@ class CarritoTabletAgregar extends StatelessWidget {
                                                 child: Text('Enviar pedidos'),
                                                 onPressed: () async {
                                                   final comandaApi = ComandaApi();
-
+                                                  provider.changeCargandoTrue();
                                                   final res = await comandaApi.enviarComanda(snapshot.data[0].idMesa);
+                                                  provider.changeCargandoFalse();
+                                                  provider.changeToMesa();
                                                 },
                                               ),
                                             ),
+                                            SizedBox(
+                                              height: ScreenUtil().setHeight(100), 
+                                            )
                                           ],
                                         ),
                                       );

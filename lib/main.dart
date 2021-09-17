@@ -10,15 +10,12 @@ import 'package:tayta_restaurant/src/preferences/preferences.dart';
 
 import 'src/bloc/provider.dart';
 
-void main()async {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
 
+  final prefs = new Preferences();
 
-    WidgetsFlutterBinding.ensureInitialized();
-
-
-    final prefs = new Preferences();
-
-    await prefs.initPrefs();
+  await prefs.initPrefs();
 
   runApp(MyApp());
 }
@@ -28,16 +25,16 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ProviderBloc(
-      child: MultiProvider(
-         providers: [
+        child: MultiProvider(
+      providers: [
         ChangeNotifierProvider<IndexBlocListener>(
           create: (_) => IndexBlocListener(),
         ),
         
       ],
-        child: ScreenUtilInit(
-            designSize: Size(1024, 768),
-            builder: () =>MaterialApp(
+      child: ScreenUtilInit(
+        designSize: Size(1024, 768),
+        builder: () => MaterialApp(
           builder: (BuildContext context, Widget child) {
             final MediaQueryData data = MediaQuery.of(context);
             return MediaQuery(
@@ -45,13 +42,12 @@ class MyApp extends StatelessWidget {
               child: child,
             );
           },
-      
           theme: ThemeData(
-                  primarySwatch: Colors.green,
-                  scaffoldBackgroundColor: Color(0xFFF0F1F5),
-                  canvasColor: Colors.transparent,
-                  textTheme: GoogleFonts.poppinsTextTheme(),
-                ),
+            primarySwatch: Colors.green,
+            scaffoldBackgroundColor: Color(0xFFF0F1F5),
+            canvasColor: Colors.transparent,
+            textTheme: GoogleFonts.poppinsTextTheme(),
+          ),
           debugShowCheckedModeBanner: false,
           title: 'Tayta',
           initialRoute: 'splash',
@@ -61,7 +57,7 @@ class MyApp extends StatelessWidget {
             "login": (BuildContext context) => LoginPage(),
           },
         ),
-      ),)
-    );
+      ),
+    ));
   }
 }

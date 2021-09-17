@@ -25,14 +25,14 @@ class ComandaApi {
         comanda.cantidadPersonas = 0;
         comanda.mesaId = int.parse(mesaID[0].idMesa);
 
-        final carrito = await carritoDatabase.obtenerCarritoPorIdCarrito(mesaID[0].idMesa, mesaID[0].locacionId);
+        final carrito = await carritoDatabase.obtenerCarritoPorIdCarritoAgregar(mesaID[0].idMesa, mesaID[0].locacionId);
 
         if (carrito.length > 0) {
           for (var i = 0; i < carrito.length; i++) {
             DetalleComanda detalleComanda = DetalleComanda();
-            detalleComanda.idComandaDetalle = 0;
+            detalleComanda.idComandaDetalle = int.parse(carrito[i].idComandaDetalle);
             detalleComanda.idProducto = int.parse(carrito[i].idProducto);
-            detalleComanda.cantidad = int.parse(carrito[i].cantidad);
+            detalleComanda.cantidad = double.parse(carrito[i].cantidad).toInt();
             detalleComanda.precioUnitario = (carrito[i].paraLLevar == '1') ? double.parse(carrito[i].precioLlevar) : double.parse(carrito[i].precioVenta);
             detalleComanda.observacion = carrito[i].observacion;
             detalleComanda.nroCuenta = int.parse(carrito[i].nroCuenta);
@@ -49,22 +49,20 @@ class ComandaApi {
 
         final resp = await http.post(url, headers: headers, body: envio);
 
+        print('comanda api');
+
         final decodedData = json.decode(resp.body);
+
         print(decodedData);
-      }
-
-      /* if (decodedData.length > 0) {
-        for (var i = 0; i < decodedData.length; i++) {
-          LocacionModel locacionModel = LocacionModel();
-          locacionModel.idLocacion = decodedData[i]['codigo'].toString();
-          locacionModel.nombre = decodedData[i]['descripcion'].toString();
-          locacionModel.idTienda = idTienda;
-
-          await locacionDatabase.insertarLocacion(locacionModel);
+        if (decodedData['exito'] == 'true') {
+          return true;
+        } else {
+          return false;
         }
-      } */
-
-      return true;
+      } else {
+        return false;
+      }
+ 
     } catch (error, stacktrace) {
       print("Exception occured: $error stackTrace: $stacktrace");
 
