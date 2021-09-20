@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:tayta_restaurant/src/api/comanda_api.dart';
 import 'package:tayta_restaurant/src/bloc/index_bloc.dart';
 import 'package:tayta_restaurant/src/bloc/provider.dart';
+import 'package:tayta_restaurant/src/database/carrito_database.dart';
+import 'package:tayta_restaurant/src/models/carrtito_model.dart';
 import 'package:tayta_restaurant/src/models/mesas_model.dart';
+import 'package:tayta_restaurant/src/pages/tablet/disgregar_producto.dart';
+import 'package:tayta_restaurant/src/pages/tablet/editar_pedido.dart';
 import 'package:tayta_restaurant/src/utils/responsive.dart';
 import 'package:tayta_restaurant/src/utils/utils.dart';
 
@@ -239,111 +244,240 @@ class CarritoTabletDisgregar extends StatelessWidget {
 
                                 return LayoutBuilder(builder: (context, constraints) {
                                   print(constraints.maxWidth);
-                                  return Container(
-                                    margin: EdgeInsets.only(
-                                      bottom: responsive.hp(1.5),
-                                    ),
-                                    child: Column(
-                                      children: [
-                                        Row(
-                                          //mainAxisAlignment:MainAxisAlignment.spaceAround,
-                                          children: [
-                                            Container(
-                                              height: constraints.maxWidth * .15,
-                                              width: constraints.maxWidth * .15,
-                                              child: SvgPicture.asset(
-                                                'assets/platos.svg',
-                                              ),
-                                            ),
-                                            Container(
-                                              width: constraints.maxWidth * .52,
-                                              child: Column(
-                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                  return InkWell(
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        PageRouteBuilder(
+                                          opaque: false,
+                                          pageBuilder: (context, animation, secondaryAnimation) {
+                                            return DisgregarProductoTablet(
+                                              mesas: snapshot.data[0],
+                                              carrito: snapshot.data[0].carrito[i],
+                                            );
+                                          },
+                                          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                                            var begin = Offset(0.0, 1.0);
+                                            var end = Offset.zero;
+                                            var curve = Curves.ease;
+
+                                            var tween = Tween(begin: begin, end: end).chain(
+                                              CurveTween(curve: curve),
+                                            );
+
+                                            return SlideTransition(
+                                              position: animation.drive(tween),
+                                              child: child,
+                                            );
+                                          },
+                                        ),
+                                      );
+                                    },
+                                    child: Slidable(
+                                      actionPane: SlidableDrawerActionPane(),
+                                      actionExtentRatio: 0.25,
+                                      child: Container(
+                                        color: Colors.transparent,
+                                        child: Container(
+                                          margin: EdgeInsets.only(
+                                            bottom: responsive.hp(1.5),
+                                          ),
+                                          child: Column(
+                                            children: [
+                                              Row(
+                                                //mainAxisAlignment:MainAxisAlignment.spaceAround,
                                                 children: [
-                                                  Text(
-                                                    '${snapshot.data[0].carrito[i].nombreProducto} ',
-                                                    style: TextStyle(
-                                                      color: Colors.black,
-                                                      fontSize: ScreenUtil().setSp(13),
-                                                      fontWeight: FontWeight.bold,
+                                                  Container(
+                                                    height: constraints.maxWidth * .15,
+                                                    width: constraints.maxWidth * .15,
+                                                    child: SvgPicture.asset(
+                                                      'assets/platos.svg',
                                                     ),
                                                   ),
-                                                  (snapshot.data[0].carrito[i].observacion.length > 0)
-                                                      ? Text(
-                                                          '${snapshot.data[0].carrito[i].observacion}',
+                                                  Container(
+                                                    width: constraints.maxWidth * .52,
+                                                    child: Column(
+                                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                                      children: [
+                                                        Text(
+                                                          '${snapshot.data[0].carrito[i].nombreProducto} ',
                                                           style: TextStyle(
-                                                            color: Colors.grey[600],
+                                                            color: Colors.black,
                                                             fontSize: ScreenUtil().setSp(13),
+                                                            fontWeight: FontWeight.bold,
                                                           ),
-                                                        )
-                                                      : Container(),
-                                                  (snapshot.data[0].carrito[i].paraLLevar == '1')
-                                                      ? Container(
-                                                          padding: EdgeInsets.symmetric(horizontal: responsive.wp(.5)),
-                                                          decoration: BoxDecoration(
-                                                            color: Colors.green,
-                                                            borderRadius: BorderRadius.circular(8),
-                                                          ),
-                                                          child: Text(
-                                                            'Para llevar',
-                                                            style: TextStyle(
-                                                              color: Colors.white,
-                                                              fontSize: ScreenUtil().setSp(12),
-                                                            ),
-                                                          ),
-                                                        )
-                                                      : Container(),
-                                                  SizedBox(
-                                                    height: ScreenUtil().setHeight(5),
+                                                        ),
+                                                        (snapshot.data[0].carrito[i].observacion.length > 0)
+                                                            ? Text(
+                                                                '${snapshot.data[0].carrito[i].observacion}',
+                                                                style: TextStyle(
+                                                                  color: Colors.grey[600],
+                                                                  fontSize: ScreenUtil().setSp(13),
+                                                                ),
+                                                              )
+                                                            : Container(),
+                                                        (snapshot.data[0].carrito[i].paraLLevar == '1')
+                                                            ? Container(
+                                                                padding: EdgeInsets.symmetric(horizontal: responsive.wp(.5)),
+                                                                decoration: BoxDecoration(
+                                                                  color: Colors.green,
+                                                                  borderRadius: BorderRadius.circular(8),
+                                                                ),
+                                                                child: Text(
+                                                                  'Para llevar',
+                                                                  style: TextStyle(
+                                                                    color: Colors.white,
+                                                                    fontSize: ScreenUtil().setSp(12),
+                                                                  ),
+                                                                ),
+                                                              )
+                                                            : Container(),
+                                                        SizedBox(
+                                                          height: ScreenUtil().setHeight(5),
+                                                        ),
+                                                        (snapshot.data[0].cuentas.length > 1)
+                                                            ? Container(
+                                                                padding: EdgeInsets.symmetric(horizontal: responsive.wp(.5)),
+                                                                decoration: BoxDecoration(
+                                                                  color: Colors.blue,
+                                                                  borderRadius: BorderRadius.circular(8),
+                                                                ),
+                                                                child: Text(
+                                                                  'Cuenta : ${snapshot.data[0].carrito[i].nroCuenta}',
+                                                                  style: TextStyle(
+                                                                    color: Colors.white,
+                                                                    fontSize: ScreenUtil().setSp(12),
+                                                                  ),
+                                                                ),
+                                                              )
+                                                            : Container(),
+                                                      ],
+                                                    ),
                                                   ),
-                                                  (snapshot.data[0].cuentas.length > 1)
-                                                      ? Container(
-                                                          padding: EdgeInsets.symmetric(horizontal: responsive.wp(.5)),
-                                                          decoration: BoxDecoration(
-                                                            color: Colors.blue,
-                                                            borderRadius: BorderRadius.circular(8),
-                                                          ),
-                                                          child: Text(
-                                                            'Cuenta : ${snapshot.data[0].carrito[i].nroCuenta}',
-                                                            style: TextStyle(
-                                                              color: Colors.white,
-                                                              fontSize: ScreenUtil().setSp(12),
-                                                            ),
-                                                          ),
-                                                        )
-                                                      : Container(),
+                                                  Container(
+                                                    width: constraints.maxWidth * .1,
+                                                    child: Center(
+                                                      child: Text(
+                                                        'x ${snapshot.data[0].carrito[i].cantidad}',
+                                                        style: TextStyle(
+                                                          color: Colors.black,
+                                                          fontSize: ScreenUtil().setSp(13),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  Container(
+                                                    width: constraints.maxWidth * .22,
+                                                    child: Center(
+                                                      child: Text(
+                                                        'S/. ${dosDecimales(totelx)}',
+                                                        style: TextStyle(
+                                                          color: Colors.black,
+                                                          fontWeight: FontWeight.bold,
+                                                          fontSize: ScreenUtil().setSp(13),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
                                                 ],
                                               ),
-                                            ),
-                                            Container(
-                                              width: constraints.maxWidth * .1,
-                                              child: Center(
-                                                child: Text(
-                                                  'x ${snapshot.data[0].carrito[i].cantidad}',
-                                                  style: TextStyle(
-                                                    color: Colors.black,
-                                                    fontSize: ScreenUtil().setSp(13),
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                            Container(
-                                              width: constraints.maxWidth * .22,
-                                              child: Center(
-                                                child: Text(
-                                                  'S/. ${dosDecimales(totelx)}',
-                                                  style: TextStyle(
-                                                    color: Colors.black,
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: ScreenUtil().setSp(13),
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ],
+                                              Divider()
+                                            ],
+                                          ),
                                         ),
-                                        Divider()
+                                      ),
+                                      actions: <Widget>[
+                                        IconSlideAction(
+                                          caption: 'Eliminar',
+                                          color: Colors.red,
+                                          icon: Icons.archive,
+                                          onTap: () async {
+                                            final carritoDatabase = CarritoDatabase();
+
+                                            CarritoModel carrito = CarritoModel();
+                                            carrito.idProducto = snapshot.data[0].carrito[i].idProducto;
+                                            carrito.nombreProducto = snapshot.data[0].carrito[i].nombreProducto;
+                                            carrito.precioVenta = snapshot.data[0].carrito[i].precioVenta;
+                                            carrito.cantidad = '0';
+                                            carrito.nroCuenta = snapshot.data[0].carrito[i].nroCuenta;
+                                            carrito.observacion = snapshot.data[0].carrito[i].observacion;
+                                            carrito.paraLLevar = snapshot.data[0].carrito[i].paraLLevar;
+                                            carrito.idMesa = snapshot.data[0].carrito[i].idMesa;
+                                            carrito.nombreMesa = snapshot.data[0].carrito[i].nombreMesa;
+                                            carrito.idLocacion = snapshot.data[0].carrito[i].idLocacion;
+                                            carrito.idComandaDetalle = snapshot.data[0].carrito[i].idComandaDetalle;
+                                            await carritoDatabase.updateCarritoPorIdComandaDetalle(carrito);
+
+                                            final comandaApi = ComandaApi();
+                                            provider.changeCargandoTrue();
+                                            final res = await comandaApi.enviarComanda(snapshot.data[0].idMesa);
+                                            if (res) {
+                                              showToast2('Pedido enviado correctamente', Colors.green);
+                                              provider.changeCargandoFalse();
+
+                                              mesasBloc.obtenerMesasPorLocacion(snapshot.data[0].locacionId);
+                                              await carritoDatabase.eliminarProductoPorIdComandaDetalle(
+                                                '${snapshot.data[0].carrito[i].idComandaDetalle}',
+                                              );
+                                            } else {
+                                              showToast2('Ocurrio un error, intentelo nuevamente', Colors.red);
+                                              provider.changeCargandoFalse();
+                                            }
+                                          },
+                                        ),
+                                        IconSlideAction(
+                                          caption: 'Editar',
+                                          color: Colors.blue,
+                                          icon: Icons.edit,
+                                          onTap: () {
+                                            Navigator.push(
+                                              context,
+                                              PageRouteBuilder(
+                                                opaque: false,
+                                                pageBuilder: (context, animation, secondaryAnimation) {
+                                                  return EditarProductoTablet(
+                                                    carrito: snapshot.data[0].carrito[i],
+                                                    mesas: snapshot.data[0],
+                                                  );
+                                                },
+                                                transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                                                  var begin = Offset(0.0, 1.0);
+                                                  var end = Offset.zero;
+                                                  var curve = Curves.ease;
+
+                                                  var tween = Tween(begin: begin, end: end).chain(
+                                                    CurveTween(curve: curve),
+                                                  );
+
+                                                  return SlideTransition(
+                                                    position: animation.drive(tween),
+                                                    child: child,
+                                                  );
+                                                },
+                                              ),
+                                            );
+                                            //EditarProductoTablet
+                                          },
+                                        ),
                                       ],
+                                      /* secondaryActions: <Widget>[
+                                        IconSlideAction(
+                                          caption: 'More',
+                                          color: Colors.black45,
+                                          icon: Icons.more_horiz,
+                                          onTap: () {
+                                            print('IconSlideAction archive');
+                                          },
+                                        ),
+                                        IconSlideAction(
+                                          caption: 'Delete',
+                                          color: Colors.red,
+                                          icon: Icons.delete,
+                                          onTap: () {
+                                            print('IconSlideAction archive');
+                                          },
+                                        ),
+                                      ], */
                                     ),
                                   );
                                 });
@@ -525,7 +659,14 @@ class CarritoTabletAgregar extends StatelessWidget {
                                                         final comandaApi = ComandaApi();
                                                         provider.changeCargandoTrue();
                                                         final res = await comandaApi.enviarComanda(snapshot.data[0].idMesa);
-                                                        provider.changeCargandoFalse(); provider.changeToMesa();
+                                                        if (res) {
+                                                          showToast2('Pedido enviado correctamente', Colors.green);
+                                                          provider.changeCargandoFalse();
+                                                          provider.changeToMesa();
+                                                        } else {
+                                                          showToast2('Ocurrio un error, intentelo nuevamente', Colors.red);
+                                                          provider.changeCargandoFalse();
+                                                        }
                                                       },
                                                     ),
                                                   ),
@@ -616,13 +757,19 @@ class CarritoTabletAgregar extends StatelessWidget {
                                                   final comandaApi = ComandaApi();
                                                   provider.changeCargandoTrue();
                                                   final res = await comandaApi.enviarComanda(snapshot.data[0].idMesa);
-                                                  provider.changeCargandoFalse();
-                                                  provider.changeToMesa();
+                                                  if (res) {
+                                                    showToast2('Pedido enviado correctamente', Colors.green);
+                                                    provider.changeCargandoFalse();
+                                                    provider.changeToMesa();
+                                                  } else {
+                                                    showToast2('Ocurrio un error, intentelo nuevamente', Colors.red);
+                                                    provider.changeCargandoFalse();
+                                                  }
                                                 },
                                               ),
                                             ),
                                             SizedBox(
-                                              height: ScreenUtil().setHeight(100), 
+                                              height: ScreenUtil().setHeight(100),
                                             )
                                           ],
                                         ),
@@ -632,111 +779,125 @@ class CarritoTabletAgregar extends StatelessWidget {
 
                                   return LayoutBuilder(builder: (context, constraints) {
                                     print(constraints.maxWidth);
-                                    return Container(
-                                      margin: EdgeInsets.only(
-                                        bottom: responsive.hp(1.5),
-                                      ),
-                                      child: Column(
-                                        children: [
-                                          Row(
-                                            //mainAxisAlignment:MainAxisAlignment.spaceAround,
-                                            children: [
-                                              Container(
-                                                height: constraints.maxWidth * .15,
-                                                width: constraints.maxWidth * .15,
-                                                child: SvgPicture.asset(
-                                                  'assets/platos.svg',
+                                    return Slidable(
+                                      actionPane: SlidableDrawerActionPane(),
+                                      actionExtentRatio: 0.25,
+                                      actions: <Widget>[
+                                        IconSlideAction(
+                                          caption: 'Eliminar',
+                                          color: Colors.red,
+                                          icon: Icons.archive,
+                                          onTap: () {
+                                            print('IconSlideAction archive');
+                                          },
+                                        ),
+                                      ],
+                                      child: Container(
+                                        margin: EdgeInsets.only(
+                                          bottom: responsive.hp(1.5),
+                                        ),
+                                        child: Column(
+                                          children: [
+                                            Row(
+                                              //mainAxisAlignment:MainAxisAlignment.spaceAround,
+                                              children: [
+                                                Container(
+                                                  height: constraints.maxWidth * .15,
+                                                  width: constraints.maxWidth * .15,
+                                                  child: SvgPicture.asset(
+                                                    'assets/platos.svg',
+                                                  ),
                                                 ),
-                                              ),
-                                              Container(
-                                                width: constraints.maxWidth * .52,
-                                                child: Column(
-                                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text(
-                                                      '${snapshot.data[0].carrito[i].nombreProducto} ',
+                                                Container(
+                                                  width: constraints.maxWidth * .52,
+                                                  child: Column(
+                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                    children: [
+                                                      Text(
+                                                        '${snapshot.data[0].carrito[i].nombreProducto} ',
+                                                        style: TextStyle(
+                                                          color: Colors.black,
+                                                          fontSize: ScreenUtil().setSp(13),
+                                                          fontWeight: FontWeight.bold,
+                                                        ),
+                                                      ),
+                                                      (snapshot.data[0].carrito[i].observacion.length > 0)
+                                                          ? Text(
+                                                              '${snapshot.data[0].carrito[i].observacion}',
+                                                              style: TextStyle(
+                                                                color: Colors.grey[600],
+                                                                fontSize: ScreenUtil().setSp(13),
+                                                              ),
+                                                            )
+                                                          : Container(),
+                                                      (snapshot.data[0].carrito[i].paraLLevar == '1')
+                                                          ? Container(
+                                                              padding: EdgeInsets.symmetric(horizontal: responsive.wp(.5)),
+                                                              decoration: BoxDecoration(
+                                                                color: Colors.green,
+                                                                borderRadius: BorderRadius.circular(8),
+                                                              ),
+                                                              child: Text(
+                                                                'Para llevar',
+                                                                style: TextStyle(
+                                                                  color: Colors.white,
+                                                                  fontSize: ScreenUtil().setSp(12),
+                                                                ),
+                                                              ),
+                                                            )
+                                                          : Container(),
+                                                      SizedBox(
+                                                        height: ScreenUtil().setHeight(5),
+                                                      ),
+                                                      (snapshot.data[0].cuentas.length > 1)
+                                                          ? Container(
+                                                              padding: EdgeInsets.symmetric(horizontal: responsive.wp(.5)),
+                                                              decoration: BoxDecoration(
+                                                                color: Colors.blue,
+                                                                borderRadius: BorderRadius.circular(8),
+                                                              ),
+                                                              child: Text(
+                                                                'Cuenta : ${snapshot.data[0].carrito[i].nroCuenta}',
+                                                                style: TextStyle(
+                                                                  color: Colors.white,
+                                                                  fontSize: ScreenUtil().setSp(12),
+                                                                ),
+                                                              ),
+                                                            )
+                                                          : Container(),
+                                                    ],
+                                                  ),
+                                                ),
+                                                Container(
+                                                  width: constraints.maxWidth * .1,
+                                                  child: Center(
+                                                    child: Text(
+                                                      'x ${snapshot.data[0].carrito[i].cantidad}',
                                                       style: TextStyle(
                                                         color: Colors.black,
                                                         fontSize: ScreenUtil().setSp(13),
-                                                        fontWeight: FontWeight.bold,
                                                       ),
                                                     ),
-                                                    (snapshot.data[0].carrito[i].observacion.length > 0)
-                                                        ? Text(
-                                                            '${snapshot.data[0].carrito[i].observacion}',
-                                                            style: TextStyle(
-                                                              color: Colors.grey[600],
-                                                              fontSize: ScreenUtil().setSp(13),
-                                                            ),
-                                                          )
-                                                        : Container(),
-                                                    (snapshot.data[0].carrito[i].paraLLevar == '1')
-                                                        ? Container(
-                                                            padding: EdgeInsets.symmetric(horizontal: responsive.wp(.5)),
-                                                            decoration: BoxDecoration(
-                                                              color: Colors.green,
-                                                              borderRadius: BorderRadius.circular(8),
-                                                            ),
-                                                            child: Text(
-                                                              'Para llevar',
-                                                              style: TextStyle(
-                                                                color: Colors.white,
-                                                                fontSize: ScreenUtil().setSp(12),
-                                                              ),
-                                                            ),
-                                                          )
-                                                        : Container(),
-                                                    SizedBox(
-                                                      height: ScreenUtil().setHeight(5),
-                                                    ),
-                                                    (snapshot.data[0].cuentas.length > 1)
-                                                        ? Container(
-                                                            padding: EdgeInsets.symmetric(horizontal: responsive.wp(.5)),
-                                                            decoration: BoxDecoration(
-                                                              color: Colors.blue,
-                                                              borderRadius: BorderRadius.circular(8),
-                                                            ),
-                                                            child: Text(
-                                                              'Cuenta : ${snapshot.data[0].carrito[i].nroCuenta}',
-                                                              style: TextStyle(
-                                                                color: Colors.white,
-                                                                fontSize: ScreenUtil().setSp(12),
-                                                              ),
-                                                            ),
-                                                          )
-                                                        : Container(),
-                                                  ],
+                                                  ),
                                                 ),
-                                              ),
-                                              Container(
-                                                width: constraints.maxWidth * .1,
-                                                child: Center(
-                                                  child: Text(
-                                                    'x ${snapshot.data[0].carrito[i].cantidad}',
-                                                    style: TextStyle(
-                                                      color: Colors.black,
-                                                      fontSize: ScreenUtil().setSp(13),
+                                                Container(
+                                                  width: constraints.maxWidth * .22,
+                                                  child: Center(
+                                                    child: Text(
+                                                      'S/. ${dosDecimales(totelx)}',
+                                                      style: TextStyle(
+                                                        color: Colors.black,
+                                                        fontWeight: FontWeight.bold,
+                                                        fontSize: ScreenUtil().setSp(13),
+                                                      ),
                                                     ),
                                                   ),
                                                 ),
-                                              ),
-                                              Container(
-                                                width: constraints.maxWidth * .22,
-                                                child: Center(
-                                                  child: Text(
-                                                    'S/. ${dosDecimales(totelx)}',
-                                                    style: TextStyle(
-                                                      color: Colors.black,
-                                                      fontWeight: FontWeight.bold,
-                                                      fontSize: ScreenUtil().setSp(13),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          Divider()
-                                        ],
+                                              ],
+                                            ),
+                                            Divider()
+                                          ],
+                                        ),
                                       ),
                                     );
                                   });

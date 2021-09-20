@@ -21,7 +21,7 @@ class MesasWidget extends StatelessWidget {
     final responsive = Responsive.of(context);
 
     Offset offset = const Offset(5, 5);
-
+ 
     return SafeArea(
       child: StreamBuilder(
         stream: mesabloc.mesasStream,

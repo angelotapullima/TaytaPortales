@@ -119,7 +119,8 @@ class SideMenu extends StatelessWidget {
                           children: [
                             Center(
                               child: SideMenuItem(
-                                press: () {},
+                                press: () {
+                                  provider.changeToPedidos();},
                                 color: Colors.transparent,
                                 title: "Pedidos",
                                 iconSrc: "assets/Icons/Send.svg",
@@ -243,7 +244,8 @@ class SideMenu extends StatelessWidget {
                       Container(
                         height: ScreenUtil().setHeight(120),
                         child: SideMenuItem(
-                          press: () {},
+                          press: () {
+                              provider.changeToPedidos();},
                           color: Colors.white,
                           title: "Pedidos",
                           iconSrc: "assets/Icons/Send.svg",
@@ -277,11 +279,11 @@ class SideMenu extends StatelessWidget {
                                   var begin = Offset(0.0, 1.0);
                                   var end = Offset.zero;
                                   var curve = Curves.ease;
-
+                  
                                   var tween = Tween(begin: begin, end: end).chain(
                                     CurveTween(curve: curve),
                                   );
-
+                  
                                   return SlideTransition(
                                     position: animation.drive(tween),
                                     child: child,
@@ -289,13 +291,13 @@ class SideMenu extends StatelessWidget {
                                 },
                               ),
                             );
-
+                  
                             //Logout
                           },
                           icon: Icon(Icons.logout_sharp, color: Colors.white),
                         ),
                       ),
-
+                  
                       SizedBox(height: kDefaultPadding * 2),
                       // Tags
                       //Tags(),

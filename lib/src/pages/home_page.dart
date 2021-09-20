@@ -11,6 +11,7 @@ import 'package:tayta_restaurant/src/pages/tablet/carrito_por_mesa.dart';
 import 'package:tayta_restaurant/src/pages/tablet/familiasItem.dart';
 import 'package:tayta_restaurant/src/pages/tablet/header_locacion.dart';
 import 'package:tayta_restaurant/src/pages/tablet/mesas.dart';
+import 'package:tayta_restaurant/src/pages/tablet/pedidos_item.dart';
 import 'package:tayta_restaurant/src/pages/tablet/productosItem.dart';
 import 'package:tayta_restaurant/src/pages/tablet/side_menu.dart';
 import 'package:tayta_restaurant/src/preferences/preferences.dart';
@@ -166,6 +167,7 @@ class VistaTablet extends StatelessWidget {
                                       builder: (context, AsyncSnapshot<List<MesasModel>> snapshot) {
                                         if (snapshot.hasData) {
                                           if (snapshot.data.length > 0) {
+                                            print('fruta');
                                             familiasBloc.obtenerFamilias(snapshot.data[0].locacionId);
                                             return SafeArea(
                                               child: Container(
@@ -244,7 +246,7 @@ class VistaTablet extends StatelessWidget {
                                         }
                                       }),
                                   ValueListenableBuilder(
-                                      valueListenable: provider.cargando,
+                                      valueListenable: provider.cargandoEnvio,
                                       builder: (context, data, widget) {
                                         return (data)
                                             ? Center(
@@ -283,7 +285,40 @@ class VistaTablet extends StatelessWidget {
                                 ],
                               ),
                             )
-                          : Container()
+                          : (data == EnumIndex.pedidos)
+                              ? Expanded(
+                                  flex: 15,
+                                  child: Container(
+                                    margin: EdgeInsets.only(
+                                      bottom: responsive.hp(2),
+                                      right: ScreenUtil().setWidth(10),
+                                    ),
+                                    child: Column(
+                                      children: [
+                                        Container(
+                                          color: Color(0xfff7f7f7),
+                                          child: HeaderLocacion(),
+                                        ),
+                                        Expanded(
+                                          child: Row(
+                                            children: [
+                                              Container(
+                                                width: ScreenUtil().setWidth(655),
+                                                child: PedidosItem(),
+                                              ),
+                                              Spacer(),
+                                              Container(
+                                                width: ScreenUtil().setWidth(265),
+                                                color: Colors.green,
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                )
+                              : Container()
             ],
           );
         },

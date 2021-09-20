@@ -40,4 +40,17 @@ class MesasDatabase {
   }
 
 
+
+
+
+  Future<List<MesasModel>> obtenerMesaPorConPedidosPorLocacion(String locacionId) async {
+    final db = await dbprovider.database;
+    final res = await db.rawQuery("SELECT * FROM Mesas where locacionId = '$locacionId' and idComanda<>0");
+
+    List<MesasModel> list = res.isNotEmpty ? res.map((c) => MesasModel.fromJson(c)).toList() : [];
+
+    return list;
+  }
+
+
 }

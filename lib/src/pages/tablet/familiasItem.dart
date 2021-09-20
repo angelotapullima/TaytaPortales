@@ -30,7 +30,7 @@ class _FamiliasitemState extends State<Familiasitem> {
       builder: (BuildContext context, AsyncSnapshot<List<FamiliasModel>> snapshot) {
         if (snapshot.hasData) {
           if (snapshot.data.length > 0) {
-            productosBloc.obtenerProductosPorFamilia(snapshot.data[0].idFamilia, snapshot.data[0].idLocacion);
+            productosBloc.obtenerProductosPorFamilia(snapshot.data[_catController.index].idFamilia, snapshot.data[0].idLocacion);
 
             return Container(
               decoration: BoxDecoration(

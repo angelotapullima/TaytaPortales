@@ -20,7 +20,7 @@ class DatabaseProvider {
   initDB() async {
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
 
-    final path = join(documentsDirectory.path, 'taytav1.db');
+    final path = join(documentsDirectory.path, 'tayta.db');
 
     Future _onConfigure(Database db) async {
       await db.execute('PRAGMA foreign_keys = ON');
@@ -85,6 +85,21 @@ class DatabaseProvider {
           ' nombreMesa TEXT ,'
           ' idLocacion TEXT ,'
           ' estado TEXT' //1 = si ya esta en la comando <> 2 = si solo esta en bd interna
+          ')');
+
+
+           await db.execute('CREATE TABLE PedidoUser ('
+          ' idPedido TEXT  PRIMARY KEY,'
+          ' mesaId TEXT ,'
+          ' cantidadPersonas TEXT ,'
+          ' horaIngreso TEXT ,'
+          ' dia TEXT ,'
+          ' mesa TEXT ,'
+          ' total TEXT ,'
+          ' estado TEXT ,'
+          ' paraLlevar TEXT ,'
+          ' idUsuario TEXT ,'
+          ' codigoUsuario TEXT'
           ')');
     });
   }

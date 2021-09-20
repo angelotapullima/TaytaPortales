@@ -30,5 +30,15 @@ class ProductosDatabase {
 
     return list;
   }
+
+
+  Future<List<ProductosModel>> obtenerProductosPorId(String idProducto) async {
+    final db = await dbprovider.database;
+    final res = await db.rawQuery("SELECT * FROM Productos where idProducto = '$idProducto' ");
+
+    List<ProductosModel> list = res.isNotEmpty ? res.map((c) => ProductosModel.fromJson(c)).toList() : [];
+
+    return list;
+  }
  
 }

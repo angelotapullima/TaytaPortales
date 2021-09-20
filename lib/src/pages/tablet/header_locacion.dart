@@ -34,7 +34,8 @@ class _WidgetLocacionState extends State<HeaderLocacion> {
             if (snapshot.hasData) {
               if (snapshot.data.length > 0) {
                 mesabloc.obtenerMesasPorLocacion(snapshot.data[0].idLocacion);
-
+                mesabloc.obtenerMesasConPedido(snapshot.data[0].idLocacion);
+                print('header aye');
                 familiasBloc.obtenerFamilias(snapshot.data[0].idLocacion);
                 return Container(
                   child: ListView.builder(
@@ -46,7 +47,7 @@ class _WidgetLocacionState extends State<HeaderLocacion> {
                           _catController.changeIndex(i, snapshot.data[i].idLocacion);
 
                           mesabloc.obtenerMesasPorLocacion(snapshot.data[i].idLocacion);
-
+ print('header click');
                           familiasBloc.obtenerFamilias(snapshot.data[i].idLocacion);
                         },
                         child: Container(

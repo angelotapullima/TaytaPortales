@@ -7,8 +7,12 @@ class IndexBlocListener with ChangeNotifier {
   ValueNotifier<EnumIndex> get page => this._page;
 
 
-  ValueNotifier<bool> _cargando = ValueNotifier(false);
-  ValueNotifier<bool> get cargando => this._cargando; 
+  ValueNotifier<bool> _cargandoEnvio = ValueNotifier(false);
+  ValueNotifier<bool> get cargandoEnvio => this._cargandoEnvio; 
+
+
+  ValueNotifier<bool> _cargandoDisgregacion = ValueNotifier(false);
+  ValueNotifier<bool> get cargandoDisgregacion  => this._cargandoDisgregacion; 
 
 
 
@@ -46,12 +50,25 @@ class IndexBlocListener with ChangeNotifier {
 
 
   void changeCargandoTrue() {
-    _cargando.value = true;
+    _cargandoEnvio.value = true;
     notifyListeners();
   }
 
   void changeCargandoFalse() {
-    _cargando.value = false;
+    _cargandoEnvio.value = false;
+    notifyListeners();
+  }
+
+
+
+
+  void changeCargandoTrueDisgregacion() {
+    _cargandoDisgregacion.value = true;
+    notifyListeners();
+  }
+
+  void changeCargandoFalseDisgregacion() {
+    _cargandoDisgregacion.value = false;
     notifyListeners();
   }
 }
