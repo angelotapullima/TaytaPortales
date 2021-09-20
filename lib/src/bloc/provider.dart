@@ -4,6 +4,7 @@ import 'package:tayta_restaurant/src/bloc/familias_bloc.dart';
 import 'package:tayta_restaurant/src/bloc/locacion_bloc.dart';
 import 'package:tayta_restaurant/src/bloc/login_bloc.dart';
 import 'package:tayta_restaurant/src/bloc/mesas_bloc.dart';
+import 'package:tayta_restaurant/src/bloc/pedidos_por_usuario_bloc.dart';
 import 'package:tayta_restaurant/src/bloc/producto_bloc.dart';
 import 'package:tayta_restaurant/src/bloc/tiendas_bloc.dart';
 
@@ -18,6 +19,7 @@ class ProviderBloc extends InheritedWidget {
   final carritoBloc = CarritoBloc();
   final familiasBloc = FamiliasBloc();
   final productosBloc = ProductosBloc();
+  final pedidosUserBloc = PedidosUserBloc();
 
   factory ProviderBloc({Key key, Widget child}) {
     if (_instancia == null) {
@@ -58,5 +60,10 @@ class ProviderBloc extends InheritedWidget {
 
   static ProductosBloc prod(BuildContext context) {
     return (context.dependOnInheritedWidgetOfExactType<ProviderBloc>()).productosBloc;
+  }
+
+
+  static PedidosUserBloc pedidoUser(BuildContext context) {
+    return (context.dependOnInheritedWidgetOfExactType<ProviderBloc>()).pedidosUserBloc;
   }
 }

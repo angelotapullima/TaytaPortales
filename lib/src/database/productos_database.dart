@@ -40,5 +40,15 @@ class ProductosDatabase {
 
     return list;
   }
+
+
+
+  eliminarTablaProductos() async { 
+    final db = await dbprovider.database;
+
+    final res = await db.rawDelete("DELETE FROM Productos");
+
+    return res;
+  }
  
 }

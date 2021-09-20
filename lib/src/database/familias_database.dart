@@ -26,4 +26,15 @@ class FamiliasDatabase {
 
     return list;
   }
+
+
+
+
+  eliminarTablaFamilias() async { 
+    final db = await dbprovider.database;
+
+    final res = await db.rawDelete("DELETE FROM Familias");
+
+    return res;
+  }
 }

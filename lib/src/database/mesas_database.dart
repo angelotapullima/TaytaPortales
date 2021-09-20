@@ -53,4 +53,14 @@ class MesasDatabase {
   }
 
 
+
+
+
+  eliminarTablaMesas() async { 
+    final db = await dbprovider.database;
+
+    final res = await db.rawDelete("DELETE FROM Mesas");
+
+    return res;
+  }
 }

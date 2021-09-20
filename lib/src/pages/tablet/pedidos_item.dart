@@ -19,8 +19,7 @@ class PedidosItem extends StatelessWidget {
       stream: mesasBloc.mesasConPedidosStream,
       builder: (BuildContext context, AsyncSnapshot<List<MesasModel>> mesas) {
         if (mesas.hasData) {
-          if (mesas.data.length > 0) { 
-           
+          if (mesas.data.length > 0) {
             return Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
@@ -52,14 +51,13 @@ class PedidosItem extends StatelessWidget {
                 ),
                 scrollDirection: Axis.vertical,
                 itemBuilder: (BuildContext context, int index) {
+                  double precio = 0;
 
-                   double precio = 0;
-
-            for (var i = 0; i < mesas.data[index].carrito.length; i++) {
-            
-              precio = (mesas.data[index].carrito[i].paraLLevar == '0') ? double.parse(mesas.data[index].carrito[i].precioVenta) : double.parse(mesas.data[index].carrito[i].precioLlevar);
-              
-            }
+                  for (var i = 0; i < mesas.data[index].carrito.length; i++) {
+                    precio = (mesas.data[index].carrito[i].paraLLevar == '0')
+                        ? double.parse(mesas.data[index].carrito[i].precioVenta)
+                        : double.parse(mesas.data[index].carrito[i].precioLlevar);
+                  }
                   return LayoutBuilder(
                     builder: (context, constraints) {
                       return Container(
@@ -149,7 +147,6 @@ class PedidosItem extends StatelessWidget {
                                                       Divider(),
                                                       Container(),
                                                       SizedBox(height: ScreenUtil().setHeight(20)),
-                                                      
                                                       SizedBox(
                                                         height: ScreenUtil().setHeight(50),
                                                       ),
@@ -199,9 +196,7 @@ class PedidosItem extends StatelessWidget {
                                             ),
                                             child: Column(
                                               children: [
-                                                
-                                                      Container(),
-                                                 
+                                                Container(),
                                                 SizedBox(
                                                   height: ScreenUtil().setHeight(100),
                                                 )

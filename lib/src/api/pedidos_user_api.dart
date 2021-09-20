@@ -41,8 +41,12 @@ class PedidosUserApi {
           pedidosUserModel.idUsuario = decodedData[i]['idUsuario'].toString();
           pedidosUserModel.codigoUsuario = decodedData[i]['codigoUsuario'].toString();
 
+          final horaSinFormato = decodedData[i]['horaIngreso'].toString().split('T');
+          final dia = horaSinFormato[0].trim();
+
+          pedidosUserModel.dia = dia;
+
           await pedidosUserDatabase.insertarPedidosPorUsuario(pedidosUserModel);
-          
         }
       }
 

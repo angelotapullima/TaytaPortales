@@ -7,6 +7,7 @@ import 'package:tayta_restaurant/src/bloc/provider.dart';
 import 'package:tayta_restaurant/src/models/locacion_model.dart';
 import 'package:tayta_restaurant/src/models/mesas_model.dart';
 import 'package:tayta_restaurant/src/pages/carrito_page.dart';
+import 'package:tayta_restaurant/src/pages/pedidos_usuario.dart';
 import 'package:tayta_restaurant/src/pages/tablet/carrito_por_mesa.dart';
 import 'package:tayta_restaurant/src/pages/tablet/familiasItem.dart';
 import 'package:tayta_restaurant/src/pages/tablet/header_locacion.dart';
@@ -309,7 +310,8 @@ class VistaTablet extends StatelessWidget {
                                               Spacer(),
                                               Container(
                                                 width: ScreenUtil().setWidth(265),
-                                                color: Colors.green,
+                                                color: Color(0xffcfd7e8),
+                                                child: PedidosUsuario(),
                                               ),
                                             ],
                                           ),

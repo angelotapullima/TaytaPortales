@@ -787,7 +787,12 @@ class CarritoTabletAgregar extends StatelessWidget {
                                           caption: 'Eliminar',
                                           color: Colors.red,
                                           icon: Icons.archive,
-                                          onTap: () {
+                                          onTap: ()async {
+
+                                            final carritoDatabase  =CarritoDatabase();
+                                            await carritoDatabase.eliminarProductoPorIdCarrito('${snapshot.data[0].carrito[i].idCarrito}');
+
+                                            mesasBloc.obtenerMesasPorIdAgregar('${snapshot.data[0].carrito[i].idMesa}');
                                             print('IconSlideAction archive');
                                           },
                                         ),

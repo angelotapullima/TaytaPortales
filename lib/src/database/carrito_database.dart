@@ -118,4 +118,23 @@ class CarritoDatabase {
 
     return res;
   }
+  eliminarProductoPorIdCarrito(String idCarrito ) async {
+    print('borrando detalle $idCarrito');
+    final db = await dbprovider.database;
+
+    final res = await db.rawDelete("DELETE FROM CarritoMesa where idCarrito = '$idCarrito'   ");
+
+    return res;
+  }
+
+
+
+
+  eliminarTablaCarritoMesa() async {
+    final db = await dbprovider.database;
+
+    final res = await db.rawDelete("DELETE FROM CarritoMesa");
+
+    return res;
+  }
 }
