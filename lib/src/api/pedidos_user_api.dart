@@ -2,12 +2,13 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:tayta_restaurant/src/database/pedido_user_database.dart';
+import 'package:tayta_restaurant/src/models/api_model.dart';
 import 'package:tayta_restaurant/src/models/pedido_user.dart';
 import 'package:tayta_restaurant/src/preferences/preferences.dart';
 import 'package:tayta_restaurant/src/utils/constants.dart';
 
 class PedidosUserApi {
-  Future<bool> obtenerPedidosPorUsuario() async {
+  Future<ApiModel> obtenerPedidosPorUsuario() async {
     final preferences = Preferences();
 
     final pedidosUserDatabase = PedidosUserDatabase();
@@ -23,6 +24,15 @@ class PedidosUserApi {
           'password': '$pass',
         }), */
       );
+
+      if (resp.statusCode == 401) {
+        ApiModel apiModel = ApiModel();
+        apiModel.error = true;
+        apiModel.resultadoPeticion = false;
+        apiModel.mensaje = 'token inválido';
+
+        return apiModel;
+      }
 
       print('user api');
       final decodedData = json.decode(resp.body);
@@ -50,11 +60,21 @@ class PedidosUserApi {
         }
       }
 
-      return true;
+      ApiModel apiModel = ApiModel();
+      apiModel.error = false;
+      apiModel.resultadoPeticion = true;
+      apiModel.mensaje = 'respuesta correcta';
+
+      return apiModel;
     } catch (error, stacktrace) {
       print("Exception occured: $error stackTrace: $stacktrace");
 
-      return false;
+      ApiModel apiModel = ApiModel();
+      apiModel.error = false;
+      apiModel.resultadoPeticion = false;
+      apiModel.mensaje = 'el envio no fue exitoso';
+
+      return apiModel;
     }
   }
 }

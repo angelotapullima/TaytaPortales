@@ -1,9 +1,9 @@
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:tayta_restaurant/src/api/comanda_api.dart';
+import 'package:tayta_restaurant/src/api/mesas_api.dart';
 import 'package:tayta_restaurant/src/bloc/provider.dart';
 import 'package:tayta_restaurant/src/database/carrito_database.dart';
 import 'package:tayta_restaurant/src/models/carrtito_model.dart';
@@ -332,7 +332,6 @@ class _EditarProductoTabletState extends State<EditarProductoTablet> {
                               carrito.idProducto = widget.carrito.idProducto;
                               carrito.nombreProducto = widget.carrito.nombreProducto;
                               carrito.precioVenta = widget.carrito.precioVenta;
-                              carrito.precioLlevar = widget.carrito.precioLlevar;
                               carrito.cantidad = _counter.toString();
                               carrito.observacion = observacionController.text;
                               carrito.idMesa = widget.mesas.idMesa;
@@ -343,24 +342,25 @@ class _EditarProductoTabletState extends State<EditarProductoTablet> {
                               carrito.estado = '0';
                               carrito.idComandaDetalle = widget.carrito.idComandaDetalle;
                               carrito.paraLLevar = (val) ? '1' : '0';
-
-                              //llevar = true -> ==== 1  producto para llevar
-                              //llevar = false -> ==== 0  producto para local
+                              
 
                               await carritoDatabase.updateCarritoPorIdComandaDetalle(carrito);
 
                               final mesasBloc = ProviderBloc.mesas(context);
                               final comandaApi = ComandaApi();
-                              final res = await comandaApi.enviarComanda(widget.mesas.idMesa);
-                              if (res) {
+                              final res = await comandaApi.enviarComanda(widget.mesas.idMesa,int.parse(widget.mesas.cantidadPersonas));
+                              if (res.resultadoPeticion) {
                                 showToast2('Pedido enviado correctamente', Colors.green);
 
-                                mesasBloc.obtenerMesasPorLocacion(widget.mesas.locacionId);
+                                final mesasApi = MesasApi();
+                                              await mesasApi.obtenerMesasPorLocacion(widget.mesas.locacionId);
+                                              
                               } else {
                                 showToast2('Ocurrio un error, intentelo nuevamente', Colors.red);
                               }
-                              mesasBloc.obtenerMesasPorIdAgregar(widget.mesas.idMesa);
-                              mesasBloc.obtenerMesasPorIdDisgregar(widget.mesas.idMesa);
+ 
+                               mesasBloc.obtenerMesasPorIdAgregar(widget.mesas.idMesa);
+                              mesasBloc.obtenerMesasPorIdDisgregar(widget.mesas.idMesa); 
 
                               Navigator.pop(context);
                             },

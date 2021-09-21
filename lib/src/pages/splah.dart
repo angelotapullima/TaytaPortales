@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:tayta_restaurant/src/bloc/provider.dart';
-import 'package:tayta_restaurant/src/bloc/tiendas_bloc.dart';
 import 'package:tayta_restaurant/src/preferences/preferences.dart';
 
 class Splash extends StatefulWidget {

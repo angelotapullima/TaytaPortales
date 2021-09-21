@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:tayta_restaurant/src/database/locacion_database.dart';
+import 'package:tayta_restaurant/src/models/api_model.dart';
 import 'package:tayta_restaurant/src/models/locacion_model.dart';
 import 'package:tayta_restaurant/src/preferences/preferences.dart';
 
@@ -10,7 +11,7 @@ import 'package:tayta_restaurant/src/utils/constants.dart';
 class LocacionApi {
   final locacionDatabase = LocacionDatabase();
   final preferences = Preferences();
-  Future<bool> obtenerLocacionesPorTienda(String idTienda) async {
+  Future<ApiModel> obtenerLocacionesPorTienda(String idTienda) async {
     try {
       final url = Uri.parse('$apiBaseURL/api/Locacion/$idTienda');
       Map<String, String> headers = {
@@ -26,7 +27,14 @@ class LocacionApi {
           'password': '$pass',
         }), */
       );
+      if (resp.statusCode == 401) {
+        ApiModel apiModel = ApiModel();
+        apiModel.error = true;
+        apiModel.resultadoPeticion = false;
+        apiModel.mensaje = 'token inválido';
 
+        return apiModel;
+      }
       print('locacionApi');
 
       final decodedData = json.decode(resp.body);
@@ -42,11 +50,21 @@ class LocacionApi {
         }
       }
 
-      return true;
+      ApiModel apiModel = ApiModel();
+      apiModel.error = false;
+      apiModel.resultadoPeticion = true;
+      apiModel.mensaje = 'respuesta correcta';
+
+      return apiModel;
     } catch (error, stacktrace) {
       print("Exception occured: $error stackTrace: $stacktrace");
 
-      return false;
+      ApiModel apiModel = ApiModel();
+      apiModel.error = false;
+      apiModel.resultadoPeticion = false;
+      apiModel.mensaje = 'el envio no fue exitoso';
+
+      return apiModel;
     }
   }
 }

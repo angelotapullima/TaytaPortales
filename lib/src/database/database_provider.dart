@@ -20,7 +20,7 @@ class DatabaseProvider {
   initDB() async {
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
 
-    final path = join(documentsDirectory.path, 'tayta.db');
+    final path = join(documentsDirectory.path, 'taytaergbrh.db');
 
     Future _onConfigure(Database db) async {
       await db.execute('PRAGMA foreign_keys = ON');
@@ -76,7 +76,6 @@ class DatabaseProvider {
           ' idProducto TEXT ,'
           ' nombreProducto TEXT ,'
           ' precioVenta TEXT ,'
-          ' precioLlevar TEXT ,'
           ' cantidad TEXT ,'
           ' observacion TEXT ,'
           ' paraLLevar TEXT ,' //1 = si es true x 0 = si es false

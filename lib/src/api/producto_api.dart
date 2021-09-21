@@ -7,6 +7,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 import 'package:tayta_restaurant/src/database/productos_database.dart';
+import 'package:tayta_restaurant/src/models/api_model.dart';
 import 'package:tayta_restaurant/src/models/productos_model.dart';
 
 import 'package:tayta_restaurant/src/preferences/preferences.dart';
@@ -16,7 +17,7 @@ import 'package:tayta_restaurant/src/utils/constants.dart';
 class ProductoApi {
   final productosDatabase = ProductosDatabase();
   final preferences = Preferences();
-  Future<bool> obtenerProductosPorFamilia(String idFamilia,String idLocacion) async {
+  Future<ApiModel> obtenerProductosPorFamilia(String idFamilia,String idLocacion) async {
     try {
       final url = Uri.parse('$apiBaseURL/api/Producto/$idFamilia/$idLocacion');
       Map<String, String> headers = {'Content-Type': 'application/json', 'Authorization': ' Bearer ${preferences.token}'};
@@ -32,7 +33,14 @@ class ProductoApi {
 
 
       print('productos Familia');
+if (resp.statusCode == 401) {
+        ApiModel apiModel = ApiModel();
+        apiModel.error = true;
+        apiModel.resultadoPeticion = false;
+        apiModel.mensaje = 'token inválido';
 
+        return apiModel;
+      }
       final decodedData = json.decode(resp.body);
 
       if (decodedData.length > 0) {
@@ -52,11 +60,21 @@ class ProductoApi {
         }
       }
 
-      return true;
+       ApiModel apiModel = ApiModel();
+      apiModel.error = false;
+      apiModel.resultadoPeticion = true;
+      apiModel.mensaje = 'operación exitosa';
+
+      return apiModel;
     } catch (error, stacktrace) {
       print("Exception occured: $error stackTrace: $stacktrace");
 
-      return false;
+      ApiModel apiModel = ApiModel();
+      apiModel.error = false;
+      apiModel.resultadoPeticion = false;
+      apiModel.mensaje = 'el envio no fue exitoso';
+
+      return apiModel;
     }
   }
 }

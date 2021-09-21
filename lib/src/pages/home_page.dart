@@ -4,6 +4,12 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:tayta_restaurant/src/bloc/index_bloc.dart';
 import 'package:tayta_restaurant/src/bloc/provider.dart';
+import 'package:tayta_restaurant/src/database/carrito_database.dart';
+import 'package:tayta_restaurant/src/database/familias_database.dart';
+import 'package:tayta_restaurant/src/database/locacion_database.dart';
+import 'package:tayta_restaurant/src/database/mesas_database.dart';
+import 'package:tayta_restaurant/src/database/pedido_user_database.dart';
+import 'package:tayta_restaurant/src/database/productos_database.dart';
 import 'package:tayta_restaurant/src/models/locacion_model.dart';
 import 'package:tayta_restaurant/src/models/mesas_model.dart';
 import 'package:tayta_restaurant/src/pages/carrito_page.dart';
@@ -28,12 +34,67 @@ class HomePage extends StatelessWidget {
     final locacionBloc = ProviderBloc.locacion(context);
     locacionBloc.obtenerLocacionesPorIdTienda(prefs.tiendaId);
 
+    final mesasBloc = ProviderBloc.mesas(context);
+
+    final preferences =Preferences();
+
     return Scaffold(
       backgroundColor: Color(0xfff7f7f7),
-      body: ResponsiveBuilder(
-        mobile: VistaTablet(),
-        tablet: VistaTablet(),
-        desktop: VistaTablet(),
+      body: Stack(
+        children: [
+          ResponsiveBuilder(
+            mobile: VistaTablet(),
+            tablet: VistaTablet(),
+            desktop: VistaTablet(),
+          ),
+          StreamBuilder(
+            stream: mesasBloc.error401Stream,
+            builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+              if (snapshot.hasData && snapshot.data) {
+                return Container(
+                  width: double.infinity,
+                  height: double.infinity,
+                  color: Colors.white,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text('Su sesión expiro, por favor vuelva a iniciar sesión'),
+                      SizedBox(
+                        height: ScreenUtil().setHeight(30),
+                      ),
+                      MaterialButton(
+                        onPressed: ()async {
+                           preferences.clearPreferences();
+
+                          final carritoDatabase = CarritoDatabase();
+                          final familiasDatabase = FamiliasDatabase();
+                          final locacionDatabase = LocacionDatabase();
+                          final mesasDatabase = MesasDatabase();
+                          final pedidosUserDatabase = PedidosUserDatabase();
+                          final productosDatabase = ProductosDatabase();
+
+                          await carritoDatabase.eliminarTablaCarritoMesa();
+                          await familiasDatabase.eliminarTablaFamilias();
+                          await locacionDatabase.eliminarTablaLocacion();
+                          await mesasDatabase.eliminarTablaMesas();
+                          await pedidosUserDatabase.eliminarTablaPedidoUser();
+                          await productosDatabase.eliminarTablaProductos();
+
+                          Navigator.of(context).pushNamedAndRemoveUntil('login', (Route<dynamic> route) => true);
+                        },
+                        child: Text('Iniciar Sesión'),
+                        color: Colors.blue,
+                        textColor: Colors.white,
+                      )
+                    ],
+                  ),
+                );
+              } else {
+                return Container();
+              }
+            },
+          ),
+        ],
       ),
     );
   }

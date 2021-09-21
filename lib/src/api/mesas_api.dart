@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:tayta_restaurant/src/database/carrito_database.dart';
 import 'package:tayta_restaurant/src/database/mesas_database.dart';
+import 'package:tayta_restaurant/src/models/api_model.dart';
 import 'package:tayta_restaurant/src/models/carrtito_model.dart';
 import 'package:tayta_restaurant/src/models/mesas_model.dart';
 import 'package:tayta_restaurant/src/preferences/preferences.dart';
@@ -13,7 +14,7 @@ class MesasApi {
   final mesasDatabase = MesasDatabase();
   final carritoDatabase = CarritoDatabase();
   final preferences = Preferences();
-  Future<bool> obtenerMesasPorLocacion(String idLocacion) async {
+  Future<ApiModel> obtenerMesasPorLocacion(String idLocacion) async {
     try {
       final url = Uri.parse('$apiBaseURL/api/MesaLayout/$idLocacion');
       Map<String, String> headers = {'Content-Type': 'application/json', 'Authorization': ' Bearer ${preferences.token}'};
@@ -25,13 +26,17 @@ class MesasApi {
           'userName': '$user',
           'password': '$pass',
         }), */
-      ); 
+      );
 
       print(resp.statusCode);
 
-      if(resp.statusCode == 401){
-        
-        return false;
+      if (resp.statusCode == 401) {
+        ApiModel apiModel = ApiModel();
+        apiModel.error = true;
+        apiModel.resultadoPeticion = false;
+        apiModel.mensaje = 'token inválido';
+
+        return apiModel;
       }
       final decodedData = json.decode(resp.body);
 
@@ -55,41 +60,47 @@ class MesasApi {
 
           if (decodedData[i]['detalles'] != null) {
             if (decodedData[i]['detalles'].length > 0) {
-
-              await carritoDatabase.eliminarPedidosPorMesa(decodedData[i]['mesaId'].toString(),idLocacion.toString());
+              await carritoDatabase.eliminarPedidosPorMesa(decodedData[i]['mesaId'].toString(), idLocacion.toString());
               for (var x = 0; x < decodedData[i]['detalles'].length; x++) {
                 CarritoModel carritoModel = CarritoModel();
                 carritoModel.idProducto = decodedData[i]['detalles'][x]['idProducto'].toString();
                 carritoModel.idComandaDetalle = decodedData[i]['detalles'][x]['idComandaDetalle'].toString();
                 carritoModel.nombreProducto = decodedData[i]['detalles'][x]['nombreProducto'].toString();
-                carritoModel.precioLlevar = (decodedData[i]['detalles'][x]['paraLlevar'].toString() == 'true') ? decodedData[i]['detalles'][x]['precioUnitario'].toString() : '0';
-                carritoModel.precioVenta = (decodedData[i]['detalles'][x]['paraLlevar'].toString() == 'false') ? decodedData[i]['detalles'][x]['precioUnitario'].toString() : '0';
+                carritoModel.precioVenta =  decodedData[i]['detalles'][x]['precioUnitario'].toString();
                 carritoModel.cantidad = decodedData[i]['detalles'][x]['cantidad'].toString();
                 carritoModel.observacion = decodedData[i]['detalles'][x]['observacion'].toString();
                 carritoModel.nroCuenta = decodedData[i]['detalles'][x]['nroCuenta'].toString();
-                carritoModel.paraLLevar = (decodedData[i]['detalles'][x]['paraLlevar'].toString() == 'true')?'1':'0';
+                carritoModel.paraLLevar = (decodedData[i]['detalles'][x]['paraLlevar'].toString() == 'true') ? '1' : '0';
                 carritoModel.idMesa = decodedData[i]['mesaId'].toString();
                 carritoModel.idLocacion = idLocacion.toString();
                 carritoModel.estado = '1';
 
                 await carritoDatabase.insertarCarito(carritoModel);
               }
-            }else{
-            await carritoDatabase.eliminarPedidosPorMesa(decodedData[i]['mesaId'].toString(),idLocacion.toString());
-          
-
+            } else {
+              await carritoDatabase.eliminarPedidosPorMesa(decodedData[i]['mesaId'].toString(), idLocacion.toString());
             }
-          }else{
-            await carritoDatabase.eliminarPedidosPorMesa(decodedData[i]['mesaId'].toString(),idLocacion.toString());
+          } else {
+            await carritoDatabase.eliminarPedidosPorMesa(decodedData[i]['mesaId'].toString(), idLocacion.toString());
           }
         }
       }
 
-      return true;
+      ApiModel apiModel = ApiModel();
+      apiModel.error = false;
+      apiModel.resultadoPeticion = true;
+      apiModel.mensaje = 'respuesta correcta';
+
+      return apiModel;
     } catch (error, stacktrace) {
       print("Exception occured: $error stackTrace: $stacktrace");
 
-      return false;
+      ApiModel apiModel = ApiModel();
+      apiModel.error = false;
+      apiModel.resultadoPeticion = false;
+      apiModel.mensaje = 'error en la respuesta';
+
+      return apiModel;
     }
   }
 }

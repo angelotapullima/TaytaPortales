@@ -4,11 +4,13 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:tayta_restaurant/src/api/comanda_api.dart';
+import 'package:tayta_restaurant/src/api/mesas_api.dart';
 import 'package:tayta_restaurant/src/bloc/index_bloc.dart';
 import 'package:tayta_restaurant/src/bloc/provider.dart';
 import 'package:tayta_restaurant/src/database/carrito_database.dart';
 import 'package:tayta_restaurant/src/models/carrtito_model.dart';
 import 'package:tayta_restaurant/src/models/mesas_model.dart';
+import 'package:tayta_restaurant/src/pages/tablet/agregar_personas.dart';
 import 'package:tayta_restaurant/src/pages/tablet/disgregar_producto.dart';
 import 'package:tayta_restaurant/src/pages/tablet/editar_pedido.dart';
 import 'package:tayta_restaurant/src/utils/responsive.dart';
@@ -37,9 +39,7 @@ class CarritoTabletDisgregar extends StatelessWidget {
 
               for (var i = 0; i < snapshot.data[0].carrito.length; i++) {
                 int cantidad = double.parse(snapshot.data[0].carrito[i].cantidad).toInt();
-                precio = (snapshot.data[0].carrito[i].paraLLevar == '0')
-                    ? double.parse(snapshot.data[0].carrito[i].precioVenta)
-                    : double.parse(snapshot.data[0].carrito[i].precioLlevar);
+                precio = double.parse(snapshot.data[0].carrito[i].precioVenta);
                 total = total + (cantidad * precio);
               }
               return Padding(
@@ -86,9 +86,7 @@ class CarritoTabletDisgregar extends StatelessWidget {
 
                                 if (i != snapshot.data[0].carrito.length) {
                                   int cantidad = double.parse(snapshot.data[0].carrito[i].cantidad).toInt();
-                                  precio = (snapshot.data[0].carrito[i].paraLLevar == '0')
-                                      ? double.parse(snapshot.data[0].carrito[i].precioVenta)
-                                      : double.parse(snapshot.data[0].carrito[i].precioLlevar);
+                                  precio = double.parse(snapshot.data[0].carrito[i].precioVenta);
 
                                   totelx = cantidad * precio;
                                 }
@@ -139,7 +137,10 @@ class CarritoTabletDisgregar extends StatelessWidget {
                                                     ),
                                                     color: Colors.blue,
                                                     textColor: Colors.white,
-                                                    child: Text('Agregar mas productos'),
+                                                    child: Text(
+                                                      'Agregar más productos',
+                                                      style: TextStyle(fontSize: ScreenUtil().setSp(15)),
+                                                    ),
                                                     onPressed: () {
                                                       provider.changeToFamiliaMesa();
                                                     },
@@ -230,7 +231,10 @@ class CarritoTabletDisgregar extends StatelessWidget {
                                               ),
                                               color: Colors.blue,
                                               textColor: Colors.white,
-                                              child: Text('Agregar más productos'),
+                                              child: Text(
+                                                'Agregar más productos',
+                                                style: TextStyle(fontSize: ScreenUtil().setSp(15)),
+                                              ),
                                               onPressed: () {
                                                 provider.changeToFamiliaMesa();
                                               },
@@ -410,12 +414,13 @@ class CarritoTabletDisgregar extends StatelessWidget {
 
                                             final comandaApi = ComandaApi();
                                             provider.changeCargandoTrue();
-                                            final res = await comandaApi.enviarComanda(snapshot.data[0].idMesa);
-                                            if (res) {
+                                            final res = await comandaApi.enviarComanda(snapshot.data[0].idMesa, int.parse(snapshot.data[0].cantidadPersonas));
+                                            if (res.resultadoPeticion) {
                                               showToast2('Pedido enviado correctamente', Colors.green);
                                               provider.changeCargandoFalse();
 
-                                              mesasBloc.obtenerMesasPorLocacion(snapshot.data[0].locacionId);
+                                              final mesasApi = MesasApi();
+                                              await mesasApi.obtenerMesasPorLocacion('${snapshot.data[0].carrito[i].idLocacion}');
                                               await carritoDatabase.eliminarProductoPorIdComandaDetalle(
                                                 '${snapshot.data[0].carrito[i].idComandaDetalle}',
                                               );
@@ -560,9 +565,7 @@ class CarritoTabletAgregar extends StatelessWidget {
 
                 for (var i = 0; i < snapshot.data[0].carrito.length; i++) {
                   int cantidad = double.parse(snapshot.data[0].carrito[i].cantidad).toInt();
-                  precio = (snapshot.data[0].carrito[i].paraLLevar == '0')
-                      ? double.parse(snapshot.data[0].carrito[i].precioVenta)
-                      : double.parse(snapshot.data[0].carrito[i].precioLlevar);
+                  precio = double.parse(snapshot.data[0].carrito[i].precioVenta);
                   total = total + (cantidad * precio);
                 }
                 return Padding(
@@ -601,9 +604,7 @@ class CarritoTabletAgregar extends StatelessWidget {
 
                                   if (i != snapshot.data[0].carrito.length) {
                                     int cantidad = double.parse(snapshot.data[0].carrito[i].cantidad).toInt();
-                                    precio = (snapshot.data[0].carrito[i].paraLLevar == '0')
-                                        ? double.parse(snapshot.data[0].carrito[i].precioVenta)
-                                        : double.parse(snapshot.data[0].carrito[i].precioLlevar);
+                                    precio = double.parse(snapshot.data[0].carrito[i].precioVenta);
 
                                     totelx = cantidad * precio;
                                   }
@@ -656,17 +657,41 @@ class CarritoTabletAgregar extends StatelessWidget {
                                                       textColor: Colors.white,
                                                       child: Text('enviar pedido'),
                                                       onPressed: () async {
-                                                        final comandaApi = ComandaApi();
+                                                        Navigator.push(
+                                                          context,
+                                                          PageRouteBuilder(
+                                                            opaque: false,
+                                                            pageBuilder: (context, animation, secondaryAnimation) {
+                                                              return AgregarPersonasTablet(mesa: snapshot.data[0]);
+                                                            },
+                                                            transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                                                              var begin = Offset(0.0, 1.0);
+                                                              var end = Offset.zero;
+                                                              var curve = Curves.ease;
+
+                                                              var tween = Tween(begin: begin, end: end).chain(
+                                                                CurveTween(curve: curve),
+                                                              );
+
+                                                              return SlideTransition(
+                                                                position: animation.drive(tween),
+                                                                child: child,
+                                                              );
+                                                            },
+                                                          ),
+                                                        );
+
+                                                        /*  final comandaApi = ComandaApi();
                                                         provider.changeCargandoTrue();
                                                         final res = await comandaApi.enviarComanda(snapshot.data[0].idMesa);
-                                                        if (res) {
+                                                        if (res.resultadoPeticion) {
                                                           showToast2('Pedido enviado correctamente', Colors.green);
                                                           provider.changeCargandoFalse();
                                                           provider.changeToMesa();
                                                         } else {
                                                           showToast2('Ocurrio un error, intentelo nuevamente', Colors.red);
                                                           provider.changeCargandoFalse();
-                                                        }
+                                                        } */
                                                       },
                                                     ),
                                                   ),
@@ -754,17 +779,40 @@ class CarritoTabletAgregar extends StatelessWidget {
                                                 textColor: Colors.white,
                                                 child: Text('Enviar pedidos'),
                                                 onPressed: () async {
-                                                  final comandaApi = ComandaApi();
+                                                  Navigator.push(
+                                                    context,
+                                                    PageRouteBuilder(
+                                                      opaque: false,
+                                                      pageBuilder: (context, animation, secondaryAnimation) {
+                                                        return AgregarPersonasTablet(mesa: snapshot.data[0]);
+                                                      },
+                                                      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                                                        var begin = Offset(0.0, 1.0);
+                                                        var end = Offset.zero;
+                                                        var curve = Curves.ease;
+
+                                                        var tween = Tween(begin: begin, end: end).chain(
+                                                          CurveTween(curve: curve),
+                                                        );
+
+                                                        return SlideTransition(
+                                                          position: animation.drive(tween),
+                                                          child: child,
+                                                        );
+                                                      },
+                                                    ),
+                                                  );
+                                                  /*  final comandaApi = ComandaApi();
                                                   provider.changeCargandoTrue();
                                                   final res = await comandaApi.enviarComanda(snapshot.data[0].idMesa);
-                                                  if (res) {
+                                                  if (res.resultadoPeticion) {
                                                     showToast2('Pedido enviado correctamente', Colors.green);
                                                     provider.changeCargandoFalse();
                                                     provider.changeToMesa();
                                                   } else {
                                                     showToast2('Ocurrio un error, intentelo nuevamente', Colors.red);
                                                     provider.changeCargandoFalse();
-                                                  }
+                                                  } */
                                                 },
                                               ),
                                             ),
@@ -787,12 +835,14 @@ class CarritoTabletAgregar extends StatelessWidget {
                                           caption: 'Eliminar',
                                           color: Colors.red,
                                           icon: Icons.archive,
-                                          onTap: ()async {
-
-                                            final carritoDatabase  =CarritoDatabase();
+                                          onTap: () async {
+                                            final mesasApi = MesasApi();
+                                            final carritoDatabase = CarritoDatabase();
                                             await carritoDatabase.eliminarProductoPorIdCarrito('${snapshot.data[0].carrito[i].idCarrito}');
 
+                                            await mesasApi.obtenerMesasPorLocacion('${snapshot.data[0].carrito[i].idLocacion}');
                                             mesasBloc.obtenerMesasPorIdAgregar('${snapshot.data[0].carrito[i].idMesa}');
+                                            mesasBloc.obtenerMesasPorIdDisgregar('${snapshot.data[0].carrito[i].idMesa}');
                                             print('IconSlideAction archive');
                                           },
                                         ),

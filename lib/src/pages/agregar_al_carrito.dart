@@ -300,7 +300,6 @@ class _AgregarAlCarritoState extends State<AgregarAlCarrito> {
                             carrito.idProducto = widget.productosModel.idProducto;
                             carrito.nombreProducto = widget.productosModel.nombreProducto;
                             carrito.precioVenta = widget.productosModel.precioVenta;
-                            carrito.precioLlevar = widget.productosModel.precioLlevar;
                             carrito.cantidad = _counter.toString();
                             carrito.observacion = observacionController.text;
                             carrito.idMesa = widget.mesas.idMesa;

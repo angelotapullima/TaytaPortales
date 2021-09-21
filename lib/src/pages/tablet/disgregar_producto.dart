@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:tayta_restaurant/src/api/comanda_api.dart';
+import 'package:tayta_restaurant/src/api/mesas_api.dart';
 import 'package:tayta_restaurant/src/bloc/index_bloc.dart';
 import 'package:tayta_restaurant/src/bloc/provider.dart';
 import 'package:tayta_restaurant/src/database/carrito_database.dart';
@@ -284,15 +285,18 @@ class _DisgregarProductoTabletState extends State<DisgregarProductoTablet> {
                                       carrito.idComandaDetalle = widget.carrito.idComandaDetalle;
                                       await carritoDatabase.updateCarritoPorIdComandaDetalle(carrito);
 
-                                      final res = await comandaApi.enviarComanda(widget.carrito.idMesa);
+                                      final res = await comandaApi.enviarComanda(widget.carrito.idMesa, int.parse(widget.mesas.cantidadPersonas));
 
-                                      if (res) {
+                                      if (res.resultadoPeticion) {
                                         showToast2('Se ha actualizado la cuenta', Colors.green);
                                       } else {
                                         showToast2('No se ha podido actualizar la cuenta', Colors.red);
                                       }
 
                                       final mesabloc = ProviderBloc.mesas(context);
+                                      final mesasApi = MesasApi();
+                                      await mesasApi.obtenerMesasPorLocacion(widget.mesas.locacionId);
+
                                       mesabloc.obtenerMesasPorIdAgregar(widget.carrito.idMesa);
                                       mesabloc.obtenerMesasPorIdDisgregar(widget.carrito.idMesa);
 
@@ -333,15 +337,18 @@ class _DisgregarProductoTabletState extends State<DisgregarProductoTablet> {
                                       carrito2.idComandaDetalle = '0';
                                       await carritoDatabase.insertarCarito(carrito2);
 
-                                      final res = await comandaApi.enviarComanda(widget.carrito.idMesa);
+                                      final res = await comandaApi.enviarComanda(widget.carrito.idMesa, int.parse(widget.mesas.cantidadPersonas));
 
-                                      if (res) {
+                                      if (res.resultadoPeticion) {
                                         showToast2('Se ha actualizado la cuenta', Colors.green);
                                       } else {
                                         showToast2('No se ha podido actualizar la cuenta', Colors.red);
                                       }
 
                                       final mesabloc = ProviderBloc.mesas(context);
+                                      final mesasApi = MesasApi();
+                                      await mesasApi.obtenerMesasPorLocacion(widget.mesas.locacionId);
+
                                       mesabloc.obtenerMesasPorIdAgregar(widget.carrito.idMesa);
                                       mesabloc.obtenerMesasPorIdDisgregar(widget.carrito.idMesa);
 

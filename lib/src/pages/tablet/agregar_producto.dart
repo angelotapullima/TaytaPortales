@@ -321,7 +321,6 @@ class _AgregarProductTabletState extends State<AgregarProductTablet> {
                               carrito.idProducto = widget.productos.idProducto;
                               carrito.nombreProducto = widget.productos.nombreProducto;
                               carrito.precioVenta = widget.productos.precioVenta;
-                              carrito.precioLlevar = widget.productos.precioLlevar;
                               carrito.cantidad = _counter.toString();
                               carrito.observacion = observacionController.text;
                               carrito.idMesa = widget.mesas.idMesa;

@@ -54,9 +54,7 @@ class PedidosItem extends StatelessWidget {
                   double precio = 0;
 
                   for (var i = 0; i < mesas.data[index].carrito.length; i++) {
-                    precio = (mesas.data[index].carrito[i].paraLLevar == '0')
-                        ? double.parse(mesas.data[index].carrito[i].precioVenta)
-                        : double.parse(mesas.data[index].carrito[i].precioLlevar);
+                    precio = double.parse(mesas.data[index].carrito[i].precioVenta);
                   }
                   return LayoutBuilder(
                     builder: (context, constraints) {
@@ -123,9 +121,7 @@ class PedidosItem extends StatelessWidget {
 
                                       if (i != mesas.data[index].carrito.length) {
                                         int cantidad = double.parse(mesas.data[index].carrito[i].cantidad).toInt();
-                                        precio = (mesas.data[index].carrito[i].paraLLevar == '0')
-                                            ? double.parse(mesas.data[index].carrito[i].precioVenta)
-                                            : double.parse(mesas.data[index].carrito[i].precioLlevar);
+                                        precio =double.parse(mesas.data[index].carrito[i].precioVenta);
 
                                         totelx = cantidad * precio;
                                       }

@@ -40,7 +40,7 @@ class _MesaPageState extends State<CarritoPage> {
 
                 for (var i = 0; i < snapshot.data.length; i++) {
                   int cantidad = int.parse(snapshot.data[i].cantidad);
-                  precio = (snapshot.data[i].paraLLevar == '1') ? double.parse(snapshot.data[i].precioLlevar) : double.parse(snapshot.data[i].precioVenta);
+                  precio =double.parse(snapshot.data[i].precioVenta);
                   total = total + (cantidad * precio);
                 }
                 return Padding(
@@ -168,7 +168,7 @@ class _MesaPageState extends State<CarritoPage> {
 
                               if (i != snapshot.data.length) {
                                 int cantidad = int.parse(snapshot.data[i].cantidad);
-                                precio = (snapshot.data[i].paraLLevar == '0') ? double.parse(snapshot.data[i].precioVenta) : double.parse(snapshot.data[i].precioLlevar);
+                                precio =  double.parse(snapshot.data[i].precioVenta) ;
 
                                 totelx = cantidad * precio;
                               }

@@ -14,17 +14,20 @@ class MesasBloc {
   final carritoDatabase = CarritoDatabase();
 
   final _locacionController = BehaviorSubject<List<MesasModel>>();
+  final _error401Controller = BehaviorSubject<bool>();
   final _mesaPorIDAgregar = BehaviorSubject<List<MesasModel>>();
   final _mesaPorIDDisgregar = BehaviorSubject<List<MesasModel>>();
   final _mesasConPedidos = BehaviorSubject<List<MesasModel>>();
 
   Stream<List<MesasModel>> get mesasStream => _locacionController.stream;
+  Stream<bool> get error401Stream => _error401Controller.stream;
   Stream<List<MesasModel>> get mesaIdAgregarStream => _mesaPorIDAgregar.stream;
   Stream<List<MesasModel>> get mesaIdDisgregarStream => _mesaPorIDDisgregar.stream;
   Stream<List<MesasModel>> get mesasConPedidosStream => _mesasConPedidos.stream;
 
   dispose() {
     _mesaPorIDAgregar?.close();
+    _error401Controller?.close();
     _mesaPorIDDisgregar?.close();
     _locacionController?.close();
     _mesasConPedidos?.close();
@@ -32,7 +35,9 @@ class MesasBloc {
 
   void obtenerMesasPorLocacion(String idLocacion) async {
     _locacionController.sink.add(await mesasDatabase.obtenerMesasPorLocacion(idLocacion));
-    await mesasApi.obtenerMesasPorLocacion(idLocacion);
+    final res = await mesasApi.obtenerMesasPorLocacion(idLocacion);
+
+    _error401Controller.sink.add(res.error);
     _locacionController.sink.add(await mesasDatabase.obtenerMesasPorLocacion(idLocacion));
   }
 
@@ -69,7 +74,6 @@ class MesasBloc {
             carritoModel.idProducto = carritoList[x].idProducto;
             carritoModel.nombreProducto = carritoList[x].nombreProducto;
             carritoModel.precioVenta = carritoList[x].precioVenta;
-            carritoModel.precioLlevar = carritoList[x].precioLlevar;
             carritoModel.cantidad = carritoList[x].cantidad;
             carritoModel.observacion = carritoList[x].observacion;
             carritoModel.nroCuenta = carritoList[x].nroCuenta;
@@ -104,7 +108,6 @@ class MesasBloc {
                 carritoModel.idProducto = carritoList2[x].idProducto;
                 carritoModel.nombreProducto = carritoList2[x].nombreProducto;
                 carritoModel.precioVenta = carritoList2[x].precioVenta;
-                carritoModel.precioLlevar = carritoList2[x].precioLlevar;
                 carritoModel.cantidad = carritoList2[x].cantidad;
                 carritoModel.observacion = carritoList2[x].observacion;
                 carritoModel.nroCuenta = carritoList2[x].nroCuenta;
@@ -115,11 +118,9 @@ class MesasBloc {
                 carritoModel.paraLLevar = carritoList2[x].paraLLevar;
                 carritoModel.idComandaDetalle = carritoList2[x].idComandaDetalle;
 
-                if ('${carritoList2[x].paraLLevar}' == '1') {
-                  montex = montex + (double.parse(carritoList2[x].precioLlevar) * double.parse(carritoList2[x].cantidad));
-                } else {
+                
                   montex = montex + (double.parse(carritoList2[x].precioVenta) * double.parse(carritoList2[x].cantidad));
-                }
+                
               }
             }
           }
@@ -172,7 +173,6 @@ class MesasBloc {
             carritoModel.idProducto = carritoList[x].idProducto;
             carritoModel.nombreProducto = carritoList[x].nombreProducto;
             carritoModel.precioVenta = carritoList[x].precioVenta;
-            carritoModel.precioLlevar = carritoList[x].precioLlevar;
             carritoModel.cantidad = carritoList[x].cantidad;
             carritoModel.observacion = carritoList[x].observacion;
             carritoModel.nroCuenta = carritoList[x].nroCuenta;
@@ -207,7 +207,6 @@ class MesasBloc {
                 carritoModel.idProducto = carritoList2[x].idProducto;
                 carritoModel.nombreProducto = carritoList2[x].nombreProducto;
                 carritoModel.precioVenta = carritoList2[x].precioVenta;
-                carritoModel.precioLlevar = carritoList2[x].precioLlevar;
                 carritoModel.cantidad = carritoList2[x].cantidad;
                 carritoModel.observacion = carritoList2[x].observacion;
                 carritoModel.nroCuenta = carritoList2[x].nroCuenta;
@@ -218,11 +217,9 @@ class MesasBloc {
                 carritoModel.paraLLevar = carritoList2[x].paraLLevar;
                 carritoModel.idComandaDetalle = carritoList2[x].idComandaDetalle;
 
-                if ('${carritoList2[x].paraLLevar}' == '1') {
-                  montex = montex + (double.parse(carritoList2[x].precioLlevar) * double.parse(carritoList2[x].cantidad));
-                } else {
+               
                   montex = montex + (double.parse(carritoList2[x].precioVenta) * double.parse(carritoList2[x].cantidad));
-                }
+                
               }
             }
           }
@@ -275,7 +272,6 @@ class MesasBloc {
               carritoModel.idProducto = carritoList[x].idProducto;
               carritoModel.nombreProducto = carritoList[x].nombreProducto;
               carritoModel.precioVenta = carritoList[x].precioVenta;
-              carritoModel.precioLlevar = carritoList[x].precioLlevar;
               carritoModel.cantidad = carritoList[x].cantidad;
               carritoModel.observacion = carritoList[x].observacion;
               carritoModel.nroCuenta = carritoList[x].nroCuenta;
@@ -310,7 +306,6 @@ class MesasBloc {
                   carritoModel.idProducto = carritoList2[x].idProducto;
                   carritoModel.nombreProducto = carritoList2[x].nombreProducto;
                   carritoModel.precioVenta = carritoList2[x].precioVenta;
-                  carritoModel.precioLlevar = carritoList2[x].precioLlevar;
                   carritoModel.cantidad = carritoList2[x].cantidad;
                   carritoModel.observacion = carritoList2[x].observacion;
                   carritoModel.nroCuenta = carritoList2[x].nroCuenta;
@@ -321,11 +316,9 @@ class MesasBloc {
                   carritoModel.paraLLevar = carritoList2[x].paraLLevar;
                   carritoModel.idComandaDetalle = carritoList2[x].idComandaDetalle;
 
-                  if ('${carritoList2[x].paraLLevar}' == '1') {
-                    montex = montex + (double.parse(carritoList2[x].precioLlevar) * double.parse(carritoList2[x].cantidad));
-                  } else {
+                 
                     montex = montex + (double.parse(carritoList2[x].precioVenta) * double.parse(carritoList2[x].cantidad));
-                  }
+                  
                 }
               }
             }

@@ -9,7 +9,6 @@ class CarritoModel{
     this.idProducto,
     this.nombreProducto,
     this.precioVenta,
-    this.precioLlevar,
     this.cantidad,
     this.observacion,
     this.nroCuenta,
@@ -25,7 +24,6 @@ class CarritoModel{
   String idProducto;
   String nombreProducto;
   String precioVenta;
-  String precioLlevar;
   String cantidad;
   String observacion;
   String nroCuenta;
@@ -41,7 +39,6 @@ class CarritoModel{
         idProducto: json["idProducto"],
         nombreProducto: json["nombreProducto"],
         precioVenta: json["precioVenta"],
-        precioLlevar: json["precioLlevar"],
         cantidad: json["cantidad"],
         observacion: json["observacion"],
         nroCuenta: json["nroCuenta"],

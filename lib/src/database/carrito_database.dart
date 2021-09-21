@@ -10,9 +10,9 @@ class CarritoDatabase {
       final db = await dbprovider.database;
 
       final res = await db.rawInsert("INSERT OR REPLACE INTO CarritoMesa (idProducto,idComandaDetalle,nombreProducto,"
-          "precioVenta,precioLlevar,cantidad,observacion,paraLLevar,nroCuenta,idMesa,nombreMesa,idLocacion,estado) "
+          "precioVenta,cantidad,observacion,paraLLevar,nroCuenta,idMesa,nombreMesa,idLocacion,estado) "
           "VALUES ('${carrito.idProducto}','${carrito.idComandaDetalle}','${carrito.nombreProducto}',"
-          "'${carrito.precioVenta}','${carrito.precioLlevar}','${carrito.cantidad}','${carrito.observacion}',"
+          "'${carrito.precioVenta}','${carrito.cantidad}','${carrito.observacion}',"
           "'${carrito.paraLLevar}','${carrito.nroCuenta}','${carrito.idMesa}','${carrito.nombreMesa}','${carrito.idLocacion}',"
           "'${carrito.estado}')");
       return res;
@@ -93,7 +93,6 @@ class CarritoDatabase {
       final res = await db.rawUpdate("UPDATE CarritoMesa SET idProducto='${carrito.idProducto}',"
       "nombreProducto='${carrito.nombreProducto}',"
       "precioVenta='${carrito.precioVenta}',"
-      "precioLlevar='${carrito.precioLlevar}',"
       "cantidad='${carrito.cantidad}',"
       "observacion='${carrito.observacion}',"
       "paraLLevar='${carrito.paraLLevar}',"
