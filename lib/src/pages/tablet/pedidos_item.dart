@@ -367,7 +367,7 @@ class PedidosItem extends StatelessWidget {
             );
           } else {
             return Center(
-              child: Text('No existen pedisos '),
+              child: Text('No existen pedidos '),
             );
           }
         } else {

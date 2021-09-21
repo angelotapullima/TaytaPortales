@@ -27,7 +27,7 @@ class _WidgetLocacionState extends State<HeaderLocacion> {
     final familiasBloc = ProviderBloc.familias(context);
     final responsive = Responsive.of(context);
     return Container(
-      height:ScreenUtil().setHeight(80),
+      height: ScreenUtil().setHeight(80),
       child: StreamBuilder(
           stream: locacionBloc.locacionStream,
           builder: (context, AsyncSnapshot<List<LocacionModel>> snapshot) {
@@ -47,7 +47,8 @@ class _WidgetLocacionState extends State<HeaderLocacion> {
                           _catController.changeIndex(i, snapshot.data[i].idLocacion);
 
                           mesabloc.obtenerMesasPorLocacion(snapshot.data[i].idLocacion);
- print('header click');
+                          mesabloc.obtenerMesasConPedido(snapshot.data[i].idLocacion);
+                          print('header click');
                           familiasBloc.obtenerFamilias(snapshot.data[i].idLocacion);
                         },
                         child: Container(

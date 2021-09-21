@@ -27,7 +27,12 @@ class MesasApi {
         }), */
       ); 
 
-      print('mesasApi');
+      print(resp.statusCode);
+
+      if(resp.statusCode == 401){
+        
+        return false;
+      }
       final decodedData = json.decode(resp.body);
 
       if (decodedData.length > 0) {

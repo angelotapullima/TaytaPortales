@@ -31,7 +31,7 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Color(0xfff7f7f7),
       body: ResponsiveBuilder(
-        mobile: VistaMovil(),
+        mobile: VistaTablet(),
         tablet: VistaTablet(),
         desktop: VistaTablet(),
       ),

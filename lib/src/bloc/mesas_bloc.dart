@@ -125,7 +125,9 @@ class MesasBloc {
           }
           cuentaModel.monto = montex.toString();
           cuentaModel.carrito = carritoList2;
-          cuenta.add(cuentaModel);
+          if (montex > 0) {
+            cuenta.add(cuentaModel);
+          }
         }
       }
 
@@ -226,7 +228,9 @@ class MesasBloc {
           }
           cuentaModel.monto = montex.toString();
           cuentaModel.carrito = carritoList2;
-          cuenta.add(cuentaModel);
+          if (montex > 0) {
+            cuenta.add(cuentaModel);
+          }
         }
       }
 
@@ -327,7 +331,10 @@ class MesasBloc {
             }
             cuentaModel.monto = montex.toString();
             cuentaModel.carrito = carritoList2;
-            cuenta.add(cuentaModel);
+
+            if (montex > 0) {
+              cuenta.add(cuentaModel);
+            }
           }
         }
 

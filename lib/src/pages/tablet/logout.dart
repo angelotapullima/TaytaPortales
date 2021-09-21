@@ -6,7 +6,6 @@ import 'package:tayta_restaurant/src/database/locacion_database.dart';
 import 'package:tayta_restaurant/src/database/mesas_database.dart';
 import 'package:tayta_restaurant/src/database/pedido_user_database.dart';
 import 'package:tayta_restaurant/src/database/productos_database.dart';
-import 'package:tayta_restaurant/src/models/pedido_user.dart';
 import 'package:tayta_restaurant/src/preferences/preferences.dart';
 
 class Logout extends StatelessWidget {
@@ -81,7 +80,7 @@ class Logout extends StatelessWidget {
                           final productosDatabase = ProductosDatabase();
 
                           await carritoDatabase.eliminarTablaCarritoMesa();
-                          await familiasDatabase.eliminarTablaFamilias()();
+                          await familiasDatabase.eliminarTablaFamilias();
                           await locacionDatabase.eliminarTablaLocacion();
                           await mesasDatabase.eliminarTablaMesas();
                           await pedidosUserDatabase.eliminarTablaPedidoUser();
