@@ -548,7 +548,14 @@ class CarritoTabletAgregar extends StatelessWidget {
                               color: Colors.blue,
                             ),
                           ),
-                          Spacer(),
+                          Spacer(), Text(
+                            'S/. ${snapshot.data[0].total}',
+                            style: TextStyle(
+                              fontSize: ScreenUtil().setSp(24),
+                              fontWeight: FontWeight.bold,
+                              color: Colors.blue,
+                            ),
+                          ),
                         ],
                       ),
                       SizedBox(
@@ -813,7 +820,7 @@ class CarritoTabletAgregar extends StatelessWidget {
                                         ),
                                       ],
                                       child: Container(
-                                        margin: EdgeInsets.only(
+                                         margin: EdgeInsets.only(
                                           bottom: responsive.hp(1.5),
                                         ),
                                         child: Column(

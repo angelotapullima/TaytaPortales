@@ -18,7 +18,7 @@ void main() async {
   final prefsUrl = new PreferencesUrl();
 
   await prefs.initPrefs();
-  await prefsUrl.initPrefs();
+  await prefsUrl.initPrefsUrl();
 
   runApp(MyApp());
 }
@@ -28,39 +28,39 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ProviderBloc(
-        child: MultiProvider(
-      providers: [
-        ChangeNotifierProvider<IndexBlocListener>(
-          create: (_) => IndexBlocListener(),
-        ),
-        
-      ],
-      child: ScreenUtilInit(
-        designSize: Size(1024, 768),
-        builder: () => MaterialApp(
-          builder: (BuildContext context, Widget child) {
-            final MediaQueryData data = MediaQuery.of(context);
-            return MediaQuery(
-              data: data.copyWith(textScaleFactor: data.textScaleFactor > 2.0 ? 1.2 : data.textScaleFactor),
-              child: child,
-            );
-          },
-          theme: ThemeData(
-            primarySwatch: Colors.green,
-            scaffoldBackgroundColor: Color(0xFFF0F1F5),
-            canvasColor: Colors.transparent,
-            textTheme: GoogleFonts.poppinsTextTheme(),
+      child: MultiProvider(
+        providers: [
+          ChangeNotifierProvider<IndexBlocListener>(
+            create: (_) => IndexBlocListener(),
           ),
-          debugShowCheckedModeBanner: false,
-          title: 'Tayta',
-          initialRoute: 'splash',
-          routes: {
-            "splash": (BuildContext context) => Splash(),
-            "home": (BuildContext context) => HomePage(),
-            "login": (BuildContext context) => LoginPage(),
-          },
+        ],
+        child: ScreenUtilInit(
+          designSize: Size(1024, 768),
+          builder: () => MaterialApp(
+            builder: (BuildContext context, Widget child) {
+              final MediaQueryData data = MediaQuery.of(context);
+              return MediaQuery(
+                data: data.copyWith(textScaleFactor: data.textScaleFactor > 2.0 ? 1.2 : data.textScaleFactor),
+                child: child,
+              );
+            },
+            theme: ThemeData(
+              primarySwatch: Colors.green,
+              scaffoldBackgroundColor: Color(0xFFF0F1F5),
+              canvasColor: Colors.transparent,
+              textTheme: GoogleFonts.poppinsTextTheme(),
+            ),
+            debugShowCheckedModeBanner: false,
+            title: 'Tayta',
+            initialRoute: 'splash',
+            routes: {
+              "splash": (BuildContext context) => Splash(),
+              "home": (BuildContext context) => HomePage(),
+              "login": (BuildContext context) => LoginPage(),
+            },
+          ),
         ),
       ),
-    ));
+    );
   }
 }

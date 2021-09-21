@@ -7,25 +7,25 @@ class PreferencesUrl {
     return _instancia;
   }
 
-  SharedPreferences _prefs;
+  SharedPreferences _prefsURl;
 
   PreferencesUrl._internal();
 
-  initPrefs() async {
-    this._prefs = await SharedPreferences.getInstance();
+  initPrefsUrl() async {
+    this._prefsURl = await SharedPreferences.getInstance();
   }
 
-  clearPreferences() async {
-    await _prefs.clear();
+  clearPreferencesUrl() async {
+    await _prefsURl.clear();
   }
 
 /////////////////////////////////////////////////////////
   get url {
-    return _prefs.getString('url');
+    return _prefsURl.getString('url');
   }
 
   set url(String value) {
-    _prefs.setString('url', value);
+    _prefsURl.setString('url', value);
   }
 
 }

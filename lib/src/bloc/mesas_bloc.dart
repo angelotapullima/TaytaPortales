@@ -64,15 +64,13 @@ class MesasBloc {
       mesasModel.idUsuario = mesaList[0].idUsuario;
       mesasModel.codigoUsuario = mesaList[0].codigoUsuario;
       mesasModel.nombreCompleto = mesaList[0].nombreCompleto;
-      mesasModel.locacionId = mesaList[0].locacionId;
+      mesasModel.locacionId = mesaList[0].locacionId; 
 
-      final carritoList = await carritoDatabase.obtenerCarritoPorIdCarritoAgregar(mesaList[0].idMesa, mesaList[0].locacionId);
+      final carritoList = await carritoDatabase.obtenerCarritoPorIdCarritoAgregarNuevo(mesaList[0].idMesa, mesaList[0].locacionId);
 
       if (carritoList.length > 0) {
         for (var x = 0; x < carritoList.length; x++) {
           if (double.parse(carritoList[x].cantidad) > 0) {
-
-            final producto = await productoDatabase.obtenerProductosPorId(carritoList[x].idProducto);
             CarritoModel carritoModel = CarritoModel();
             carritoModel.idCarrito = carritoList[x].idCarrito;
             carritoModel.idProducto = carritoList[x].idProducto;
@@ -107,9 +105,6 @@ class MesasBloc {
           if (carritoList2.length > 0) {
             for (var x = 0; x < carritoList2.length; x++) {
               if (double.parse(carritoList2[x].cantidad) > 0) {
-
-
-            final producto = await productoDatabase.obtenerProductosPorId(carritoList[x].idProducto);
                 CarritoModel carritoModel = CarritoModel();
                 carritoModel.idCarrito = carritoList2[x].idCarrito;
                 carritoModel.idProducto = carritoList2[x].idProducto;
@@ -123,11 +118,9 @@ class MesasBloc {
                 carritoModel.idLocacion = carritoList2[x].idLocacion;
                 carritoModel.estado = carritoList2[x].estado;
                 carritoModel.paraLLevar = carritoList2[x].paraLLevar;
-                carritoModel.idComandaDetalle = carritoList2[x].idComandaDetalle; 
+                carritoModel.idComandaDetalle = carritoList2[x].idComandaDetalle;
 
-                
-                  montex = montex + (double.parse(carritoList2[x].precioVenta) * double.parse(carritoList2[x].cantidad));
-                
+                montex = montex + (double.parse(carritoList2[x].precioVenta) * double.parse(carritoList2[x].cantidad));
               }
             }
           }
@@ -175,9 +168,7 @@ class MesasBloc {
       if (carritoList.length > 0) {
         for (var x = 0; x < carritoList.length; x++) {
           if (double.parse(carritoList[x].cantidad) > 0) {
-
-
-            final producto = await productoDatabase.obtenerProductosPorId(carritoList[x].idProducto);
+            
             CarritoModel carritoModel = CarritoModel();
             carritoModel.idCarrito = carritoList[x].idCarrito;
             carritoModel.idProducto = carritoList[x].idProducto;
@@ -191,8 +182,7 @@ class MesasBloc {
             carritoModel.idLocacion = carritoList[x].idLocacion;
             carritoModel.estado = carritoList[x].estado;
             carritoModel.paraLLevar = carritoList[x].paraLLevar;
-            carritoModel.idComandaDetalle = carritoList[x].idComandaDetalle; 
-
+            carritoModel.idComandaDetalle = carritoList[x].idComandaDetalle;
 
             car.add(carritoModel);
           }
@@ -213,9 +203,7 @@ class MesasBloc {
           if (carritoList2.length > 0) {
             for (var x = 0; x < carritoList2.length; x++) {
               if (double.parse(carritoList2[x].cantidad) > 0) {
-
-
-            final producto = await productoDatabase.obtenerProductosPorId(carritoList[x].idProducto);
+                final producto = await productoDatabase.obtenerProductosPorId(carritoList[x].idProducto);
                 CarritoModel carritoModel = CarritoModel();
                 carritoModel.idCarrito = carritoList2[x].idCarrito;
                 carritoModel.idProducto = carritoList2[x].idProducto;
@@ -229,12 +217,9 @@ class MesasBloc {
                 carritoModel.idLocacion = carritoList2[x].idLocacion;
                 carritoModel.estado = carritoList2[x].estado;
                 carritoModel.paraLLevar = carritoList2[x].paraLLevar;
-                carritoModel.idComandaDetalle = carritoList2[x].idComandaDetalle; 
+                carritoModel.idComandaDetalle = carritoList2[x].idComandaDetalle;
 
-
-               
-                  montex = montex + (double.parse(carritoList2[x].precioVenta) * double.parse(carritoList2[x].cantidad));
-                
+                montex = montex + (double.parse(carritoList2[x].precioVenta) * double.parse(carritoList2[x].cantidad));
               }
             }
           }
@@ -331,9 +316,7 @@ class MesasBloc {
                   carritoModel.paraLLevar = carritoList2[x].paraLLevar;
                   carritoModel.idComandaDetalle = carritoList2[x].idComandaDetalle;
 
-                 
-                    montex = montex + (double.parse(carritoList2[x].precioVenta) * double.parse(carritoList2[x].cantidad));
-                  
+                  montex = montex + (double.parse(carritoList2[x].precioVenta) * double.parse(carritoList2[x].cantidad));
                 }
               }
             }

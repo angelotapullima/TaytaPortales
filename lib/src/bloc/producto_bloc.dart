@@ -16,7 +16,7 @@ class ProductosBloc {
   }
 
   void obtenerProductosPorFamilia(String idFamilia,String idLocacion) async {
-    //_productoController.sink.add(await productosDatabase.obtenerProductosPorFamiliaLocacion(idFamilia, idLocacion));
+    _productoController.sink.add([]);
     await productoApi.obtenerProductosPorFamilia(idFamilia, idLocacion);
     _productoController.sink.add(await productosDatabase.obtenerProductosPorFamiliaLocacion(idFamilia, idLocacion));
   }

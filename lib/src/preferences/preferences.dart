@@ -3,7 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class Preferences {
   static final Preferences _instancia = new Preferences._internal();
 
-  factory Preferences() {
+  factory Preferences() { 
     return _instancia;
   }
 
