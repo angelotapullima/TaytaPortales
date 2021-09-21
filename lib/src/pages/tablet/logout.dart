@@ -70,7 +70,16 @@ class Logout extends StatelessWidget {
                       width: ScreenUtil().setWidth(150),
                       child: MaterialButton(
                         onPressed: () async {
-                          preferences.clearPreferences();
+                          preferences.apellidoMaterno ='';
+                          preferences.apellidoPaterno ='';
+                          preferences.codigoUsuario ='';
+                          preferences.idUsuario ='';
+                          preferences.locacionId ='';
+                          preferences.nombres ='';
+                          preferences.nombresCompletos ='';
+                          preferences.tiendaId ='';
+                          preferences.token ='';
+                          
 
                           final carritoDatabase = CarritoDatabase();
                           final familiasDatabase = FamiliasDatabase();

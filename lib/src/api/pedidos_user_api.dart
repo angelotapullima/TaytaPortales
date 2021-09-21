@@ -5,16 +5,14 @@ import 'package:tayta_restaurant/src/database/pedido_user_database.dart';
 import 'package:tayta_restaurant/src/models/api_model.dart';
 import 'package:tayta_restaurant/src/models/pedido_user.dart';
 import 'package:tayta_restaurant/src/preferences/preferences.dart';
-import 'package:tayta_restaurant/src/preferences/prefs_url.dart';
 
 class PedidosUserApi {
   Future<ApiModel> obtenerPedidosPorUsuario() async {
     final preferences = Preferences();
-  final preferencesUrl = PreferencesUrl();
 
     final pedidosUserDatabase = PedidosUserDatabase();
     try {
-      final url = Uri.parse('${preferencesUrl.url}/api/User/GetProductsByUser');
+      final url = Uri.parse('${preferences.url}/api/User/GetProductsByUser');
       Map<String, String> headers = {'Content-Type': 'application/json', 'Authorization': ' Bearer ${preferences.token}'};
 
       final resp = await http.get(

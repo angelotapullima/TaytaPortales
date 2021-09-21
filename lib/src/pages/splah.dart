@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:tayta_restaurant/src/preferences/preferences.dart';
-import 'package:tayta_restaurant/src/preferences/prefs_url.dart';
 import 'package:tayta_restaurant/src/utils/constants.dart';
 
 class Splash extends StatefulWidget {
@@ -18,10 +17,9 @@ class _SplashState extends State<Splash> {
       tiendadBloc.obtenerTiendas(); */
 
       final preferences = Preferences();
-      final prefsUrl = PreferencesUrl();
 
-      if (prefsUrl.url == null || prefsUrl.url.isEmpty) {
-        prefsUrl.url = "$apiBaseURL";
+      if (preferences.url == null || preferences.url.isEmpty || preferences.url == '') {
+        preferences.url = "$apiBaseURL";
       }
 
       

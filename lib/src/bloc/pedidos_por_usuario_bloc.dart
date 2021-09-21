@@ -15,7 +15,7 @@ class PedidosUserBloc {
   }
 
   void obtenerPedidosPorUsuarioEnElDia(String dia) async {
-    //_pedidosUserController.sink.add(await pedidosUserDatabase.obtenerPedidosPorDia(dia));
+    _pedidosUserController.sink.add([]);
 
     await pedidosUserApi.obtenerPedidosPorUsuario();
     _pedidosUserController.sink.add(await pedidosUserDatabase.obtenerPedidosPorDia(dia));

@@ -6,7 +6,6 @@ import 'package:tayta_restaurant/src/database/productos_database.dart';
 import 'package:tayta_restaurant/src/models/api_model.dart';
 import 'package:tayta_restaurant/src/models/comanda_model.dart';
 import 'package:tayta_restaurant/src/preferences/preferences.dart';
-import 'package:tayta_restaurant/src/preferences/prefs_url.dart';
 import 'package:http/http.dart' as http;
 
 class ComandaApi {
@@ -14,7 +13,6 @@ class ComandaApi {
   final mesasDatabase = MesasDatabase();
   final productoDatabase = ProductosDatabase();
   final preferences = Preferences();
-  final preferencesUrl = PreferencesUrl();
 
   Future<ApiModel> enviarComanda(String idMesa,int cantidad) async {
     try {
@@ -62,7 +60,7 @@ class ComandaApi {
         }
         comanda.detalles = detallesList;
         var envio = jsonEncode(comanda.toJson());
-        final url = Uri.parse('${preferencesUrl.url}/api/Comanda');
+        final url = Uri.parse('${preferences.url}/api/Comanda');
         Map<String, String> headers = {
           'Content-Type': 'application/json',
           'Authorization': ' Bearer ${preferences.token}',

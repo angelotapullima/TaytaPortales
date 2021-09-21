@@ -3,16 +3,14 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 import 'package:tayta_restaurant/src/preferences/preferences.dart';
-import 'package:tayta_restaurant/src/preferences/prefs_url.dart';
 
 
 class LoginApi {
   final prefs = new Preferences();
-  final preferencesUrl = PreferencesUrl();
 
   Future<bool> login(String userName, String password) async {
     try {
-      final url = Uri.parse('${preferencesUrl.url}/api/User/Login');
+      final url = Uri.parse('${prefs.url}/api/User/Login');
 
       Map<String, String> headers = {
         'Content-Type': 'application/json',

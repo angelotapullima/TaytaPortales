@@ -5,17 +5,16 @@ import 'package:tayta_restaurant/src/database/locacion_database.dart';
 import 'package:tayta_restaurant/src/models/api_model.dart';
 import 'package:tayta_restaurant/src/models/locacion_model.dart';
 import 'package:tayta_restaurant/src/preferences/preferences.dart';
-import 'package:tayta_restaurant/src/preferences/prefs_url.dart';
 
 
 
 class LocacionApi {
   final locacionDatabase = LocacionDatabase();
   final preferences = Preferences();
-  final preferencesUrl = PreferencesUrl();
+  
   Future<ApiModel> obtenerLocacionesPorTienda(String idTienda) async {
     try {
-      final url = Uri.parse('${preferencesUrl.url}/api/Locacion/$idTienda');
+      final url = Uri.parse('${preferences.url}/api/Locacion/$idTienda');
       Map<String, String> headers = {
         'Content-Type': 'application/json',
         'Authorization': ' Bearer ${preferences.token}',

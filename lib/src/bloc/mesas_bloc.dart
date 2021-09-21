@@ -36,6 +36,7 @@ class MesasBloc {
   }
 
   void obtenerMesasPorLocacion(String idLocacion) async {
+    _locacionController.sink.add([]);
     //_locacionController.sink.add(await mesasDatabase.obtenerMesasPorLocacion(idLocacion));
     final res = await mesasApi.obtenerMesasPorLocacion(idLocacion);
 

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tayta_restaurant/src/api/tiendas_api.dart';
-import 'package:tayta_restaurant/src/preferences/prefs_url.dart';
+import 'package:tayta_restaurant/src/bloc/provider.dart';
+import 'package:tayta_restaurant/src/preferences/preferences.dart';
 import 'package:tayta_restaurant/src/utils/utils.dart';
 
 class ConfigPage extends StatefulWidget {
@@ -20,12 +21,12 @@ class _ConfigPageState extends State<ConfigPage> {
     super.dispose();
   }
 
-
   @override
   Widget build(BuildContext context) {
     Offset offset = const Offset(5, 5);
+    final pedidoUsuarioBloc = ProviderBloc.pedidoUser(context);
 
-    final preferences = PreferencesUrl();
+    final preferences = Preferences();
 
     return Container(
       decoration: BoxDecoration(
@@ -47,69 +48,69 @@ class _ConfigPageState extends State<ConfigPage> {
       child: SafeArea(
         child: Column(
           children: [
-
             SizedBox(
-                  height: ScreenUtil().setHeight(40),
-                ),
+              height: ScreenUtil().setHeight(40),
+            ),
             Text('URL Actual'),
-                Text('${preferences.url}'),
-                SizedBox(
-                  height: ScreenUtil().setHeight(40),
+            Text('${preferences.url}'),
+            SizedBox(
+              height: ScreenUtil().setHeight(40),
+            ),
+            Text('Nueva Url'),
+            Container(
+              margin: EdgeInsets.symmetric(
+                horizontal: ScreenUtil().setWidth(300),
+              ),
+              padding: EdgeInsets.symmetric(
+                horizontal: ScreenUtil().setWidth(10),
+              ),
+              width: double.infinity,
+              height: ScreenUtil().setHeight(40),
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.black26),
+              ),
+              child: TextField(
+                cursorColor: Colors.transparent,
+                maxLines: 1,
+                style: TextStyle(
+                  fontSize: ScreenUtil().setSp(17),
                 ),
-                Text('Nueva Url'),
-                Container(
-                  margin: EdgeInsets.symmetric(
-                    horizontal: ScreenUtil().setWidth(300),
-                  ),
-                  padding: EdgeInsets.symmetric(
-                    horizontal: ScreenUtil().setWidth(10),
-                  ),
-                  width: double.infinity,
-                  height: ScreenUtil().setHeight(40),
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.black26),
-                  ),
-                  child: TextField(
-                    cursorColor: Colors.transparent,
-                    maxLines: 1,
-                    style: TextStyle(
+                keyboardType: TextInputType.text,
+                decoration: InputDecoration(
+                    border: InputBorder.none,
+                    hintStyle: TextStyle(
+                      color: Colors.black45,
                       fontSize: ScreenUtil().setSp(17),
                     ),
-                    keyboardType: TextInputType.text,
-                    decoration: InputDecoration(
-                        border: InputBorder.none,
-                        hintStyle: TextStyle(
-                          color: Colors.black45,
-                          fontSize: ScreenUtil().setSp(17),
-                        ),
-                        hintText: 'Ingresar nueva Url'),
-                    enableInteractiveSelection: false,
-                    controller: urlController,
-                  ),
-                ),
-                SizedBox(
-                  height: ScreenUtil().setHeight(40),
-                ),
-                SizedBox(
-                  width: ScreenUtil().setWidth(300),
-                  child: MaterialButton(
-                    onPressed: () async {
-                      if (urlController.text.isNotEmpty) {
-                        preferences.url = '${urlController.text}';
-                        final tiendasApi = TiendaApi();
-                         tiendasApi.obtenerTiendas();
-      
-                        Navigator.pop(context);
-                      } else {
-                        showToast2('Por favor ingrese la url', Colors.red);
-                      }
-                    },
-                    color: Colors.blue,
-                    textColor: Colors.white,
-                    child: Text('Guardar Cambios'),
-                  ),
-                )
-              
+                    hintText: 'Ingresar nueva Url'),
+                enableInteractiveSelection: false,
+                controller: urlController,
+              ),
+            ),
+            SizedBox(
+              height: ScreenUtil().setHeight(40),
+            ),
+            SizedBox(
+              width: ScreenUtil().setWidth(300),
+              child: MaterialButton(
+                onPressed: () async {
+                  if (urlController.text.isNotEmpty) {
+                    preferences.url = '${urlController.text}';
+
+                    pedidoUsuarioBloc.obtenerPedidosPorUsuarioEnElDia('2021-09-21');
+                    final tiendasApi = TiendaApi();
+                    tiendasApi.obtenerTiendas();
+
+                    Navigator.of(context).pushNamedAndRemoveUntil('login', (Route<dynamic> route) => true);
+                  } else {
+                    showToast2('Por favor ingrese la url', Colors.red);
+                  }
+                },
+                color: Colors.blue,
+                textColor: Colors.white,
+                child: Text('Guardar Cambios'),
+              ),
+            )
           ],
         ),
       ),
@@ -137,7 +138,8 @@ class _ConfigPageLoginState extends State<ConfigPageLogin> {
   Widget build(BuildContext context) {
     Offset offset = const Offset(5, 5);
 
-    final preferences = PreferencesUrl();
+    final preferences = Preferences();
+    final pedidoUsuarioBloc = ProviderBloc.pedidoUser(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -214,7 +216,9 @@ class _ConfigPageLoginState extends State<ConfigPageLogin> {
                     if (urlController.text.isNotEmpty) {
                       preferences.url = '${urlController.text}';
                       final tiendasApi = TiendaApi();
-                       tiendasApi.obtenerTiendas();
+                      tiendasApi.obtenerTiendas();
+
+                      pedidoUsuarioBloc.obtenerPedidosPorUsuarioEnElDia('2021-09-21');
 
                       Navigator.pop(context);
                     } else {

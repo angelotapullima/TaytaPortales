@@ -6,16 +6,14 @@ import 'package:tayta_restaurant/src/models/api_model.dart';
 import 'package:tayta_restaurant/src/models/familias_model.dart';
 
 import 'package:tayta_restaurant/src/preferences/preferences.dart';
-import 'package:tayta_restaurant/src/preferences/prefs_url.dart';
 
 
 class FamiliasApi {
   final familiasDatabase = FamiliasDatabase();
   final preferences = Preferences();
-  final preferencesUrl = PreferencesUrl();
   Future<ApiModel> obtenerFamilias(String idLocacion) async {
     try {
-      final url = Uri.parse('${preferencesUrl.url}/api/Familia');
+      final url = Uri.parse('${preferences.url}/api/Familia');
       Map<String, String> headers = {'Content-Type': 'application/json', 'Authorization': ' Bearer ${preferences.token}'};
 
       final resp = await http.get(

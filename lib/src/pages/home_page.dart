@@ -64,8 +64,15 @@ class HomePage extends StatelessWidget {
                         height: ScreenUtil().setHeight(30),
                       ),
                       MaterialButton(
-                        onPressed: ()async {
-                           preferences.clearPreferences();
+                        onPressed: ()async { preferences.apellidoMaterno ='';
+                          preferences.apellidoPaterno ='';
+                          preferences.codigoUsuario ='';
+                          preferences.idUsuario ='';
+                          preferences.locacionId ='';
+                          preferences.nombres ='';
+                          preferences.nombresCompletos ='';
+                          preferences.tiendaId ='';
+                          preferences.token ='';
 
                           final carritoDatabase = CarritoDatabase();
                           final familiasDatabase = FamiliasDatabase();
@@ -111,8 +118,15 @@ class HomePage extends StatelessWidget {
                         height: ScreenUtil().setHeight(30),
                       ),
                       MaterialButton(
-                        onPressed: ()async {
-                           preferences.clearPreferences();
+                        onPressed: ()async { preferences.apellidoMaterno ='';
+                          preferences.apellidoPaterno ='';
+                          preferences.codigoUsuario ='';
+                          preferences.idUsuario ='';
+                          preferences.locacionId ='';
+                          preferences.nombres ='';
+                          preferences.nombresCompletos ='';
+                          preferences.tiendaId ='';
+                          preferences.token ='';
 
                           final carritoDatabase = CarritoDatabase();
                           final familiasDatabase = FamiliasDatabase();

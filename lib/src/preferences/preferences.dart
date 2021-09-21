@@ -105,4 +105,14 @@ class Preferences {
   set locacionId(String value) {
     _prefs.setString('locacionId', value);
   }
+
+
+/////////////////////////////////////////////////////////
+  get url {
+    return _prefs.getString('url');
+  }
+
+  set url(String value) {
+    _prefs.setString('url', value);
+  }
 }

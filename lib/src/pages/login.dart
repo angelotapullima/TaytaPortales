@@ -1,3 +1,4 @@
+import 'package:after_layout/after_layout.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -7,8 +8,6 @@ import 'package:tayta_restaurant/src/bloc/provider.dart';
 import 'package:tayta_restaurant/src/models/tienda_model.dart';
 import 'package:tayta_restaurant/src/pages/tablet/config.dart';
 import 'package:tayta_restaurant/src/preferences/preferences.dart';
-import 'package:tayta_restaurant/src/preferences/prefs_url.dart';
-import 'package:tayta_restaurant/src/utils/constants.dart';
 import 'package:tayta_restaurant/src/utils/responsive.dart';
 import 'package:tayta_restaurant/src/utils/utils.dart';
 
@@ -19,25 +18,29 @@ class LoginPage extends StatefulWidget {
   _LoginPageState createState() => _LoginPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _LoginPageState extends State<LoginPage>  {
   final _cargando = ValueNotifier<bool>(false);
 
   int cantItems = 0;
   String dropdownTienda = '';
-  String codTienda = "";
+  String codTienda = ""; 
+ 
 
   @override
   Widget build(BuildContext context) {
-
-    final prefsUrl =PreferencesUrl();
+  
     final responsive = Responsive.of(context);
     final loginBloc = ProviderBloc.login(context);
 
     final tiendasBloc = ProviderBloc.tiendas(context);
 
+    final pedidoUsuarioBloc =ProviderBloc.pedidoUser(context);
+
     if (cantItems == 0) {
       tiendasBloc.obtenerTiendas();
     }
+
+    final prefsUrl = Preferences();
     return Scaffold(
       body: ValueListenableBuilder(
         valueListenable: _cargando,
@@ -112,20 +115,23 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                 ),
-              )
-            ,Positioned(
-                top: ScreenUtil().setHeight(20),
-                left: ScreenUtil().setWidth(20),
-                child: SafeArea(
-                  child: InkWell(
-                    onTap: () {
-                       
-
-                      //ConfigPage
-                    },
-                    child: Text('url = ${prefsUrl.url}')
-                  ),
-                ),
+              ),
+              StreamBuilder(
+                stream: pedidoUsuarioBloc.pedidosUserStream,
+                builder: (context, snapshot) {
+                  return Positioned(
+                    top: ScreenUtil().setHeight(20),
+                    left: ScreenUtil().setWidth(20),
+                    child: SafeArea(
+                      child: InkWell(
+                        onTap: () {
+                          //ConfigPage
+                        },
+                        child: Text('url = ${prefsUrl.url}'),
+                      ),
+                    ),
+                  );
+                }
               )
             ],
           );

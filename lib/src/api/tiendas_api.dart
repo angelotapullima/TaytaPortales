@@ -3,13 +3,13 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:tayta_restaurant/src/database/tienda_database.dart';
 import 'package:tayta_restaurant/src/models/tienda_model.dart';
-import 'package:tayta_restaurant/src/preferences/prefs_url.dart';
+import 'package:tayta_restaurant/src/preferences/preferences.dart';
 
 
 class TiendaApi {
   final tiendasDatabase = TiendasDatabase();
 
-  final preferencesUrl = PreferencesUrl();
+  final preferencesUrl = Preferences();
   Future<bool> obtenerTiendas() async {
     try {
       final url = Uri.parse('${preferencesUrl.url}/api/Tienda');
