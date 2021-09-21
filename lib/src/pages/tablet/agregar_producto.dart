@@ -142,14 +142,14 @@ class _AgregarProductTabletState extends State<AgregarProductTablet> {
                             color: Color(0xff808080),
                           ),
                         ),
-                        Text(
+                        /* Text(
                           'Disponibles: ${widget.productos.saldo}',
                           style: TextStyle(
                             fontSize: ScreenUtil().setSp(14),
                             fontWeight: FontWeight.w600,
                             color: Color(0xff808080),
                           ),
-                        ),
+                        ), */
                       ],
                     ),
                     SizedBox(

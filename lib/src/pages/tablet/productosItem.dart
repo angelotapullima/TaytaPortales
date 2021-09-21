@@ -153,13 +153,13 @@ class ProductosItem extends StatelessWidget {
                                               color: Colors.black,
                                             ),
                                           ),
-                                          Text(
+                                          /* Text(
                                             'disponible : ${productos.data[i].saldo}',
                                             style: TextStyle(
                                               fontSize: ScreenUtil().setSp(14),
                                               color: Colors.black,
                                             ),
-                                          ),
+                                          ), */
                                         ],
                                       ),
                                     ),

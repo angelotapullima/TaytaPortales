@@ -3,12 +3,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
-import 'package:tayta_restaurant/src/api/comanda_api.dart';
 import 'package:tayta_restaurant/src/api/mesas_api.dart';
 import 'package:tayta_restaurant/src/bloc/index_bloc.dart';
 import 'package:tayta_restaurant/src/bloc/provider.dart';
 import 'package:tayta_restaurant/src/database/carrito_database.dart';
-import 'package:tayta_restaurant/src/models/carrtito_model.dart';
 import 'package:tayta_restaurant/src/models/mesas_model.dart';
 import 'package:tayta_restaurant/src/pages/tablet/agregar_personas.dart';
 import 'package:tayta_restaurant/src/pages/tablet/disgregar_producto.dart';
@@ -578,135 +576,7 @@ class CarritoTabletAgregar extends StatelessWidget {
                                   }
 
                                   if (i == snapshot.data[0].carrito.length) {
-                                    if (snapshot.data[0].cuentas.length > 1) {
-                                      return ListView.builder(
-                                        shrinkWrap: true,
-                                        physics: ClampingScrollPhysics(),
-                                        itemCount: snapshot.data[0].cuentas.length + 2,
-                                        itemBuilder: (_, index2) {
-                                          if (index2 == snapshot.data[0].cuentas.length + 1) {
-                                            return Padding(
-                                              padding: EdgeInsets.symmetric(
-                                                horizontal: responsive.wp(2),
-                                              ),
-                                              child: Column(
-                                                children: [
-                                                  Divider(),
-                                                  Row(
-                                                    children: [
-                                                      Text(
-                                                        'Total',
-                                                        style: TextStyle(
-                                                          color: Colors.black,
-                                                          fontWeight: FontWeight.bold,
-                                                          fontSize: ScreenUtil().setSp(18),
-                                                        ),
-                                                      ),
-                                                      Spacer(),
-                                                      Text(
-                                                        'S/. ${dosDecimales(total)}',
-                                                        style: TextStyle(
-                                                          color: Colors.black,
-                                                          fontWeight: FontWeight.bold,
-                                                          fontSize: ScreenUtil().setSp(22),
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                  SizedBox(height: ScreenUtil().setHeight(20)),
-                                                  SizedBox(
-                                                    height: ScreenUtil().setHeight(40),
-                                                    width: ScreenUtil().setWidth(200),
-                                                    child: MaterialButton(
-                                                      shape: RoundedRectangleBorder(
-                                                        borderRadius: BorderRadius.circular(10),
-                                                      ),
-                                                      color: Colors.blue,
-                                                      textColor: Colors.white,
-                                                      child: Text('enviar pedido'),
-                                                      onPressed: () async {
-                                                        Navigator.push(
-                                                          context,
-                                                          PageRouteBuilder(
-                                                            opaque: false,
-                                                            pageBuilder: (context, animation, secondaryAnimation) {
-                                                              return AgregarPersonasTablet(mesa: snapshot.data[0]);
-                                                            },
-                                                            transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                                                              var begin = Offset(0.0, 1.0);
-                                                              var end = Offset.zero;
-                                                              var curve = Curves.ease;
-
-                                                              var tween = Tween(begin: begin, end: end).chain(
-                                                                CurveTween(curve: curve),
-                                                              );
-
-                                                              return SlideTransition(
-                                                                position: animation.drive(tween),
-                                                                child: child,
-                                                              );
-                                                            },
-                                                          ),
-                                                        );
-
-                                                        /*  final comandaApi = ComandaApi();
-                                                        provider.changeCargandoTrue();
-                                                        final res = await comandaApi.enviarComanda(snapshot.data[0].idMesa);
-                                                        if (res.resultadoPeticion) {
-                                                          showToast2('Pedido enviado correctamente', Colors.green);
-                                                          provider.changeCargandoFalse();
-                                                          provider.changeToMesa();
-                                                        } else {
-                                                          showToast2('Ocurrio un error, intentelo nuevamente', Colors.red);
-                                                          provider.changeCargandoFalse();
-                                                        } */
-                                                      },
-                                                    ),
-                                                  ),
-                                                  SizedBox(
-                                                    height: ScreenUtil().setHeight(50),
-                                                  ),
-                                                ],
-                                              ),
-                                            );
-                                          }
-                                          if (index2 == 0) {
-                                            return Container(
-                                              child: Text(
-                                                'Cuentas',
-                                                style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: ScreenUtil().setSp(18),
-                                                ),
-                                              ),
-                                            );
-                                          }
-                                          index2 = index2 - 1;
-
-                                          return Padding(
-                                            padding: EdgeInsets.symmetric(
-                                              horizontal: responsive.wp(2),
-                                            ),
-                                            child: Row(
-                                              children: [
-                                                Text('Cuenta ${snapshot.data[0].cuentas[index2].cuenta}'),
-                                                Spacer(),
-                                                Text(
-                                                  'S/. ${snapshot.data[0].cuentas[index2].monto}',
-                                                  style: TextStyle(
-                                                    color: Colors.black,
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: ScreenUtil().setSp(18),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          );
-                                        },
-                                      );
-                                    } else {
-                                      return Padding(
+                                    return Padding(
                                         padding: EdgeInsets.symmetric(
                                           horizontal: responsive.wp(2),
                                         ),
@@ -790,7 +660,7 @@ class CarritoTabletAgregar extends StatelessWidget {
                                           ],
                                         ),
                                       );
-                                    }
+                                    
                                   }
 
                                   return LayoutBuilder(builder: (context, constraints) {

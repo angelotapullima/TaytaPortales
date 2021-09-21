@@ -53,7 +53,8 @@ if (resp.statusCode == 401) {
           productosModel.nombreProducto = decodedData[i]['nombreProducto'].toString();
           productosModel.precioVenta = decodedData[i]['precioVenta'].toString();
           productosModel.precioLlevar = decodedData[i]['precioLlevar'].toString();
-          productosModel.saldo = decodedData[i]['saldo'].toString();
+          //productosModel.saldo = decodedData[i]['saldo'].toString();
+          productosModel.saldo = '1000000';
           productosModel.idFamilia = idFamilia;
           productosModel.idLocacion = idLocacion;
           
