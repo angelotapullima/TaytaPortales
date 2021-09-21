@@ -65,7 +65,7 @@ class ProductosItem extends StatelessWidget {
                       itemCount: productos.data.length,
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: (tipo == '1') ? 1 : 2,
-                        childAspectRatio: 2,
+                        childAspectRatio: 1.9,
                         crossAxisSpacing: responsive.wp(.2),
                       ),
                       scrollDirection: Axis.vertical,
@@ -140,7 +140,7 @@ class ProductosItem extends StatelessWidget {
                                           Text(
                                             '${productos.data[i].nombreProducto}',
                                             style: TextStyle(
-                                              fontSize: ScreenUtil().setSp(14),
+                                              fontSize: ScreenUtil().setSp(15),
                                               color: Colors.blue,
                                             ),
                                           ),

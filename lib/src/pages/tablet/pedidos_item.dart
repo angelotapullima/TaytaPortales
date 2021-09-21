@@ -229,7 +229,7 @@ class PedidosItem extends StatelessWidget {
                                                           '${mesas.data[index].carrito[i].nombreProducto} ',
                                                           style: TextStyle(
                                                             color: Colors.black,
-                                                            fontSize: ScreenUtil().setSp(13),
+                                                            fontSize: ScreenUtil().setSp(15),
                                                             fontWeight: FontWeight.bold,
                                                           ),
                                                         ),
@@ -238,7 +238,7 @@ class PedidosItem extends StatelessWidget {
                                                                 '${mesas.data[index].carrito[i].observacion}',
                                                                 style: TextStyle(
                                                                   color: Colors.grey[600],
-                                                                  fontSize: ScreenUtil().setSp(13),
+                                                                  fontSize: ScreenUtil().setSp(15),
                                                                 ),
                                                               )
                                                             : Container(),

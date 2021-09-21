@@ -339,14 +339,14 @@ class VistaTablet extends StatelessWidget {
                                                           Row(
                                                             children: [
                                                               Container(
-                                                                width: ScreenUtil().setWidth(300),
+                                                                width: ScreenUtil().setWidth(280),
                                                                 child: Familiasitem(),
                                                               ),
                                                               SizedBox(
                                                                 width: ScreenUtil().setWidth(15),
                                                               ),
                                                               Container(
-                                                                width: ScreenUtil().setWidth(300),
+                                                                width: ScreenUtil().setWidth(320),
                                                                 child: ProductosItem(tipo: '1', mesas: snapshot.data[0]),
                                                               ),
                                                               Container(
