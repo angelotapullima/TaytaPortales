@@ -23,6 +23,8 @@ class _SplashState extends State<Splash> {
       if (prefsUrl.url == null || prefsUrl.url.isEmpty) {
         prefsUrl.url = "$apiBaseURL";
       }
+
+      
       if (preferences.token == null || preferences.token.isEmpty) {
         Navigator.pushNamed(context, 'login');
       } else {

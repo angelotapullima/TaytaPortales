@@ -7,7 +7,6 @@ import 'package:tayta_restaurant/src/models/api_model.dart';
 import 'package:tayta_restaurant/src/models/comanda_model.dart';
 import 'package:tayta_restaurant/src/preferences/preferences.dart';
 import 'package:tayta_restaurant/src/preferences/prefs_url.dart';
-import 'package:tayta_restaurant/src/utils/constants.dart';
 import 'package:http/http.dart' as http;
 
 class ComandaApi {
@@ -41,6 +40,7 @@ class ComandaApi {
             detalleComanda.precioUnitario = double.parse(carrito[i].precioVenta);
             detalleComanda.observacion = carrito[i].observacion;
             detalleComanda.nroCuenta = int.parse(carrito[i].nroCuenta);
+            detalleComanda.paraLLevar = (carrito[i].paraLLevar == '1') ? true:false;
             detallesList.add(detalleComanda);
           }
         }
@@ -56,6 +56,7 @@ class ComandaApi {
             detalleComanda.precioUnitario = double.parse(carritoNuevo[i].precioVenta);
             detalleComanda.observacion = carritoNuevo[i].observacion;
             detalleComanda.nroCuenta = int.parse(carritoNuevo[i].nroCuenta);
+            detalleComanda.paraLLevar = (carritoNuevo[i].paraLLevar == '1') ? true:false;
             detallesList.add(detalleComanda);
           }
         }
