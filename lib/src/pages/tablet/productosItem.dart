@@ -10,7 +10,7 @@ import 'package:tayta_restaurant/src/utils/responsive.dart';
 import 'package:tayta_restaurant/src/utils/utils.dart';
 
 class ProductosItem extends StatelessWidget {
-  const ProductosItem({Key key,@required this.tipo, @required this.mesas}) : super(key: key);
+  const ProductosItem({Key key, @required this.tipo, @required this.mesas}) : super(key: key);
 
   final String tipo;
   final MesasModel mesas;
@@ -64,44 +64,47 @@ class ProductosItem extends StatelessWidget {
                       ),
                       itemCount: productos.data.length,
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: (tipo=='1')?1:2,
-                        childAspectRatio: 2.5,
-                         
+                        crossAxisCount: (tipo == '1') ? 1 : 2,
+                        childAspectRatio: 2,
                         crossAxisSpacing: responsive.wp(.2),
                       ),
                       scrollDirection: Axis.vertical,
                       itemBuilder: (BuildContext context, int i) {
                         return LayoutBuilder(
                           builder: (_, constraints) {
-                            
                             return InkWell(
                               onTap: () {
+                                if (tipo == '1') {
+                                  if (int.parse(productos.data[i].saldo) > 0) {
+                                    Navigator.push(
+                                      context,
+                                      PageRouteBuilder(
+                                        opaque: false,
+                                        pageBuilder: (context, animation, secondaryAnimation) {
+                                          return AgregarProductTablet(
+                                            productos: productos.data[i],
+                                            mesas: mesas,
+                                          );
+                                        },
+                                        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                                          var begin = Offset(0.0, 1.0);
+                                          var end = Offset.zero;
+                                          var curve = Curves.ease;
 
-                                if(tipo=='1'){
-                                  Navigator.push(
-                                    
-                                  context,
-                                  PageRouteBuilder(
-                                    opaque: false,
-                                    pageBuilder: (context, animation, secondaryAnimation) {
-                                      return AgregarProductTablet(productos: productos.data[i],mesas: mesas,);
-                                    },
-                                    transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                                      var begin = Offset(0.0, 1.0);
-                                      var end = Offset.zero;
-                                      var curve = Curves.ease;
+                                          var tween = Tween(begin: begin, end: end).chain(
+                                            CurveTween(curve: curve),
+                                          );
 
-                                      var tween = Tween(begin: begin, end: end).chain(
-                                        CurveTween(curve: curve),
-                                      );
-
-                                      return SlideTransition(
-                                        position: animation.drive(tween),
-                                        child: child,
-                                      );
-                                    },
-                                  ),
-                                );
+                                          return SlideTransition(
+                                            position: animation.drive(tween),
+                                            child: child,
+                                          );
+                                        },
+                                      ),
+                                    );
+                                  } else {
+                                    showToast2('No hay disponibilidad de producto', Colors.red);
+                                  }
                                 }
                                 //AgregarAlCarrito
                               },
@@ -138,7 +141,7 @@ class ProductosItem extends StatelessWidget {
                                             '${productos.data[i].nombreProducto}',
                                             style: TextStyle(
                                               fontSize: ScreenUtil().setSp(14),
-                                              color: Colors.black,
+                                              color: Colors.blue,
                                             ),
                                           ),
                                           Text(
@@ -147,7 +150,14 @@ class ProductosItem extends StatelessWidget {
                                             )}',
                                             style: TextStyle(
                                               fontSize: ScreenUtil().setSp(14),
-                                              color: Colors.grey[400],
+                                              color: Colors.black,
+                                            ),
+                                          ),
+                                          Text(
+                                            'disponible : ${productos.data[i].saldo}',
+                                            style: TextStyle(
+                                              fontSize: ScreenUtil().setSp(14),
+                                              color: Colors.black,
                                             ),
                                           ),
                                         ],

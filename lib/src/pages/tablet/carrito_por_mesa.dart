@@ -392,45 +392,6 @@ class CarritoTabletDisgregar extends StatelessWidget {
                                       ),
                                       actions: <Widget>[
                                         IconSlideAction(
-                                          caption: 'Eliminar',
-                                          color: Colors.red,
-                                          icon: Icons.archive,
-                                          onTap: () async {
-                                            final carritoDatabase = CarritoDatabase();
-
-                                            CarritoModel carrito = CarritoModel();
-                                            carrito.idProducto = snapshot.data[0].carrito[i].idProducto;
-                                            carrito.nombreProducto = snapshot.data[0].carrito[i].nombreProducto;
-                                            carrito.precioVenta = snapshot.data[0].carrito[i].precioVenta;
-                                            carrito.cantidad = '0';
-                                            carrito.nroCuenta = snapshot.data[0].carrito[i].nroCuenta;
-                                            carrito.observacion = snapshot.data[0].carrito[i].observacion;
-                                            carrito.paraLLevar = snapshot.data[0].carrito[i].paraLLevar;
-                                            carrito.idMesa = snapshot.data[0].carrito[i].idMesa;
-                                            carrito.nombreMesa = snapshot.data[0].carrito[i].nombreMesa;
-                                            carrito.idLocacion = snapshot.data[0].carrito[i].idLocacion;
-                                            carrito.idComandaDetalle = snapshot.data[0].carrito[i].idComandaDetalle;
-                                            await carritoDatabase.updateCarritoPorIdComandaDetalle(carrito);
-
-                                            final comandaApi = ComandaApi();
-                                            provider.changeCargandoTrue();
-                                            final res = await comandaApi.enviarComanda(snapshot.data[0].idMesa, int.parse(snapshot.data[0].cantidadPersonas));
-                                            if (res.resultadoPeticion) {
-                                              showToast2('Pedido enviado correctamente', Colors.green);
-                                              provider.changeCargandoFalse();
-
-                                              final mesasApi = MesasApi();
-                                              await mesasApi.obtenerMesasPorLocacion('${snapshot.data[0].carrito[i].idLocacion}');
-                                              await carritoDatabase.eliminarProductoPorIdComandaDetalle(
-                                                '${snapshot.data[0].carrito[i].idComandaDetalle}',
-                                              );
-                                            } else {
-                                              showToast2('Ocurrio un error, intentelo nuevamente', Colors.red);
-                                              provider.changeCargandoFalse();
-                                            }
-                                          },
-                                        ),
-                                        IconSlideAction(
                                           caption: 'Editar',
                                           color: Colors.blue,
                                           icon: Icons.edit,
@@ -836,14 +797,18 @@ class CarritoTabletAgregar extends StatelessWidget {
                                           color: Colors.red,
                                           icon: Icons.archive,
                                           onTap: () async {
-                                            final mesasApi = MesasApi();
-                                            final carritoDatabase = CarritoDatabase();
-                                            await carritoDatabase.eliminarProductoPorIdCarrito('${snapshot.data[0].carrito[i].idCarrito}');
+                                            if ('${snapshot.data[0].carrito[i].idComandaDetalle}' == '0') {
+                                              final mesasApi = MesasApi();
+                                              final carritoDatabase = CarritoDatabase();
+                                              await carritoDatabase.eliminarProductoPorIdCarrito('${snapshot.data[0].carrito[i].idCarrito}');
 
-                                            await mesasApi.obtenerMesasPorLocacion('${snapshot.data[0].carrito[i].idLocacion}');
-                                            mesasBloc.obtenerMesasPorIdAgregar('${snapshot.data[0].carrito[i].idMesa}');
-                                            mesasBloc.obtenerMesasPorIdDisgregar('${snapshot.data[0].carrito[i].idMesa}');
-                                            print('IconSlideAction archive');
+                                              await mesasApi.obtenerMesasPorLocacion('${snapshot.data[0].carrito[i].idLocacion}');
+                                              mesasBloc.obtenerMesasPorIdAgregar('${snapshot.data[0].carrito[i].idMesa}');
+                                              mesasBloc.obtenerMesasPorIdDisgregar('${snapshot.data[0].carrito[i].idMesa}');
+                                              print('IconSlideAction archive');
+                                            } else {
+                                              showToast2('El producto no se puede eliminar ', Colors.red);
+                                            }
                                           },
                                         ),
                                       ],

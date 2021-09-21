@@ -36,7 +36,11 @@ class _AgregarProductTabletState extends State<AgregarProductTablet> {
   bool val = false;
   void _increase() {
     setState(() {
-      _counter++;
+      if (_counter > int.parse(widget.productos.saldo)-1) {
+        showToast2('No hay saldo para este producto', Colors.red);
+      } else {
+        _counter++;
+      }
     });
   }
 
@@ -132,6 +136,14 @@ class _AgregarProductTabletState extends State<AgregarProductTablet> {
                           'S/.${dosDecimales(
                             double.parse(widget.productos.precioVenta),
                           )}',
+                          style: TextStyle(
+                            fontSize: ScreenUtil().setSp(14),
+                            fontWeight: FontWeight.w600,
+                            color: Color(0xff808080),
+                          ),
+                        ),
+                        Text(
+                          'Disponibles: ${widget.productos.saldo}',
                           style: TextStyle(
                             fontSize: ScreenUtil().setSp(14),
                             fontWeight: FontWeight.w600,
@@ -255,7 +267,8 @@ class _AgregarProductTabletState extends State<AgregarProductTablet> {
                         cursorColor: Colors.transparent,
                         maxLines: 2,
                         style: TextStyle(
-                              fontSize: ScreenUtil().setSp(22),),
+                          fontSize: ScreenUtil().setSp(22),
+                        ),
                         keyboardType: TextInputType.text,
                         decoration: InputDecoration(
                             border: InputBorder.none,
@@ -326,7 +339,7 @@ class _AgregarProductTabletState extends State<AgregarProductTablet> {
                               carrito.idMesa = widget.mesas.idMesa;
                               carrito.nombreMesa = widget.mesas.nombreCompleto;
                               carrito.idLocacion = widget.mesas.locacionId;
-                             
+
                               carrito.nroCuenta = '1';
                               carrito.estado = '0';
                               carrito.idComandaDetalle = '0';

@@ -95,7 +95,7 @@ class _ConfigPageState extends State<ConfigPage> {
                   child: MaterialButton(
                     onPressed: () async {
                       if (urlController.text.isNotEmpty) {
-                        preferences.url = 'https://${urlController.text}';
+                        preferences.url = '${urlController.text}';
                         final tiendasApi = TiendaApi();
                          tiendasApi.obtenerTiendas();
       
@@ -212,7 +212,7 @@ class _ConfigPageLoginState extends State<ConfigPageLogin> {
                 child: MaterialButton(
                   onPressed: () async {
                     if (urlController.text.isNotEmpty) {
-                      preferences.url = 'https://${urlController.text}';
+                      preferences.url = '${urlController.text}';
                       final tiendasApi = TiendaApi();
                        tiendasApi.obtenerTiendas();
 
