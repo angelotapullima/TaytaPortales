@@ -7,16 +7,18 @@ import 'package:tayta_restaurant/src/models/api_model.dart';
 import 'package:tayta_restaurant/src/models/carrtito_model.dart';
 import 'package:tayta_restaurant/src/models/mesas_model.dart';
 import 'package:tayta_restaurant/src/preferences/preferences.dart';
+import 'package:tayta_restaurant/src/preferences/prefs_url.dart';
 
-import 'package:tayta_restaurant/src/utils/constants.dart';
+
 
 class MesasApi {
   final mesasDatabase = MesasDatabase();
   final carritoDatabase = CarritoDatabase();
   final preferences = Preferences();
+  final preferencesUrl = PreferencesUrl();
   Future<ApiModel> obtenerMesasPorLocacion(String idLocacion) async {
     try {
-      final url = Uri.parse('$apiBaseURL/api/MesaLayout/$idLocacion');
+      final url = Uri.parse('${preferencesUrl.url}/api/MesaLayout/$idLocacion');
       Map<String, String> headers = {'Content-Type': 'application/json', 'Authorization': ' Bearer ${preferences.token}'};
 
       final resp = await http.get(

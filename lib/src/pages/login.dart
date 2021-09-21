@@ -1,10 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tayta_restaurant/src/bloc/login_bloc.dart';
 import 'package:tayta_restaurant/src/bloc/provider.dart';
 import 'package:tayta_restaurant/src/models/tienda_model.dart';
+import 'package:tayta_restaurant/src/pages/tablet/config.dart';
 import 'package:tayta_restaurant/src/preferences/preferences.dart';
+import 'package:tayta_restaurant/src/preferences/prefs_url.dart';
+import 'package:tayta_restaurant/src/utils/constants.dart';
 import 'package:tayta_restaurant/src/utils/responsive.dart';
 import 'package:tayta_restaurant/src/utils/utils.dart';
 
@@ -24,6 +28,8 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+
+    final prefsUrl =PreferencesUrl();
     final responsive = Responsive.of(context);
     final loginBloc = ProviderBloc.login(context);
 
@@ -65,12 +71,67 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ),
                     )
-                  : Container()
+                  : Container(),
+              Positioned(
+                top: ScreenUtil().setHeight(20),
+                right: ScreenUtil().setWidth(20),
+                child: SafeArea(
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        PageRouteBuilder(
+                          pageBuilder: (context, animation, secondaryAnimation) {
+                            return ConfigPageLogin();
+                          },
+                          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                            var begin = Offset(0.0, 1.0);
+                            var end = Offset.zero;
+                            var curve = Curves.ease;
+
+                            var tween = Tween(begin: begin, end: end).chain(
+                              CurveTween(curve: curve),
+                            );
+
+                            return SlideTransition(
+                              position: animation.drive(tween),
+                              child: child,
+                            );
+                          },
+                        ),
+                      );
+
+                      //ConfigPage
+                    },
+                    child: Container(
+                      height: ScreenUtil().setHeight(50),
+                      width: ScreenUtil().setHeight(50),
+                      child: SvgPicture.asset(
+                        'assets/settings_blue.svg',
+                      ),
+                    ),
+                  ),
+                ),
+              )
+            ,Positioned(
+                top: ScreenUtil().setHeight(20),
+                left: ScreenUtil().setWidth(20),
+                child: SafeArea(
+                  child: InkWell(
+                    onTap: () {
+                       
+
+                      //ConfigPage
+                    },
+                    child: Text('url = ${prefsUrl.url}')
+                  ),
+                ),
+              )
             ],
           );
         },
       ),
-    ); 
+    );
   }
 
   var list;
@@ -151,7 +212,7 @@ class _LoginPageState extends State<LoginPage> {
               child: Text(
                 value,
                 maxLines: 2,
-                style: TextStyle(color: Colors.blue[900], fontSize:  ScreenUtil().setSp(16), fontWeight: FontWeight.w500),
+                style: TextStyle(color: Colors.blue[900], fontSize: ScreenUtil().setSp(16), fontWeight: FontWeight.w500),
                 overflow: TextOverflow.ellipsis,
               ),
             );
@@ -185,17 +246,15 @@ class _LoginPageState extends State<LoginPage> {
               ),
               Text(
                 "Bienvenido",
-                style: TextStyle(fontSize:  ScreenUtil().setSp(50), fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: ScreenUtil().setSp(50), fontWeight: FontWeight.bold),
               ),
               Padding(
                 padding: EdgeInsets.symmetric(
-                  vertical:  ScreenUtil().setHeight(10),
+                  vertical: ScreenUtil().setHeight(10),
                 ),
                 child: Text(
                   "Inicie Sesión",
-                  style: TextStyle(
-                    fontSize:  ScreenUtil().setSp(24)
-                  ),
+                  style: TextStyle(fontSize: ScreenUtil().setSp(24)),
                 ),
               ),
               _user(loginBloc, responsive),
@@ -215,7 +274,7 @@ class _LoginPageState extends State<LoginPage> {
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         return Padding(
           padding: EdgeInsets.only(
-            bottom:  ScreenUtil().setHeight(20),
+            bottom: ScreenUtil().setHeight(20),
             left: responsive.wp(6),
             right: responsive.wp(6),
           ),
@@ -226,7 +285,7 @@ class _LoginPageState extends State<LoginPage> {
               fillColor: Theme.of(context).dividerColor,
               hintText: 'Ingrese su usuario',
               hintStyle: TextStyle(
-                fontSize:  ScreenUtil().setSp(16),
+                fontSize: ScreenUtil().setSp(16),
                 color: Colors.black54,
               ),
               border: OutlineInputBorder(
@@ -356,6 +415,6 @@ class _LoginPageState extends State<LoginPage> {
       _cargando.value = false;
     } else {
       showToast2('Seleccione tienda', Colors.black);
-    } 
+    }
   }
 }
