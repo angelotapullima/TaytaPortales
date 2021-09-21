@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:tayta_restaurant/src/bloc/index_bloc.dart';
 import 'package:tayta_restaurant/src/pages/tablet/logout.dart';
@@ -120,7 +121,8 @@ class SideMenu extends StatelessWidget {
                             Center(
                               child: SideMenuItem(
                                 press: () {
-                                  provider.changeToPedidos();},
+                                  provider.changeToPedidos();
+                                },
                                 color: Colors.transparent,
                                 title: "Pedidos",
                                 iconSrc: "assets/Icons/Send.svg",
@@ -245,7 +247,8 @@ class SideMenu extends StatelessWidget {
                         height: ScreenUtil().setHeight(120),
                         child: SideMenuItem(
                           press: () {
-                              provider.changeToPedidos();},
+                            provider.changeToPedidos();
+                          },
                           color: Colors.white,
                           title: "Pedidos",
                           iconSrc: "assets/Icons/Send.svg",
@@ -266,6 +269,22 @@ class SideMenu extends StatelessWidget {
                       ),
                       Spacer(),
                       Center(
+                        child: InkWell(
+                          onTap: (){
+
+                            provider.changeToConfig();
+                          },
+                          child: Container(
+                            height: ScreenUtil().setHeight(30),
+                            width: ScreenUtil().setHeight(30),
+                            child: SvgPicture.asset(
+                              'assets/settings.svg',
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: ScreenUtil().setHeight(10),),
+                      Center(
                         child: IconButton(
                           onPressed: () {
                             Navigator.push(
@@ -279,11 +298,11 @@ class SideMenu extends StatelessWidget {
                                   var begin = Offset(0.0, 1.0);
                                   var end = Offset.zero;
                                   var curve = Curves.ease;
-                  
+
                                   var tween = Tween(begin: begin, end: end).chain(
                                     CurveTween(curve: curve),
                                   );
-                  
+
                                   return SlideTransition(
                                     position: animation.drive(tween),
                                     child: child,
@@ -291,13 +310,13 @@ class SideMenu extends StatelessWidget {
                                 },
                               ),
                             );
-                  
+
                             //Logout
                           },
                           icon: Icon(Icons.logout_sharp, color: Colors.white),
                         ),
                       ),
-                  
+
                       SizedBox(height: kDefaultPadding * 2),
                       // Tags
                       //Tags(),

@@ -15,6 +15,7 @@ import 'package:tayta_restaurant/src/models/mesas_model.dart';
 import 'package:tayta_restaurant/src/pages/carrito_page.dart';
 import 'package:tayta_restaurant/src/pages/pedidos_usuario.dart';
 import 'package:tayta_restaurant/src/pages/tablet/carrito_por_mesa.dart';
+import 'package:tayta_restaurant/src/pages/tablet/config.dart';
 import 'package:tayta_restaurant/src/pages/tablet/familiasItem.dart';
 import 'package:tayta_restaurant/src/pages/tablet/header_locacion.dart';
 import 'package:tayta_restaurant/src/pages/tablet/mesas.dart';
@@ -49,6 +50,53 @@ class HomePage extends StatelessWidget {
           ),
           StreamBuilder(
             stream: mesasBloc.error401Stream,
+            builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+              if (snapshot.hasData && snapshot.data) {
+                return Container(
+                  width: double.infinity,
+                  height: double.infinity,
+                  color: Colors.white,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text('Su sesión expiro, por favor vuelva a iniciar sesión'),
+                      SizedBox(
+                        height: ScreenUtil().setHeight(30),
+                      ),
+                      MaterialButton(
+                        onPressed: ()async {
+                           preferences.clearPreferences();
+
+                          final carritoDatabase = CarritoDatabase();
+                          final familiasDatabase = FamiliasDatabase();
+                          final locacionDatabase = LocacionDatabase();
+                          final mesasDatabase = MesasDatabase();
+                          final pedidosUserDatabase = PedidosUserDatabase();
+                          final productosDatabase = ProductosDatabase();
+
+                          await carritoDatabase.eliminarTablaCarritoMesa();
+                          await familiasDatabase.eliminarTablaFamilias();
+                          await locacionDatabase.eliminarTablaLocacion();
+                          await mesasDatabase.eliminarTablaMesas();
+                          await pedidosUserDatabase.eliminarTablaPedidoUser();
+                          await productosDatabase.eliminarTablaProductos();
+
+                          Navigator.of(context).pushNamedAndRemoveUntil('login', (Route<dynamic> route) => true);
+                        },
+                        child: Text('Iniciar Sesión'),
+                        color: Colors.blue,
+                        textColor: Colors.white,
+                      )
+                    ],
+                  ),
+                );
+              } else {
+                return Container();
+              }
+            },
+          ),
+        StreamBuilder(
+            stream: locacionBloc.errorStream,
             builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
               if (snapshot.hasData && snapshot.data) {
                 return Container(
@@ -378,6 +426,20 @@ class VistaTablet extends StatelessWidget {
                                           ),
                                         ),
                                       ],
+                                    ),
+                                  ),
+                                )
+                              : (data == EnumIndex.config)
+                              ? Expanded(
+                                  flex: 15,
+                                  child: Container(
+                                    margin: EdgeInsets.only(
+                                      bottom: responsive.hp(2),
+                                      right: ScreenUtil().setWidth(10),
+                                    ),
+                                    child: Container(
+                                      width: ScreenUtil().setWidth(655),
+                                      child: ConfigPage(),
                                     ),
                                   ),
                                 )

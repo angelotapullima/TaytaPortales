@@ -130,7 +130,7 @@ class CarritoTabletDisgregar extends StatelessWidget {
                                                 SizedBox(height: ScreenUtil().setHeight(20)),
                                                 SizedBox(
                                                   height: ScreenUtil().setHeight(40),
-                                                  width: ScreenUtil().setWidth(200),
+                                                  width: ScreenUtil().setWidth(250),
                                                   child: MaterialButton(
                                                     shape: RoundedRectangleBorder(
                                                       borderRadius: BorderRadius.circular(10),
@@ -224,7 +224,7 @@ class CarritoTabletDisgregar extends StatelessWidget {
                                           ),
                                           SizedBox(
                                             height: ScreenUtil().setHeight(40),
-                                            width: ScreenUtil().setWidth(200),
+                                            width: ScreenUtil().setWidth(250),
                                             child: MaterialButton(
                                               shape: RoundedRectangleBorder(
                                                 borderRadius: BorderRadius.circular(10),

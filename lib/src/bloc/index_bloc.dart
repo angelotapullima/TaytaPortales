@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-enum EnumIndex { mesas,productos, pedidos,familiaMesa }
+enum EnumIndex { mesas,productos, pedidos,familiaMesa,config }
 
 class IndexBlocListener with ChangeNotifier { 
   ValueNotifier<EnumIndex> _page = ValueNotifier(EnumIndex.mesas);
@@ -43,6 +43,11 @@ class IndexBlocListener with ChangeNotifier {
 
   void changeToFamiliaMesa() {
     _page.value  = EnumIndex.familiaMesa;
+    notifyListeners();
+  }
+
+  void changeToConfig() {
+    _page.value  = EnumIndex.config;
     notifyListeners();
   }
 

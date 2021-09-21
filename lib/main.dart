@@ -7,6 +7,7 @@ import 'package:tayta_restaurant/src/pages/home_page.dart';
 import 'package:tayta_restaurant/src/pages/login.dart';
 import 'package:tayta_restaurant/src/pages/splah.dart';
 import 'package:tayta_restaurant/src/preferences/preferences.dart';
+import 'package:tayta_restaurant/src/preferences/prefs_url.dart';
 
 import 'src/bloc/provider.dart';
 
@@ -14,8 +15,10 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   final prefs = new Preferences();
+  final prefsUrl = new PreferencesUrl();
 
   await prefs.initPrefs();
+  await prefsUrl.initPrefs();
 
   runApp(MyApp());
 }
