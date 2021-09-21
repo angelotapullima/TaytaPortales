@@ -3,6 +3,7 @@ import 'package:tayta_restaurant/src/api/mesas_api.dart';
 import 'package:tayta_restaurant/src/database/carrito_database.dart';
 
 import 'package:tayta_restaurant/src/database/mesas_database.dart';
+import 'package:tayta_restaurant/src/database/productos_database.dart';
 import 'package:tayta_restaurant/src/models/carrtito_model.dart';
 import 'package:tayta_restaurant/src/models/cuenta_model.dart';
 import 'package:tayta_restaurant/src/models/mesas_model.dart';
@@ -10,6 +11,7 @@ import 'package:tayta_restaurant/src/models/mesas_model.dart';
 class MesasBloc {
   final mesasDatabase = MesasDatabase();
   final mesasApi = MesasApi();
+  final productoDatabase = ProductosDatabase();
 
   final carritoDatabase = CarritoDatabase();
 
@@ -34,7 +36,7 @@ class MesasBloc {
   }
 
   void obtenerMesasPorLocacion(String idLocacion) async {
-    _locacionController.sink.add(await mesasDatabase.obtenerMesasPorLocacion(idLocacion));
+    //_locacionController.sink.add(await mesasDatabase.obtenerMesasPorLocacion(idLocacion));
     final res = await mesasApi.obtenerMesasPorLocacion(idLocacion);
 
     _error401Controller.sink.add(res.error);
@@ -69,6 +71,8 @@ class MesasBloc {
       if (carritoList.length > 0) {
         for (var x = 0; x < carritoList.length; x++) {
           if (double.parse(carritoList[x].cantidad) > 0) {
+
+            final producto = await productoDatabase.obtenerProductosPorId(carritoList[x].idProducto);
             CarritoModel carritoModel = CarritoModel();
             carritoModel.idCarrito = carritoList[x].idCarrito;
             carritoModel.idProducto = carritoList[x].idProducto;
@@ -103,6 +107,9 @@ class MesasBloc {
           if (carritoList2.length > 0) {
             for (var x = 0; x < carritoList2.length; x++) {
               if (double.parse(carritoList2[x].cantidad) > 0) {
+
+
+            final producto = await productoDatabase.obtenerProductosPorId(carritoList[x].idProducto);
                 CarritoModel carritoModel = CarritoModel();
                 carritoModel.idCarrito = carritoList2[x].idCarrito;
                 carritoModel.idProducto = carritoList2[x].idProducto;
@@ -116,7 +123,7 @@ class MesasBloc {
                 carritoModel.idLocacion = carritoList2[x].idLocacion;
                 carritoModel.estado = carritoList2[x].estado;
                 carritoModel.paraLLevar = carritoList2[x].paraLLevar;
-                carritoModel.idComandaDetalle = carritoList2[x].idComandaDetalle;
+                carritoModel.idComandaDetalle = carritoList2[x].idComandaDetalle; 
 
                 
                   montex = montex + (double.parse(carritoList2[x].precioVenta) * double.parse(carritoList2[x].cantidad));
@@ -168,6 +175,9 @@ class MesasBloc {
       if (carritoList.length > 0) {
         for (var x = 0; x < carritoList.length; x++) {
           if (double.parse(carritoList[x].cantidad) > 0) {
+
+
+            final producto = await productoDatabase.obtenerProductosPorId(carritoList[x].idProducto);
             CarritoModel carritoModel = CarritoModel();
             carritoModel.idCarrito = carritoList[x].idCarrito;
             carritoModel.idProducto = carritoList[x].idProducto;
@@ -181,7 +191,8 @@ class MesasBloc {
             carritoModel.idLocacion = carritoList[x].idLocacion;
             carritoModel.estado = carritoList[x].estado;
             carritoModel.paraLLevar = carritoList[x].paraLLevar;
-            carritoModel.idComandaDetalle = carritoList[x].idComandaDetalle;
+            carritoModel.idComandaDetalle = carritoList[x].idComandaDetalle; 
+
 
             car.add(carritoModel);
           }
@@ -202,6 +213,9 @@ class MesasBloc {
           if (carritoList2.length > 0) {
             for (var x = 0; x < carritoList2.length; x++) {
               if (double.parse(carritoList2[x].cantidad) > 0) {
+
+
+            final producto = await productoDatabase.obtenerProductosPorId(carritoList[x].idProducto);
                 CarritoModel carritoModel = CarritoModel();
                 carritoModel.idCarrito = carritoList2[x].idCarrito;
                 carritoModel.idProducto = carritoList2[x].idProducto;
@@ -215,7 +229,8 @@ class MesasBloc {
                 carritoModel.idLocacion = carritoList2[x].idLocacion;
                 carritoModel.estado = carritoList2[x].estado;
                 carritoModel.paraLLevar = carritoList2[x].paraLLevar;
-                carritoModel.idComandaDetalle = carritoList2[x].idComandaDetalle;
+                carritoModel.idComandaDetalle = carritoList2[x].idComandaDetalle; 
+
 
                
                   montex = montex + (double.parse(carritoList2[x].precioVenta) * double.parse(carritoList2[x].cantidad));

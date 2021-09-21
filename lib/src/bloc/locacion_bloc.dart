@@ -18,7 +18,7 @@ class LocacionBloc {
   }
 
   void obtenerLocacionesPorIdTienda(String idTienda) async {
-    _locacionController.sink.add(await locacionDatabase.obtenerLocacionPorTienda(idTienda));
+    //_locacionController.sink.add(await locacionDatabase.obtenerLocacionPorTienda(idTienda));
     final res = await locacionApi.obtenerLocacionesPorTienda(idTienda);
 
     _errorController.sink.add(res.error);

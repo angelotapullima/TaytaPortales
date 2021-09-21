@@ -37,8 +37,10 @@ class _EditarProductoTabletState extends State<EditarProductoTablet> {
 
   bool val = false;
   void _increase() {
-    setState(() {
-      _counter++;
+     setState(() {
+      
+        _counter++;
+      
     });
   }
 
@@ -147,7 +149,7 @@ class _EditarProductoTabletState extends State<EditarProductoTablet> {
                             fontWeight: FontWeight.w600,
                             color: Color(0xff808080),
                           ),
-                        ),
+                        ), 
                       ],
                     ),
                     SizedBox(
@@ -229,7 +231,7 @@ class _EditarProductoTabletState extends State<EditarProductoTablet> {
                       ),
                     )
                   ],
-                ),
+                ), 
                 SizedBox(
                   height: ScreenUtil().setHeight(30),
                 ),

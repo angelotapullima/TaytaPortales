@@ -488,7 +488,7 @@ class CarritoTabletDisgregar extends StatelessWidget {
                   size: responsive.ip(20),
                 ),
                 Text(
-                  'Presionar una mesa para ontener sus detalles',
+                  'Presionar una mesa para obtener sus detalles',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: responsive.ip(2),
