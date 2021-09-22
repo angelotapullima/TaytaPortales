@@ -139,6 +139,7 @@ class ProductosItem extends StatelessWidget {
                                         children: [
                                           Text(
                                             '${productos.data[i].nombreProducto}',
+                                            maxLines: 4,
                                             style: TextStyle(
                                               fontSize: ScreenUtil().setSp(15),
                                               color: Colors.blue,

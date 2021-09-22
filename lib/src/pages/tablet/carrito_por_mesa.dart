@@ -675,14 +675,16 @@ class CarritoTabletAgregar extends StatelessWidget {
                                           icon: Icons.archive,
                                           onTap: () async {
                                             if ('${snapshot.data[0].carrito[i].idComandaDetalle}' == '0') {
-                                              final mesasApi = MesasApi();
+                                              
                                               final carritoDatabase = CarritoDatabase();
                                               await carritoDatabase.eliminarProductoPorIdCarrito('${snapshot.data[0].carrito[i].idCarrito}');
 
-                                              await mesasApi.obtenerMesasPorLocacion('${snapshot.data[0].carrito[i].idLocacion}');
+/*                                               await mesasApi.obtenerMesasPorLocacion('${snapshot.data[0].carrito[i].idLocacion}');
                                               mesasBloc.obtenerMesasPorIdAgregar('${snapshot.data[0].carrito[i].idMesa}');
                                               mesasBloc.obtenerMesasPorIdDisgregar('${snapshot.data[0].carrito[i].idMesa}');
-                                              print('IconSlideAction archive');
+                                              print('IconSlideAction archive'); */
+                                              mesasBloc.obtenerMesasPorIdAgregar('${snapshot.data[0].carrito[i].idMesa}');
+                                              mesasBloc.obtenerMesasPorIdDisgregar('${snapshot.data[0].carrito[i].idMesa}');
                                             } else {
                                               showToast2('El producto no se puede eliminar ', Colors.red);
                                             }

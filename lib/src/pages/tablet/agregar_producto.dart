@@ -110,7 +110,7 @@ class _AgregarProductTabletState extends State<AgregarProductTablet> {
                       borderRadius: BorderRadius.circular(100),
                       child: Container(
                         width: ScreenUtil().setWidth(80),
-                        height: ScreenUtil().setWidth(80),
+                        height: ScreenUtil().setWidth(90),
                         color: Color(0xffe5e5e5),
                         child: SvgPicture.asset(
                           'assets/platos.svg',
@@ -120,37 +120,39 @@ class _AgregarProductTabletState extends State<AgregarProductTablet> {
                     SizedBox(
                       width: ScreenUtil().setWidth(10),
                     ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          '${widget.productos.nombreProducto}',
-                          style: TextStyle(
-                            fontSize: ScreenUtil().setSp(14),
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black,
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            '${widget.productos.nombreProducto}',
+                            style: TextStyle(
+                              fontSize: ScreenUtil().setSp(14),
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                            ),
                           ),
-                        ),
-                        Text(
-                          'S/.${dosDecimales(
-                            double.parse(widget.productos.precioVenta),
-                          )}',
-                          style: TextStyle(
-                            fontSize: ScreenUtil().setSp(14),
-                            fontWeight: FontWeight.w600,
-                            color: Color(0xff808080),
+                          Text(
+                            'S/.${dosDecimales(
+                              double.parse(widget.productos.precioVenta),
+                            )}',
+                            style: TextStyle(
+                              fontSize: ScreenUtil().setSp(14),
+                              fontWeight: FontWeight.w600,
+                              color: Color(0xff808080),
+                            ),
                           ),
-                        ),
-                        /* Text(
-                          'Disponibles: ${widget.productos.saldo}',
-                          style: TextStyle(
-                            fontSize: ScreenUtil().setSp(14),
-                            fontWeight: FontWeight.w600,
-                            color: Color(0xff808080),
-                          ),
-                        ), */
-                      ],
+                          /* Text(
+                            'Disponibles: ${widget.productos.saldo}',
+                            style: TextStyle(
+                              fontSize: ScreenUtil().setSp(14),
+                              fontWeight: FontWeight.w600,
+                              color: Color(0xff808080),
+                            ),
+                          ), */
+                        ],
+                      ),
                     ),
                     SizedBox(
                       width: ScreenUtil().setWidth(40),
