@@ -18,6 +18,8 @@ class Familiasitem extends StatefulWidget {
 
 class _FamiliasitemState extends State<Familiasitem> {
   final _catController = CategoryController();
+
+  int valor = 0;
   @override
   Widget build(BuildContext context) {
     final familiasBloc = ProviderBloc.familias(context);
@@ -30,8 +32,12 @@ class _FamiliasitemState extends State<Familiasitem> {
       builder: (BuildContext context, AsyncSnapshot<List<FamiliasModel>> snapshot) {
         if (snapshot.hasData) {
           if (snapshot.data.length > 0) {
+
+            if(valor==0){
+              valor++;
             productosBloc.obtenerProductosPorFamilia(snapshot.data[_catController.index].idFamilia, snapshot.data[0].idLocacion);
 
+            }
             return Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),

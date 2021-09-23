@@ -76,6 +76,7 @@ class Logout extends StatelessWidget {
                           preferences.idUsuario ='';
                           preferences.locacionId ='';
                           preferences.nombres ='';
+                          preferences.llamadaLocacion ='';
                           preferences.nombresCompletos ='';
                           preferences.tiendaId ='';
                           preferences.token ='';

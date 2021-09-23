@@ -204,7 +204,7 @@ class MesasBloc {
           if (carritoList2.length > 0) {
             for (var x = 0; x < carritoList2.length; x++) {
               if (double.parse(carritoList2[x].cantidad) > 0) {
-                final producto = await productoDatabase.obtenerProductosPorId(carritoList[x].idProducto);
+                
                 CarritoModel carritoModel = CarritoModel();
                 carritoModel.idCarrito = carritoList2[x].idCarrito;
                 carritoModel.idProducto = carritoList2[x].idProducto;

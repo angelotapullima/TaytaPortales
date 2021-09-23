@@ -48,6 +48,8 @@ class LocacionApi {
           locacionModel.idTienda = idTienda;
 
           await locacionDatabase.insertarLocacion(locacionModel);
+
+          preferences.llamadaLocacion = 'true';
         }
       }
 

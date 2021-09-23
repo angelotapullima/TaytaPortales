@@ -115,4 +115,15 @@ class Preferences {
   set url(String value) {
     _prefs.setString('url', value);
   }
+
+
+
+/////////////////////////////////////////////////////////
+  get llamadaLocacion {
+    return _prefs.getString('llamadaLocacion');
+  }
+
+  set llamadaLocacion(String value) {
+    _prefs.setString('llamadaLocacion', value);
+  }
 }

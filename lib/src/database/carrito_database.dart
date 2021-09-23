@@ -78,7 +78,6 @@ class CarritoDatabase {
   }
 
   eliminarPedidosPorMesa(String idMesa, String idLocacion) async {
-    print('borrando carrito $idMesa');
     final db = await dbprovider.database;
 
     final res = await db.rawDelete("DELETE FROM CarritoMesa where idMesa = '$idMesa' and idLocacion= '$idLocacion' ");

@@ -72,6 +72,7 @@ class HomePage extends StatelessWidget {
                           preferences.nombres ='';
                           preferences.nombresCompletos ='';
                           preferences.tiendaId ='';
+                          preferences.llamadaLocacion ='';
                           preferences.token ='';
 
                           final carritoDatabase = CarritoDatabase();
@@ -124,6 +125,7 @@ class HomePage extends StatelessWidget {
                           preferences.idUsuario ='';
                           preferences.locacionId ='';
                           preferences.nombres ='';
+                          preferences.llamadaLocacion ='';
                           preferences.nombresCompletos ='';
                           preferences.tiendaId ='';
                           preferences.token ='';
