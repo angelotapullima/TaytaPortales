@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:tayta_restaurant/src/bloc/index_bloc.dart';
 import 'package:tayta_restaurant/src/bloc/provider.dart';
@@ -10,9 +9,7 @@ import 'package:tayta_restaurant/src/database/locacion_database.dart';
 import 'package:tayta_restaurant/src/database/mesas_database.dart';
 import 'package:tayta_restaurant/src/database/pedido_user_database.dart';
 import 'package:tayta_restaurant/src/database/productos_database.dart';
-import 'package:tayta_restaurant/src/models/locacion_model.dart';
 import 'package:tayta_restaurant/src/models/mesas_model.dart';
-import 'package:tayta_restaurant/src/pages/carrito_page.dart';
 import 'package:tayta_restaurant/src/pages/pedidos_usuario.dart';
 import 'package:tayta_restaurant/src/pages/tablet/carrito_por_mesa.dart';
 import 'package:tayta_restaurant/src/pages/tablet/config.dart';
@@ -37,7 +34,7 @@ class HomePage extends StatelessWidget {
 
     final mesasBloc = ProviderBloc.mesas(context);
 
-    final preferences =Preferences();
+    final preferences = Preferences();
 
     return Scaffold(
       backgroundColor: Color(0xfff7f7f7),
@@ -64,16 +61,17 @@ class HomePage extends StatelessWidget {
                         height: ScreenUtil().setHeight(30),
                       ),
                       MaterialButton(
-                        onPressed: ()async { preferences.apellidoMaterno ='';
-                          preferences.apellidoPaterno ='';
-                          preferences.codigoUsuario ='';
-                          preferences.idUsuario ='';
-                          preferences.locacionId ='';
-                          preferences.nombres ='';
-                          preferences.nombresCompletos ='';
-                          preferences.tiendaId ='';
-                          preferences.llamadaLocacion ='';
-                          preferences.token ='';
+                        onPressed: () async {
+                          preferences.apellidoMaterno = '';
+                          preferences.apellidoPaterno = '';
+                          preferences.codigoUsuario = '';
+                          preferences.idUsuario = '';
+                          preferences.locacionId = '';
+                          preferences.nombres = '';
+                          preferences.nombresCompletos = '';
+                          preferences.tiendaId = '';
+                          preferences.llamadaLocacion = '';
+                          preferences.token = '';
 
                           final carritoDatabase = CarritoDatabase();
                           final familiasDatabase = FamiliasDatabase();
@@ -103,7 +101,7 @@ class HomePage extends StatelessWidget {
               }
             },
           ),
-        StreamBuilder(
+          StreamBuilder(
             stream: locacionBloc.errorStream,
             builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
               if (snapshot.hasData && snapshot.data) {
@@ -119,16 +117,17 @@ class HomePage extends StatelessWidget {
                         height: ScreenUtil().setHeight(30),
                       ),
                       MaterialButton(
-                        onPressed: ()async { preferences.apellidoMaterno ='';
-                          preferences.apellidoPaterno ='';
-                          preferences.codigoUsuario ='';
-                          preferences.idUsuario ='';
-                          preferences.locacionId ='';
-                          preferences.nombres ='';
-                          preferences.llamadaLocacion ='';
-                          preferences.nombresCompletos ='';
-                          preferences.tiendaId ='';
-                          preferences.token ='';
+                        onPressed: () async {
+                          preferences.apellidoMaterno = '';
+                          preferences.apellidoPaterno = '';
+                          preferences.codigoUsuario = '';
+                          preferences.idUsuario = '';
+                          preferences.locacionId = '';
+                          preferences.nombres = '';
+                          preferences.llamadaLocacion = '';
+                          preferences.nombresCompletos = '';
+                          preferences.tiendaId = '';
+                          preferences.token = '';
 
                           final carritoDatabase = CarritoDatabase();
                           final familiasDatabase = FamiliasDatabase();
@@ -180,12 +179,15 @@ class VistaTablet extends StatelessWidget {
       child: ValueListenableBuilder(
         valueListenable: provider.page,
         builder: (BuildContext context, EnumIndex data, Widget child) {
-          MesasModel mesas = MesasModel();
+          MesasModel mesas2 = MesasModel();
           return Row(
             children: [
               Container(
                 width: ScreenUtil().setWidth(83),
-                child: Container(color: Color(0xfff7f7f7), child: SideMenu()),
+                child: Container(
+                  color: Color(0xfff7f7f7),
+                  child: SideMenu(),
+                ),
               ),
               (data == EnumIndex.mesas)
                   ? Expanded(
@@ -199,7 +201,7 @@ class VistaTablet extends StatelessWidget {
                           children: [
                             Container(
                               color: Color(0xfff7f7f7),
-                              child: HeaderLocacion(),
+                              child: HeaderLocacionMesas(),
                             ),
                             Expanded(
                               child: Stack(
@@ -255,7 +257,7 @@ class VistaTablet extends StatelessWidget {
                               children: [
                                 Container(
                                   color: Color(0xfff7f7f7),
-                                  child: HeaderLocacion(),
+                                  child: HeaderLocacionProductos(),
                                 ),
                                 Expanded(
                                   child: Row(
@@ -271,7 +273,7 @@ class VistaTablet extends StatelessWidget {
                                       Container(
                                         width: ScreenUtil().setWidth(640),
                                         color: Colors.white,
-                                        child: ProductosItem(tipo: '2', mesas: mesas),
+                                        child: ProductosItem(tipo: '2', mesas: mesas2),
                                       ),
                                       SizedBox(
                                         width: ScreenUtil().setWidth(10),
@@ -423,7 +425,7 @@ class VistaTablet extends StatelessWidget {
                                       children: [
                                         Container(
                                           color: Color(0xfff7f7f7),
-                                          child: HeaderLocacion(),
+                                          child: HeaderLocacionMesas(),
                                         ),
                                         Expanded(
                                           child: Row(
@@ -446,20 +448,20 @@ class VistaTablet extends StatelessWidget {
                                   ),
                                 )
                               : (data == EnumIndex.config)
-                              ? Expanded(
-                                  flex: 15,
-                                  child: Container(
-                                    margin: EdgeInsets.only(
-                                      bottom: responsive.hp(2),
-                                      right: ScreenUtil().setWidth(10),
-                                    ),
-                                    child: Container(
-                                      width: ScreenUtil().setWidth(655),
-                                      child: ConfigPage(),
-                                    ),
-                                  ),
-                                )
-                              : Container()
+                                  ? Expanded(
+                                      flex: 15,
+                                      child: Container(
+                                        margin: EdgeInsets.only(
+                                          bottom: responsive.hp(2),
+                                          right: ScreenUtil().setWidth(10),
+                                        ),
+                                        child: Container(
+                                          width: ScreenUtil().setWidth(655),
+                                          child: ConfigPage(),
+                                        ),
+                                      ),
+                                    )
+                                  : Container()
             ],
           );
         },
@@ -467,7 +469,7 @@ class VistaTablet extends StatelessWidget {
     );
   }
 }
-
+/* 
 class VistaMovil extends StatelessWidget {
   const VistaMovil({Key key}) : super(key: key);
 
@@ -740,14 +742,4 @@ class VistaMovil extends StatelessWidget {
     );
   }
 }
-
-class CategoryController extends ChangeNotifier {
-  int index = 0;
-  String idCategoria = '0';
-
-  void changeIndex(int i, String idCat) {
-    index = i;
-    idCategoria = idCat;
-    notifyListeners();
-  }
-}
+ */

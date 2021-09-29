@@ -41,6 +41,8 @@ class MesasBloc {
     final res = await mesasApi.obtenerMesasPorLocacion(idLocacion);
 
     _error401Controller.sink.add(res.error);
+
+    //_locacionController.sink.add(res.mesas);
     _locacionController.sink.add(await mesasDatabase.obtenerMesasPorLocacion(idLocacion));
   }
 
@@ -65,7 +67,7 @@ class MesasBloc {
       mesasModel.idUsuario = mesaList[0].idUsuario;
       mesasModel.codigoUsuario = mesaList[0].codigoUsuario;
       mesasModel.nombreCompleto = mesaList[0].nombreCompleto;
-      mesasModel.locacionId = mesaList[0].locacionId; 
+      mesasModel.locacionId = mesaList[0].locacionId;
 
       final carritoList = await carritoDatabase.obtenerCarritoPorIdCarritoAgregarNuevo(mesaList[0].idMesa, mesaList[0].locacionId);
 
@@ -169,7 +171,6 @@ class MesasBloc {
       if (carritoList.length > 0) {
         for (var x = 0; x < carritoList.length; x++) {
           if (double.parse(carritoList[x].cantidad) > 0) {
-            
             CarritoModel carritoModel = CarritoModel();
             carritoModel.idCarrito = carritoList[x].idCarrito;
             carritoModel.idProducto = carritoList[x].idProducto;
@@ -204,7 +205,6 @@ class MesasBloc {
           if (carritoList2.length > 0) {
             for (var x = 0; x < carritoList2.length; x++) {
               if (double.parse(carritoList2[x].cantidad) > 0) {
-                
                 CarritoModel carritoModel = CarritoModel();
                 carritoModel.idCarrito = carritoList2[x].idCarrito;
                 carritoModel.idProducto = carritoList2[x].idProducto;
@@ -336,7 +336,7 @@ class MesasBloc {
       }
     }
 
-    print('object');
+
     _mesasConPedidos.sink.add(mesitas);
   }
 }

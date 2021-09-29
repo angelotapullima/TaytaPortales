@@ -8,14 +8,16 @@ import 'package:tayta_restaurant/src/models/carrtito_model.dart';
 import 'package:tayta_restaurant/src/models/mesas_model.dart';
 import 'package:tayta_restaurant/src/preferences/preferences.dart';
 
-
-
 class MesasApi {
   final mesasDatabase = MesasDatabase();
-  final carritoDatabase = CarritoDatabase();
+  final carritoDatabase = CarritoDatabase(); 
   final preferences = Preferences();
   Future<ApiModel> obtenerMesasPorLocacion(String idLocacion) async {
+    var entradaapi = DateTime.now();
+
+    print('entrada a la api $entradaapi');
     try {
+      final List<MesasModel> listMesas = [];
       final url = Uri.parse('${preferences.url}/api/MesaLayout/$idLocacion');
       Map<String, String> headers = {'Content-Type': 'application/json', 'Authorization': ' Bearer ${preferences.token}'};
 
@@ -29,6 +31,12 @@ class MesasApi {
       );
 
       print(resp.statusCode);
+      var respuestaApi = DateTime.now();
+
+
+      Duration _diastotales = respuestaApi.difference(entradaapi);
+
+      print('diferencia a la api ${_diastotales.inMilliseconds}');
 
       if (resp.statusCode == 401) {
         ApiModel apiModel = ApiModel();
@@ -41,6 +49,8 @@ class MesasApi {
       final decodedData = json.decode(resp.body);
 
       if (decodedData.length > 0) {
+        /*  await carritoDatabase.eliminarTablaCarritoMesa();
+        await mesasDatabase.eliminarTablaMesas(); */
         for (var i = 0; i < decodedData.length; i++) {
           MesasModel mesasModel = MesasModel();
           mesasModel.idMesa = decodedData[i]['mesaId'].toString();
@@ -61,12 +71,14 @@ class MesasApi {
           if (decodedData[i]['detalles'] != null) {
             if (decodedData[i]['detalles'].length > 0) {
               await carritoDatabase.eliminarPedidosPorMesa(decodedData[i]['mesaId'].toString(), idLocacion.toString());
+
+              final List<CarritoModel> listCarrito = [];
               for (var x = 0; x < decodedData[i]['detalles'].length; x++) {
                 CarritoModel carritoModel = CarritoModel();
                 carritoModel.idProducto = decodedData[i]['detalles'][x]['idProducto'].toString();
                 carritoModel.idComandaDetalle = decodedData[i]['detalles'][x]['idComandaDetalle'].toString();
                 carritoModel.nombreProducto = decodedData[i]['detalles'][x]['nombreProducto'].toString();
-                carritoModel.precioVenta =  decodedData[i]['detalles'][x]['precioUnitario'].toString();
+                carritoModel.precioVenta = decodedData[i]['detalles'][x]['precioUnitario'].toString();
                 carritoModel.cantidad = decodedData[i]['detalles'][x]['cantidad'].toString();
                 carritoModel.observacion = decodedData[i]['detalles'][x]['observacion'].toString();
                 carritoModel.nroCuenta = decodedData[i]['detalles'][x]['nroCuenta'].toString();
@@ -74,15 +86,20 @@ class MesasApi {
                 carritoModel.idMesa = decodedData[i]['mesaId'].toString();
                 carritoModel.idLocacion = idLocacion.toString();
                 carritoModel.estado = '1';
+                listCarrito.add(carritoModel);
 
                 await carritoDatabase.insertarCarito(carritoModel);
               }
+
+              mesasModel.carrito = listCarrito;
             } else {
               await carritoDatabase.eliminarPedidosPorMesa(decodedData[i]['mesaId'].toString(), idLocacion.toString());
             }
           } else {
             await carritoDatabase.eliminarPedidosPorMesa(decodedData[i]['mesaId'].toString(), idLocacion.toString());
           }
+
+          listMesas.add(mesasModel);
         }
       }
 
@@ -90,7 +107,13 @@ class MesasApi {
       apiModel.error = false;
       apiModel.resultadoPeticion = true;
       apiModel.mensaje = 'respuesta correcta';
+      apiModel.mesas = listMesas;
 
+
+
+      var salidaFuncion = DateTime.now().millisecond;
+
+      print('entrada a la api $salidaFuncion');
       return apiModel;
     } catch (error, stacktrace) {
       print("Exception occured: $error stackTrace: $stacktrace");

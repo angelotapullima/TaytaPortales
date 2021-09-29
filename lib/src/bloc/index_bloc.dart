@@ -1,21 +1,25 @@
 import 'package:flutter/material.dart';
 
-enum EnumIndex { mesas,productos, pedidos,familiaMesa,config }
+enum EnumIndex { mesas, productos, pedidos, familiaMesa, config }
 
-class IndexBlocListener with ChangeNotifier { 
+class IndexBlocListener with ChangeNotifier {
+  int index = 0;
+  String idCategoria = '0';
+
+  void changeIndex(int i, String idCat) {
+    index = i;
+    idCategoria = idCat;
+    notifyListeners();
+  }
+
   ValueNotifier<EnumIndex> _page = ValueNotifier(EnumIndex.mesas);
   ValueNotifier<EnumIndex> get page => this._page;
 
-
   ValueNotifier<bool> _cargandoEnvio = ValueNotifier(false);
-  ValueNotifier<bool> get cargandoEnvio => this._cargandoEnvio; 
-
+  ValueNotifier<bool> get cargandoEnvio => this._cargandoEnvio;
 
   ValueNotifier<bool> _cargandoDisgregacion = ValueNotifier(false);
-  ValueNotifier<bool> get cargandoDisgregacion  => this._cargandoDisgregacion; 
-
-
-
+  ValueNotifier<bool> get cargandoDisgregacion => this._cargandoDisgregacion;
 
   BuildContext context;
 
@@ -25,34 +29,29 @@ class IndexBlocListener with ChangeNotifier {
   void _init() {}
 
   void changeToMesa() {
-    _page.value =EnumIndex.mesas;
+    _page.value = EnumIndex.mesas;
     notifyListeners();
   }
 
   void changeToProductos() {
-    _page.value  = EnumIndex.productos;
+    _page.value = EnumIndex.productos;
     notifyListeners();
   }
-
 
   void changeToPedidos() {
-    _page.value  = EnumIndex.pedidos;
+    _page.value = EnumIndex.pedidos;
     notifyListeners();
   }
 
-
   void changeToFamiliaMesa() {
-    _page.value  = EnumIndex.familiaMesa;
+    _page.value = EnumIndex.familiaMesa;
     notifyListeners();
   }
 
   void changeToConfig() {
-    _page.value  = EnumIndex.config;
+    _page.value = EnumIndex.config;
     notifyListeners();
   }
-
-
-
 
   void changeCargandoTrue() {
     _cargandoEnvio.value = true;
@@ -63,9 +62,6 @@ class IndexBlocListener with ChangeNotifier {
     _cargandoEnvio.value = false;
     notifyListeners();
   }
-
-
-
 
   void changeCargandoTrueDisgregacion() {
     _cargandoDisgregacion.value = true;

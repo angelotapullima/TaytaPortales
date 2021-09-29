@@ -3,7 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
-import 'package:tayta_restaurant/src/api/mesas_api.dart';
 import 'package:tayta_restaurant/src/bloc/index_bloc.dart';
 import 'package:tayta_restaurant/src/bloc/provider.dart';
 import 'package:tayta_restaurant/src/database/carrito_database.dart';
@@ -92,6 +91,7 @@ class CarritoTabletDisgregar extends StatelessWidget {
                                 if (i == snapshot.data[0].carrito.length) {
                                   if (snapshot.data[0].cuentas.length > 1) {
                                     return ListView.builder(
+                                      padding:EdgeInsets.only(bottom: responsive.hp(20)),
                                       shrinkWrap: true,
                                       physics: ClampingScrollPhysics(),
                                       itemCount: snapshot.data[0].cuentas.length + 2,

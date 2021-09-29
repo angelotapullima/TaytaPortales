@@ -20,6 +20,9 @@ class PedidosItem extends StatelessWidget {
       builder: (BuildContext context, AsyncSnapshot<List<MesasModel>> mesas) {
         if (mesas.hasData) {
           if (mesas.data.length > 0) {
+
+
+            print('mesas pedidos');
             return Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
