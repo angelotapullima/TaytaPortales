@@ -19,6 +19,18 @@ class Preferences {
     await _prefs.clear();
   }
 
+
+
+
+/////////////////////////////////////////////////////////
+  get locacionId {
+    return _prefs.getString('locacionId');
+  }
+
+  set locacionId(String value) {
+    _prefs.setString('locacionId', value);
+  }
+
 /////////////////////////////////////////////////////////
   get token {
     return _prefs.getString('token');
@@ -97,14 +109,6 @@ class Preferences {
 
 
 
-/////////////////////////////////////////////////////////
-  get locacionId {
-    return _prefs.getString('locacionId');
-  }
-
-  set locacionId(String value) {
-    _prefs.setString('locacionId', value);
-  }
 
 
 /////////////////////////////////////////////////////////

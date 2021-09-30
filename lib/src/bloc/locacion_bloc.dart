@@ -1,5 +1,7 @@
+import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:tayta_restaurant/src/api/locacion_api.dart';
+import 'package:tayta_restaurant/src/bloc/provider.dart';
 import 'package:tayta_restaurant/src/database/locacion_database.dart';
 import 'package:tayta_restaurant/src/models/locacion_model.dart';
 import 'package:tayta_restaurant/src/preferences/preferences.dart';
@@ -19,12 +21,20 @@ class LocacionBloc {
     _errorController?.close();
   }
 
-  void obtenerLocacionesPorIdTienda(String idTienda) async {
+  void obtenerLocacionesPorIdTienda(String idTienda, BuildContext context) async {
+    
+    print('llamar locacion');
     if (preferences.llamadaLocacion == null || preferences.llamadaLocacion == 'false' || preferences.llamadaLocacion == '') {
       final res = await locacionApi.obtenerLocacionesPorTienda(idTienda);
       _errorController.sink.add(res.error);
     }
 
-    _locacionController.sink.add(await locacionDatabase.obtenerLocacionPorTienda(idTienda));
+    final locacionDbv = await locacionDatabase.obtenerLocacionPorTienda(idTienda);
+
+    final mesasBloc = ProviderBloc.mesas(context);
+    mesasBloc.obtenerMesasPorLocacion(locacionDbv[0].idLocacion, context);
+
+    preferences.locacionId = locacionDbv[0].idLocacion;
+    _locacionController.sink.add(locacionDbv);
   }
 }

@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:tayta_restaurant/src/api/mesas_api.dart';
 import 'package:tayta_restaurant/src/database/carrito_database.dart';
@@ -15,13 +16,13 @@ class MesasBloc {
 
   final carritoDatabase = CarritoDatabase();
 
-  final _locacionController = BehaviorSubject<List<MesasModel>>();
+  final _mesasLocacionController = BehaviorSubject<List<MesasModel>>();
   final _error401Controller = BehaviorSubject<bool>();
   final _mesaPorIDAgregar = BehaviorSubject<List<MesasModel>>();
   final _mesaPorIDDisgregar = BehaviorSubject<List<MesasModel>>();
   final _mesasConPedidos = BehaviorSubject<List<MesasModel>>();
 
-  Stream<List<MesasModel>> get mesasStream => _locacionController.stream;
+  Stream<List<MesasModel>> get mesasStream => _mesasLocacionController.stream;
   Stream<bool> get error401Stream => _error401Controller.stream;
   Stream<List<MesasModel>> get mesaIdAgregarStream => _mesaPorIDAgregar.stream;
   Stream<List<MesasModel>> get mesaIdDisgregarStream => _mesaPorIDDisgregar.stream;
@@ -31,19 +32,21 @@ class MesasBloc {
     _mesaPorIDAgregar?.close();
     _error401Controller?.close();
     _mesaPorIDDisgregar?.close();
-    _locacionController?.close();
+    _mesasLocacionController?.close();
     _mesasConPedidos?.close();
   }
 
-  void obtenerMesasPorLocacion(String idLocacion) async {
-    _locacionController.sink.add([]);
+  void obtenerMesasPorLocacion(String idLocacion,BuildContext context) async {
+
+    print('obtenerMesasPorLocacion');
+    _mesasLocacionController.sink.add([]);
     //_locacionController.sink.add(await mesasDatabase.obtenerMesasPorLocacion(idLocacion));
-    final res = await mesasApi.obtenerMesasPorLocacion(idLocacion);
+    final res = await mesasApi.obtenerMesasPorLocacion(idLocacion,context);
 
     _error401Controller.sink.add(res.error);
 
     //_locacionController.sink.add(res.mesas);
-    _locacionController.sink.add(await mesasDatabase.obtenerMesasPorLocacion(idLocacion));
+    _mesasLocacionController.sink.add(await mesasDatabase.obtenerMesasPorLocacion(idLocacion));
   }
 
   void obtenerMesasPorIdAgregar(String idMesa) async {

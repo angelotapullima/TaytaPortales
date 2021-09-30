@@ -80,6 +80,7 @@ class Logout extends StatelessWidget {
                           preferences.nombresCompletos ='';
                           preferences.tiendaId ='';
                           preferences.token ='';
+                          preferences.locacionId ='';
                           
 
                           final carritoDatabase = CarritoDatabase();

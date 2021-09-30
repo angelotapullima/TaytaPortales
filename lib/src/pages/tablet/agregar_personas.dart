@@ -164,7 +164,7 @@ class _AgregarPersonasTabletState extends State<AgregarPersonasTablet> {
                         if (res.resultadoPeticion) {
                           showToast2('Pedido enviado correctamente', Colors.green);
                           provider.changeCargandoFalse();
-                          provider.changeToMesa();
+                          provider.changeToMesa(context);
                         } else {
                           showToast2('Ocurrio un error, intentelo nuevamente', Colors.red);
                           provider.changeCargandoFalse();

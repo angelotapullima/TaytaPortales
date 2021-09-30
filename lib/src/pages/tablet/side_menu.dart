@@ -5,7 +5,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:tayta_restaurant/src/bloc/index_bloc.dart';
+import 'package:tayta_restaurant/src/bloc/provider.dart';
 import 'package:tayta_restaurant/src/pages/tablet/logout.dart';
+import 'package:tayta_restaurant/src/preferences/preferences.dart';
 import 'package:tayta_restaurant/src/utils/constants.dart';
 import 'package:tayta_restaurant/src/widgets/side_menu_item.dart';
 
@@ -17,6 +19,10 @@ class SideMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<IndexBlocListener>(context, listen: false);
+    final mesabloc = ProviderBloc.mesas(context);
+    final familiasBloc = ProviderBloc.familias(context);
+
+    final preferences = Preferences();
     return Container(
       width: ScreenUtil().setWidth(83),
       height: double.infinity,
@@ -70,9 +76,7 @@ class SideMenu extends StatelessWidget {
                           children: [
                             Center(
                               child: SideMenuItem(
-                                press: () {
-                                  provider.changeToMesa();
-                                },
+                                press: () async {},
                                 color: Colors.transparent,
                                 title: "Mesas",
                                 iconSrc: "assets/Icons/Inbox.svg",
@@ -120,9 +124,7 @@ class SideMenu extends StatelessWidget {
                           children: [
                             Center(
                               child: SideMenuItem(
-                                press: () {
-                                  provider.changeToPedidos();
-                                },
+                                press: () {},
                                 color: Colors.transparent,
                                 title: "Pedidos",
                                 iconSrc: "assets/Icons/Send.svg",
@@ -165,9 +167,7 @@ class SideMenu extends StatelessWidget {
                           children: [
                             Center(
                               child: SideMenuItem(
-                                press: () {
-                                  provider.changeToProductos();
-                                },
+                                press: () {},
                                 color: Colors.transparent,
                                 title: "Productos",
                                 iconSrc: "assets/Icons/File.svg",
@@ -234,7 +234,9 @@ class SideMenu extends StatelessWidget {
                         child: Center(
                           child: SideMenuItem(
                             press: () {
-                              provider.changeToMesa();
+                              /* print('change to mesa 2');
+                              mesabloc.obtenerMesasPorLocacion(provider.idLocacion, context);*/
+                              provider.changeToMesa(context);
                             },
                             color: Colors.white,
                             title: "Mesas",
@@ -247,6 +249,7 @@ class SideMenu extends StatelessWidget {
                         height: ScreenUtil().setHeight(120),
                         child: SideMenuItem(
                           press: () {
+                            mesabloc.obtenerMesasConPedido(preferences.locacionId);
                             provider.changeToPedidos();
                           },
                           color: Colors.white,
@@ -259,6 +262,7 @@ class SideMenu extends StatelessWidget {
                         height: ScreenUtil().setHeight(150),
                         child: SideMenuItem(
                           press: () {
+                            familiasBloc.obtenerFamilias(preferences.locacionId);
                             provider.changeToProductos();
                           },
                           color: Colors.white,
@@ -270,8 +274,7 @@ class SideMenu extends StatelessWidget {
                       Spacer(),
                       Center(
                         child: InkWell(
-                          onTap: (){
-
+                          onTap: () {
                             provider.changeToConfig();
                           },
                           child: Container(
@@ -283,7 +286,9 @@ class SideMenu extends StatelessWidget {
                           ),
                         ),
                       ),
-                      SizedBox(height: ScreenUtil().setHeight(10),),
+                      SizedBox(
+                        height: ScreenUtil().setHeight(10),
+                      ),
                       Center(
                         child: IconButton(
                           onPressed: () {

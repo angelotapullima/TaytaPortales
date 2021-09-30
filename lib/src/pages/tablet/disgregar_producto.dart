@@ -295,7 +295,7 @@ class _DisgregarProductoTabletState extends State<DisgregarProductoTablet> {
 
                                       final mesabloc = ProviderBloc.mesas(context);
                                       final mesasApi = MesasApi();
-                                      await mesasApi.obtenerMesasPorLocacion(widget.mesas.locacionId);
+                                      await mesasApi.obtenerMesasPorLocacion(widget.mesas.locacionId,context);
 
                                       mesabloc.obtenerMesasPorIdAgregar(widget.carrito.idMesa);
                                       mesabloc.obtenerMesasPorIdDisgregar(widget.carrito.idMesa);
@@ -347,7 +347,7 @@ class _DisgregarProductoTabletState extends State<DisgregarProductoTablet> {
 
                                       final mesabloc = ProviderBloc.mesas(context);
                                       final mesasApi = MesasApi();
-                                      await mesasApi.obtenerMesasPorLocacion(widget.mesas.locacionId);
+                                      await mesasApi.obtenerMesasPorLocacion(widget.mesas.locacionId,context);
 
                                       mesabloc.obtenerMesasPorIdAgregar(widget.carrito.idMesa);
                                       mesabloc.obtenerMesasPorIdDisgregar(widget.carrito.idMesa);

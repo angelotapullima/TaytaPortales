@@ -3,13 +3,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
+import 'package:tayta_restaurant/src/api/comanda_api.dart';
 import 'package:tayta_restaurant/src/bloc/index_bloc.dart';
 import 'package:tayta_restaurant/src/bloc/provider.dart';
 import 'package:tayta_restaurant/src/database/carrito_database.dart';
 import 'package:tayta_restaurant/src/models/mesas_model.dart';
-import 'package:tayta_restaurant/src/pages/tablet/agregar_personas.dart';
 import 'package:tayta_restaurant/src/pages/tablet/disgregar_producto.dart';
 import 'package:tayta_restaurant/src/pages/tablet/editar_pedido.dart';
+import 'package:tayta_restaurant/src/preferences/preferences.dart';
 import 'package:tayta_restaurant/src/utils/responsive.dart';
 import 'package:tayta_restaurant/src/utils/utils.dart';
 
@@ -19,8 +20,9 @@ class CarritoTabletDisgregar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final responsive = Responsive.of(context);
-
+    final preferences = Preferences();
     final mesasBloc = ProviderBloc.mesas(context);
+    final familiasBloc = ProviderBloc.familias(context);
 
     final provider = Provider.of<IndexBlocListener>(context, listen: false);
 
@@ -91,7 +93,7 @@ class CarritoTabletDisgregar extends StatelessWidget {
                                 if (i == snapshot.data[0].carrito.length) {
                                   if (snapshot.data[0].cuentas.length > 1) {
                                     return ListView.builder(
-                                      padding:EdgeInsets.only(bottom: responsive.hp(20)),
+                                      padding: EdgeInsets.only(bottom: responsive.hp(20)),
                                       shrinkWrap: true,
                                       physics: ClampingScrollPhysics(),
                                       itemCount: snapshot.data[0].cuentas.length + 2,
@@ -140,6 +142,7 @@ class CarritoTabletDisgregar extends StatelessWidget {
                                                       style: TextStyle(fontSize: ScreenUtil().setSp(15)),
                                                     ),
                                                     onPressed: () {
+                                                      familiasBloc.obtenerFamilias(preferences.locacionId);
                                                       provider.changeToFamiliaMesa();
                                                     },
                                                   ),
@@ -234,6 +237,7 @@ class CarritoTabletDisgregar extends StatelessWidget {
                                                 style: TextStyle(fontSize: ScreenUtil().setSp(15)),
                                               ),
                                               onPressed: () {
+                                                familiasBloc.obtenerFamilias(preferences.locacionId);
                                                 provider.changeToFamiliaMesa();
                                               },
                                             ),
@@ -454,6 +458,7 @@ class CarritoTabletDisgregar extends StatelessWidget {
                               children: [
                                 InkWell(
                                   onTap: () {
+                                    familiasBloc.obtenerFamilias(preferences.locacionId);
                                     provider.changeToFamiliaMesa();
                                   },
                                   child: Container(
@@ -509,6 +514,8 @@ class CarritoTabletAgregar extends StatelessWidget {
     final responsive = Responsive.of(context);
 
     final mesasBloc = ProviderBloc.mesas(context);
+    final familiasBloc = ProviderBloc.familias(context);
+    final preferences = Preferences();
 
     final provider = Provider.of<IndexBlocListener>(context, listen: false);
 
@@ -546,7 +553,8 @@ class CarritoTabletAgregar extends StatelessWidget {
                               color: Colors.blue,
                             ),
                           ),
-                          Spacer(), Text(
+                          Spacer(),
+                          Text(
                             'S/. ${snapshot.data[0].total}',
                             style: TextStyle(
                               fontSize: ScreenUtil().setSp(24),
@@ -577,70 +585,84 @@ class CarritoTabletAgregar extends StatelessWidget {
 
                                   if (i == snapshot.data[0].carrito.length) {
                                     return Padding(
-                                        padding: EdgeInsets.symmetric(
-                                          horizontal: responsive.wp(2),
-                                        ),
-                                        child: Column(
-                                          children: [
-                                            Row(
-                                              children: [
-                                                Text(
-                                                  'Total',
-                                                  style: TextStyle(
-                                                    color: Colors.black,
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: ScreenUtil().setSp(18),
-                                                  ),
+                                      padding: EdgeInsets.symmetric(
+                                        horizontal: responsive.wp(2),
+                                      ),
+                                      child: Column(
+                                        children: [
+                                          Row(
+                                            children: [
+                                              Text(
+                                                'Total',
+                                                style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: ScreenUtil().setSp(18),
                                                 ),
-                                                Spacer(),
-                                                Text(
-                                                  'S/. ${dosDecimales(total)}',
-                                                  style: TextStyle(
-                                                    color: Colors.black,
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: ScreenUtil().setSp(22),
-                                                  ),
+                                              ),
+                                              Spacer(),
+                                              Text(
+                                                'S/. ${dosDecimales(total)}',
+                                                style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: ScreenUtil().setSp(22),
                                                 ),
-                                                SizedBox(
-                                                  height: ScreenUtil().setHeight(50),
-                                                ),
-                                              ],
-                                            ),
-                                            SizedBox(
-                                              height: ScreenUtil().setHeight(40),
-                                              width: ScreenUtil().setWidth(200),
-                                              child: MaterialButton(
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius: BorderRadius.circular(10),
-                                                ),
-                                                color: Colors.blue,
-                                                textColor: Colors.white,
-                                                child: Text('Enviar pedidos'),
-                                                onPressed: () async {
-                                                  Navigator.push(
-                                                    context,
-                                                    PageRouteBuilder(
-                                                      opaque: false,
-                                                      pageBuilder: (context, animation, secondaryAnimation) {
-                                                        return AgregarPersonasTablet(mesa: snapshot.data[0]);
-                                                      },
-                                                      transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                                                        var begin = Offset(0.0, 1.0);
-                                                        var end = Offset.zero;
-                                                        var curve = Curves.ease;
+                                              ),
+                                              SizedBox(
+                                                height: ScreenUtil().setHeight(50),
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: ScreenUtil().setHeight(40),
+                                            width: ScreenUtil().setWidth(200),
+                                            child: MaterialButton(
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.circular(10),
+                                              ),
+                                              color: Colors.blue,
+                                              textColor: Colors.white,
+                                              child: Text('Enviar pedidos'),
+                                              onPressed: () async {
+                                                Navigator.pop(context);
+                                                final comandaApi = ComandaApi();
+                                                provider.changeCargandoTrue();
+                                                final res = await comandaApi.enviarComanda(snapshot.data[0].idMesa, 0);
+                                                if (res.resultadoPeticion) {
+                                                  showToast2('Pedido enviado correctamente', Colors.green);
+                                                  provider.changeCargandoFalse();
+                                                  provider.changeToMesa(context);
+                                                } else {
+                                                  showToast2('Ocurrio un error, intentelo nuevamente', Colors.red);
+                                                  provider.changeCargandoFalse();
+                                                }
 
-                                                        var tween = Tween(begin: begin, end: end).chain(
-                                                          CurveTween(curve: curve),
-                                                        );
+                                                /* 
+                                                Navigator.push(
+                                                  context,
+                                                  PageRouteBuilder(
+                                                    opaque: false,
+                                                    pageBuilder: (context, animation, secondaryAnimation) {
+                                                      return AgregarPersonasTablet(mesa: snapshot.data[0]);
+                                                    },
+                                                    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                                                      var begin = Offset(0.0, 1.0);
+                                                      var end = Offset.zero;
+                                                      var curve = Curves.ease;
 
-                                                        return SlideTransition(
-                                                          position: animation.drive(tween),
-                                                          child: child,
-                                                        );
-                                                      },
-                                                    ),
-                                                  );
-                                                  /*  final comandaApi = ComandaApi();
+                                                      var tween = Tween(begin: begin, end: end).chain(
+                                                        CurveTween(curve: curve),
+                                                      );
+
+                                                      return SlideTransition(
+                                                        position: animation.drive(tween),
+                                                        child: child,
+                                                      );
+                                                    },
+                                                  ),
+                                                );
+                                                /*  final comandaApi = ComandaApi();
                                                   provider.changeCargandoTrue();
                                                   final res = await comandaApi.enviarComanda(snapshot.data[0].idMesa);
                                                   if (res.resultadoPeticion) {
@@ -650,17 +672,16 @@ class CarritoTabletAgregar extends StatelessWidget {
                                                   } else {
                                                     showToast2('Ocurrio un error, intentelo nuevamente', Colors.red);
                                                     provider.changeCargandoFalse();
-                                                  } */
-                                                },
-                                              ),
+                                                  } */ */
+                                              },
                                             ),
-                                            SizedBox(
-                                              height: ScreenUtil().setHeight(100),
-                                            )
-                                          ],
-                                        ),
-                                      );
-                                    
+                                          ),
+                                          SizedBox(
+                                            height: ScreenUtil().setHeight(100),
+                                          )
+                                        ],
+                                      ),
+                                    );
                                   }
 
                                   return LayoutBuilder(builder: (context, constraints) {
@@ -675,7 +696,6 @@ class CarritoTabletAgregar extends StatelessWidget {
                                           icon: Icons.archive,
                                           onTap: () async {
                                             if ('${snapshot.data[0].carrito[i].idComandaDetalle}' == '0') {
-                                              
                                               final carritoDatabase = CarritoDatabase();
                                               await carritoDatabase.eliminarProductoPorIdCarrito('${snapshot.data[0].carrito[i].idCarrito}');
 
@@ -692,7 +712,7 @@ class CarritoTabletAgregar extends StatelessWidget {
                                         ),
                                       ],
                                       child: Container(
-                                         margin: EdgeInsets.only(
+                                        margin: EdgeInsets.only(
                                           bottom: responsive.hp(1.5),
                                         ),
                                         child: Column(
@@ -819,6 +839,7 @@ class CarritoTabletAgregar extends StatelessWidget {
                                   ),
                                   InkWell(
                                     onTap: () {
+                                      familiasBloc.obtenerFamilias(preferences.locacionId);
                                       provider.changeToFamiliaMesa();
                                     },
                                     child: Container(

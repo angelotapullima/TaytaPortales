@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import 'package:tayta_restaurant/src/bloc/error_api_bloc.dart';
 import 'package:tayta_restaurant/src/bloc/index_bloc.dart';
 import 'package:tayta_restaurant/src/bloc/provider.dart';
 import 'package:tayta_restaurant/src/database/carrito_database.dart';
@@ -30,7 +31,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final prefs = Preferences();
     final locacionBloc = ProviderBloc.locacion(context);
-    locacionBloc.obtenerLocacionesPorIdTienda(prefs.tiendaId);
+    locacionBloc.obtenerLocacionesPorIdTienda(prefs.tiendaId,context);
 
     final mesasBloc = ProviderBloc.mesas(context);
 
@@ -174,7 +175,8 @@ class VistaTablet extends StatelessWidget {
     final provider = Provider.of<IndexBlocListener>(context, listen: false);
 
     final mesasBloc = ProviderBloc.mesas(context);
-    final familiasBloc = ProviderBloc.familias(context);
+
+    final errroApiBloc = ProviderBloc.erApi(context);
     return SafeArea(
       child: ValueListenableBuilder(
         valueListenable: provider.page,
@@ -226,8 +228,29 @@ class VistaTablet extends StatelessWidget {
                                     children: [
                                       Container(
                                         width: ScreenUtil().setWidth(600),
-                                        child: Container(
-                                          child: MesasWidget(),
+                                        child: Stack(
+                                          children: [
+                                            MesasWidget(),
+                                            StreamBuilder(
+                                              stream: errroApiBloc.errorMesaStream,
+                                              builder: (BuildContext context, AsyncSnapshot<ErrorApiModel> errorMesas) {
+                                                if (errorMesas.hasData) {
+                                                  return (errorMesas.data.respuestaApi == false)
+                                                      ? Container(
+                                                        color: Colors.white,
+                                                          child: Center(
+                                                            child: Text(errorMesas.data.mensaje),
+                                                          ),
+                                                        )
+                                                      : Container();
+                                                } else {
+                                                  return Container(
+                                                    child: Text(''),
+                                                  );
+                                                }
+                                              },
+                                            ),
+                                          ],
                                         ),
                                       ),
                                       Container(
@@ -295,8 +318,7 @@ class VistaTablet extends StatelessWidget {
                                       builder: (context, AsyncSnapshot<List<MesasModel>> snapshot) {
                                         if (snapshot.hasData) {
                                           if (snapshot.data.length > 0) {
-                                            print('fruta');
-                                            familiasBloc.obtenerFamilias(snapshot.data[0].locacionId);
+                                            
                                             return SafeArea(
                                               child: Container(
                                                 margin: EdgeInsets.only(
@@ -425,7 +447,7 @@ class VistaTablet extends StatelessWidget {
                                       children: [
                                         Container(
                                           color: Color(0xfff7f7f7),
-                                          child: HeaderLocacionMesas(),
+                                          child: HeaderLocacionPedidos(),
                                         ),
                                         Expanded(
                                           child: Row(

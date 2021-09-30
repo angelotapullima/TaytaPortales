@@ -3,18 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tayta_restaurant/src/bloc/provider.dart';
 import 'package:tayta_restaurant/src/models/mesas_model.dart';
-import 'package:tayta_restaurant/src/preferences/preferences.dart';
 import 'package:tayta_restaurant/src/utils/responsive.dart';
 
 class MesasWidget extends StatelessWidget {
   const MesasWidget({Key key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    final prefs = Preferences();
-
-    final locacionBloc = ProviderBloc.locacion(context);
-    locacionBloc.obtenerLocacionesPorIdTienda(prefs.tiendaId);
+  Widget build(BuildContext context) { 
+ 
 
     final mesabloc = ProviderBloc.mesas(context);
 
@@ -78,7 +74,7 @@ class MesasWidget extends StatelessWidget {
                       return InkWell(
                         onTap: () {
 
-                          print('ptmr');
+
                           mesabloc.obtenerMesasPorIdAgregar(mesas.data[index].idMesa);
                           mesabloc.obtenerMesasPorIdDisgregar(mesas.data[index].idMesa);
                         },

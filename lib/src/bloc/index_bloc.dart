@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:tayta_restaurant/src/bloc/provider.dart';
+import 'package:tayta_restaurant/src/preferences/preferences.dart';
 
 enum EnumIndex { mesas, productos, pedidos, familiaMesa, config }
 
 class IndexBlocListener with ChangeNotifier {
   int index = 0;
-  String idCategoria = '0';
+  final preferences =Preferences();
 
-  void changeIndex(int i, String idCat) {
+  void changeIndex(int i) {
+    print('index $i');
     index = i;
-    idCategoria = idCat;
     notifyListeners();
   }
 
@@ -28,7 +30,10 @@ class IndexBlocListener with ChangeNotifier {
   }
   void _init() {}
 
-  void changeToMesa() {
+  void changeToMesa(BuildContext context) {
+    final mesabloc = ProviderBloc.mesas(context);
+
+    mesabloc.obtenerMesasPorLocacion(preferences.locacionId, context);
     _page.value = EnumIndex.mesas;
     notifyListeners();
   }

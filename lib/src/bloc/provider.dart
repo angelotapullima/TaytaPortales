@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tayta_restaurant/src/bloc/carrito_bloc.dart';
+import 'package:tayta_restaurant/src/bloc/error_api_bloc.dart';
 import 'package:tayta_restaurant/src/bloc/familias_bloc.dart';
 import 'package:tayta_restaurant/src/bloc/locacion_bloc.dart';
 import 'package:tayta_restaurant/src/bloc/login_bloc.dart';
@@ -20,6 +21,7 @@ class ProviderBloc extends InheritedWidget {
   final familiasBloc = FamiliasBloc();
   final productosBloc = ProductosBloc();
   final pedidosUserBloc = PedidosUserBloc();
+  final errorApi = ErrorApi();
 
   factory ProviderBloc({Key key, Widget child}) {
     if (_instancia == null) {
@@ -65,5 +67,9 @@ class ProviderBloc extends InheritedWidget {
 
   static PedidosUserBloc pedidoUser(BuildContext context) {
     return (context.dependOnInheritedWidgetOfExactType<ProviderBloc>()).pedidosUserBloc;
+  }
+
+  static ErrorApi erApi(BuildContext context) {
+    return (context.dependOnInheritedWidgetOfExactType<ProviderBloc>()).errorApi;
   }
 }
