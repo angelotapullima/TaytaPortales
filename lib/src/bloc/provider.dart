@@ -20,8 +20,8 @@ class ProviderBloc extends InheritedWidget {
   final carritoBloc = CarritoBloc();
   final familiasBloc = FamiliasBloc();
   final productosBloc = ProductosBloc();
-  final pedidosUserBloc = PedidosUserBloc();
-  final errorApi = ErrorApi();
+  final pedidosUserBloc = PedidosUserBloc();/* 
+  final errorApi = ErrorApi(); */
 
   factory ProviderBloc({Key key, Widget child}) {
     if (_instancia == null) {
@@ -68,8 +68,8 @@ class ProviderBloc extends InheritedWidget {
   static PedidosUserBloc pedidoUser(BuildContext context) {
     return (context.dependOnInheritedWidgetOfExactType<ProviderBloc>()).pedidosUserBloc;
   }
-
+/* 
   static ErrorApi erApi(BuildContext context) {
     return (context.dependOnInheritedWidgetOfExactType<ProviderBloc>()).errorApi;
-  }
+  } */
 }

@@ -50,7 +50,7 @@ class _WidgetLocacionState extends State<HeaderLocacionMesas> {
                                 provider.changeIndex(i);
                                 prefs.locacionId = snapshot.data[i].idLocacion;
 
-                                mesabloc.obtenerMesasPorLocacion(snapshot.data[i].idLocacion, context);
+                                mesabloc.obtenerMesasPorLocacion(snapshot.data[i].idLocacion);
                                 print('locacion Mesas click');
                                 //familiasBloc.obtenerFamilias(snapshot.data[i].idLocacion);
                               },

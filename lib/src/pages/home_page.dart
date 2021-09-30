@@ -10,6 +10,7 @@ import 'package:tayta_restaurant/src/database/locacion_database.dart';
 import 'package:tayta_restaurant/src/database/mesas_database.dart';
 import 'package:tayta_restaurant/src/database/pedido_user_database.dart';
 import 'package:tayta_restaurant/src/database/productos_database.dart';
+import 'package:tayta_restaurant/src/models/api_model.dart';
 import 'package:tayta_restaurant/src/models/mesas_model.dart';
 import 'package:tayta_restaurant/src/pages/pedidos_usuario.dart';
 import 'package:tayta_restaurant/src/pages/tablet/carrito_por_mesa.dart';
@@ -31,7 +32,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final prefs = Preferences();
     final locacionBloc = ProviderBloc.locacion(context);
-    locacionBloc.obtenerLocacionesPorIdTienda(prefs.tiendaId,context);
+    locacionBloc.obtenerLocacionesPorIdTienda(prefs.tiendaId, context);
 
     final mesasBloc = ProviderBloc.mesas(context);
 
@@ -176,7 +177,7 @@ class VistaTablet extends StatelessWidget {
 
     final mesasBloc = ProviderBloc.mesas(context);
 
-    final errroApiBloc = ProviderBloc.erApi(context);
+    //final errroApiBloc = ProviderBloc.erApi(context);
     return SafeArea(
       child: ValueListenableBuilder(
         valueListenable: provider.page,
@@ -232,12 +233,12 @@ class VistaTablet extends StatelessWidget {
                                           children: [
                                             MesasWidget(),
                                             StreamBuilder(
-                                              stream: errroApiBloc.errorMesaStream,
-                                              builder: (BuildContext context, AsyncSnapshot<ErrorApiModel> errorMesas) {
+                                              stream: mesasBloc.errorMesaStream,
+                                              builder: (BuildContext context, AsyncSnapshot<ApiModel> errorMesas) {
                                                 if (errorMesas.hasData) {
-                                                  return (errorMesas.data.respuestaApi == false)
+                                                  return (errorMesas.data.resultadoPeticion == false)
                                                       ? Container(
-                                                        color: Colors.white,
+                                                          color: Colors.white,
                                                           child: Center(
                                                             child: Text(errorMesas.data.mensaje),
                                                           ),
@@ -318,7 +319,6 @@ class VistaTablet extends StatelessWidget {
                                       builder: (context, AsyncSnapshot<List<MesasModel>> snapshot) {
                                         if (snapshot.hasData) {
                                           if (snapshot.data.length > 0) {
-                                            
                                             return SafeArea(
                                               child: Container(
                                                 margin: EdgeInsets.only(

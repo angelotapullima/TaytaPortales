@@ -32,7 +32,7 @@ class LocacionBloc {
     final locacionDbv = await locacionDatabase.obtenerLocacionPorTienda(idTienda);
 
     final mesasBloc = ProviderBloc.mesas(context);
-    mesasBloc.obtenerMesasPorLocacion(locacionDbv[0].idLocacion, context);
+    mesasBloc.obtenerMesasPorLocacion(locacionDbv[0].idLocacion);
 
     preferences.locacionId = locacionDbv[0].idLocacion;
     _locacionController.sink.add(locacionDbv);

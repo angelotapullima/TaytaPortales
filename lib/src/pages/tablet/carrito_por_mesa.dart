@@ -481,7 +481,21 @@ class CarritoTabletDisgregar extends StatelessWidget {
                 ),
               );
             } else {
-              return Container();
+              return Column(
+                children: [
+                  Icon(
+                    Icons.people_alt_sharp,
+                    size: responsive.ip(20),
+                  ),
+                  Text(
+                    'Presionar una mesa para obtener sus detalles',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: responsive.ip(2),
+                    ),
+                  )
+                ],
+              );
             }
           } else {
             return Column(
@@ -625,14 +639,19 @@ class CarritoTabletAgregar extends StatelessWidget {
                                               textColor: Colors.white,
                                               child: Text('Enviar pedidos'),
                                               onPressed: () async {
-                                                Navigator.pop(context);
+                                                //Navigator.pop(context);
                                                 final comandaApi = ComandaApi();
                                                 provider.changeCargandoTrue();
                                                 final res = await comandaApi.enviarComanda(snapshot.data[0].idMesa, 0);
                                                 if (res.resultadoPeticion) {
                                                   showToast2('Pedido enviado correctamente', Colors.green);
+
                                                   provider.changeCargandoFalse();
+
                                                   provider.changeToMesa(context);
+                                                  final mesabloc = ProviderBloc.mesas(context);
+                                                  mesabloc.obtenerMesasPorIdDisgregar('89585859595959');
+                                                  /* */
                                                 } else {
                                                   showToast2('Ocurrio un error, intentelo nuevamente', Colors.red);
                                                   provider.changeCargandoFalse();

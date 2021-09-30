@@ -6,7 +6,7 @@ enum EnumIndex { mesas, productos, pedidos, familiaMesa, config }
 
 class IndexBlocListener with ChangeNotifier {
   int index = 0;
-  final preferences =Preferences();
+  final preferences = Preferences();
 
   void changeIndex(int i) {
     print('index $i');
@@ -23,9 +23,8 @@ class IndexBlocListener with ChangeNotifier {
   ValueNotifier<bool> _cargandoDisgregacion = ValueNotifier(false);
   ValueNotifier<bool> get cargandoDisgregacion => this._cargandoDisgregacion;
 
-  BuildContext context;
 
-  IndexBlocListener({this.context}) {
+  IndexBlocListener() {
     _init();
   }
   void _init() {}
@@ -33,10 +32,13 @@ class IndexBlocListener with ChangeNotifier {
   void changeToMesa(BuildContext context) {
     final mesabloc = ProviderBloc.mesas(context);
 
-    mesabloc.obtenerMesasPorLocacion(preferences.locacionId, context);
+    mesabloc.obtenerMesasPorLocacion(preferences.locacionId);
+
+    
     _page.value = EnumIndex.mesas;
     notifyListeners();
   }
+
 
   void changeToProductos() {
     _page.value = EnumIndex.productos;

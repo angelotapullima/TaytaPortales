@@ -1,4 +1,4 @@
-import 'package:rxdart/rxdart.dart';
+/* import 'package:rxdart/rxdart.dart';
 
 class ErrorApi {
   final _errorControllerMesasApi = BehaviorSubject<ErrorApiModel>();
@@ -23,3 +23,4 @@ class ErrorApiModel {
   bool respuestaApi;
   ErrorApiModel({this.mensaje, this.respuestaApi});
 }
+ */

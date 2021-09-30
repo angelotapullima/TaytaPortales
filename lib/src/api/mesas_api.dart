@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:tayta_restaurant/src/bloc/provider.dart';
 import 'package:tayta_restaurant/src/database/carrito_database.dart';
 import 'package:tayta_restaurant/src/database/mesas_database.dart';
 import 'package:tayta_restaurant/src/models/api_model.dart';
@@ -15,7 +14,7 @@ class MesasApi {
   final mesasDatabase = MesasDatabase();
   final carritoDatabase = CarritoDatabase();
   final preferences = Preferences();
-  Future<ApiModel> obtenerMesasPorLocacion(String idLocacion, BuildContext context) async {
+  Future<ApiModel> obtenerMesasPorLocacion(String idLocacion) async {
     var entradaapi = DateTime.now();
 
     print('entrada a la api $entradaapi');
@@ -118,9 +117,7 @@ class MesasApi {
 
       print('salida deapi ${_final.inMilliseconds}');
 
-      final errroAPiBloc = ProviderBloc.erApi(context);
-
-      errroAPiBloc.respuestaApiMesas(true, "");
+     
       return apiModel;
     } catch (error, stacktrace) {
       showToast2("Exception occured: $error stackTrace: $stacktrace", Colors.red);
@@ -129,11 +126,9 @@ class MesasApi {
       ApiModel apiModel = ApiModel();
       apiModel.error = false;
       apiModel.resultadoPeticion = false;
-      apiModel.mensaje = 'error en la respuesta';
+      apiModel.mensaje = "Exception occured: $error stackTrace: $stacktrace";
 
-      final errroApiBloc = ProviderBloc.erApi(context);
-
-      errroApiBloc.respuestaApiMesas(false, "Exception occured: $error stackTrace: $stacktrace");
+     
 
       return apiModel;
     }

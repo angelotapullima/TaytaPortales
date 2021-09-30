@@ -5,6 +5,7 @@ import 'package:tayta_restaurant/src/database/carrito_database.dart';
 
 import 'package:tayta_restaurant/src/database/mesas_database.dart';
 import 'package:tayta_restaurant/src/database/productos_database.dart';
+import 'package:tayta_restaurant/src/models/api_model.dart';
 import 'package:tayta_restaurant/src/models/carrtito_model.dart';
 import 'package:tayta_restaurant/src/models/cuenta_model.dart';
 import 'package:tayta_restaurant/src/models/mesas_model.dart';
@@ -22,11 +23,15 @@ class MesasBloc {
   final _mesaPorIDDisgregar = BehaviorSubject<List<MesasModel>>();
   final _mesasConPedidos = BehaviorSubject<List<MesasModel>>();
 
+  final _errorControllerMesasApi = BehaviorSubject<ApiModel>();
+
   Stream<List<MesasModel>> get mesasStream => _mesasLocacionController.stream;
   Stream<bool> get error401Stream => _error401Controller.stream;
   Stream<List<MesasModel>> get mesaIdAgregarStream => _mesaPorIDAgregar.stream;
   Stream<List<MesasModel>> get mesaIdDisgregarStream => _mesaPorIDDisgregar.stream;
   Stream<List<MesasModel>> get mesasConPedidosStream => _mesasConPedidos.stream;
+
+  Stream<ApiModel> get errorMesaStream => _errorControllerMesasApi.stream;
 
   dispose() {
     _mesaPorIDAgregar?.close();
@@ -34,18 +39,17 @@ class MesasBloc {
     _mesaPorIDDisgregar?.close();
     _mesasLocacionController?.close();
     _mesasConPedidos?.close();
+    _errorControllerMesasApi?.close();
   }
 
-  void obtenerMesasPorLocacion(String idLocacion,BuildContext context) async {
-
+  void obtenerMesasPorLocacion(String idLocacion) async {
     print('obtenerMesasPorLocacion');
     _mesasLocacionController.sink.add([]);
-    //_locacionController.sink.add(await mesasDatabase.obtenerMesasPorLocacion(idLocacion));
-    final res = await mesasApi.obtenerMesasPorLocacion(idLocacion,context);
-
+    final res = await mesasApi.obtenerMesasPorLocacion(idLocacion);
     _error401Controller.sink.add(res.error);
 
-    //_locacionController.sink.add(res.mesas);
+    _errorControllerMesasApi.sink.add(res);
+    
     _mesasLocacionController.sink.add(await mesasDatabase.obtenerMesasPorLocacion(idLocacion));
   }
 
@@ -338,7 +342,6 @@ class MesasBloc {
         mesitas.add(mesasModel);
       }
     }
-
 
     _mesasConPedidos.sink.add(mesitas);
   }

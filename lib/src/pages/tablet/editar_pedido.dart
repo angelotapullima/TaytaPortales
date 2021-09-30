@@ -355,7 +355,7 @@ class _EditarProductoTabletState extends State<EditarProductoTablet> {
                                 showToast2('Pedido enviado correctamente', Colors.green);
 
                                 final mesasApi = MesasApi();
-                                              await mesasApi.obtenerMesasPorLocacion(widget.mesas.locacionId,context);
+                                              await mesasApi.obtenerMesasPorLocacion(widget.mesas.locacionId);
                                               
                               } else {
                                 showToast2('Ocurrio un error, intentelo nuevamente', Colors.red);
