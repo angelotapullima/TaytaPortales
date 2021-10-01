@@ -20,7 +20,7 @@ class DatabaseProvider {
   initDB() async {
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
 
-    final path = join(documentsDirectory.path, 'taytaergbrh.db');
+    final path = join(documentsDirectory.path, 'taytaPostV1.db');
 
     Future _onConfigure(Database db) async {
       await db.execute('PRAGMA foreign_keys = ON');
@@ -83,7 +83,8 @@ class DatabaseProvider {
           ' idMesa TEXT ,'
           ' nombreMesa TEXT ,'
           ' idLocacion TEXT ,'
-          ' estado TEXT' //1 = si ya esta en la comando <> 2 = si solo esta en bd interna
+          ' estado TEXT ,'//1 = si ya esta en la comando <> 2 = si solo esta en bd interna
+          ' productoDisgregacion TEXT' //1 = si es disgregacion <> 0 = si es nuevo
           ')');
 
 

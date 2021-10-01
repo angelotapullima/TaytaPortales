@@ -4,6 +4,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:tayta_restaurant/src/api/comanda_api.dart';
+import 'package:tayta_restaurant/src/api/mesas_api.dart';
 import 'package:tayta_restaurant/src/bloc/index_bloc.dart';
 import 'package:tayta_restaurant/src/bloc/provider.dart';
 import 'package:tayta_restaurant/src/database/carrito_database.dart';
@@ -645,12 +646,16 @@ class CarritoTabletAgregar extends StatelessWidget {
                                                 final res = await comandaApi.enviarComanda(snapshot.data[0].idMesa, 0);
                                                 if (res.resultadoPeticion) {
                                                   showToast2('Pedido enviado correctamente', Colors.green);
-
-                                                  provider.changeCargandoFalse();
-
-                                                  provider.changeToMesa(context);
                                                   final mesabloc = ProviderBloc.mesas(context);
-                                                  mesabloc.obtenerMesasPorIdDisgregar('89585859595959');
+                                                  
+                                                  final mesasApi = MesasApi();
+                                                  await mesasApi.obtenerMesasPorLocacion(preferences.locacionId);
+
+                                                  mesabloc.obtenerMesasPorLocacionSinApi(snapshot.data[0].idMesa);
+                                                  provider.changeCargandoFalse();
+                                                  provider.changeToMesa2(context);
+
+                                                  mesabloc.obtenerMesasPorIdDisgregar(snapshot.data[0].idMesa);
                                                   /* */
                                                 } else {
                                                   showToast2('Ocurrio un error, intentelo nuevamente', Colors.red);

@@ -17,6 +17,7 @@ class CarritoModel{
     this.idLocacion,
     this.estado,
     this.paraLLevar,
+    this.productoDisgregacion,
   });
 
   int idCarrito;
@@ -32,6 +33,7 @@ class CarritoModel{
   String idLocacion;
   String estado;
   String paraLLevar;
+  String productoDisgregacion;
 
   factory CarritoModel.fromJson(Map<String, dynamic> json) => CarritoModel(
         idCarrito: json["idCarrito"],
@@ -47,6 +49,7 @@ class CarritoModel{
         idLocacion: json["idLocacion"],
         estado: json["estado"],
         paraLLevar: json["paraLLevar"],
+        productoDisgregacion: json["productoDisgregacion"],
       );
 
 

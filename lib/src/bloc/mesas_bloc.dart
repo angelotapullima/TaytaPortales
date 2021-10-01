@@ -49,7 +49,13 @@ class MesasBloc {
     _error401Controller.sink.add(res.error);
 
     _errorControllerMesasApi.sink.add(res);
-    
+
+    _mesasLocacionController.sink.add(await mesasDatabase.obtenerMesasPorLocacion(idLocacion));
+  }
+
+  void obtenerMesasPorLocacionSinApi(String idLocacion) async {
+    print('obtenerMesasPorLocacionSinApi');
+
     _mesasLocacionController.sink.add(await mesasDatabase.obtenerMesasPorLocacion(idLocacion));
   }
 

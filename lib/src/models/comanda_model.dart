@@ -30,6 +30,7 @@ class DetalleComanda {
   String observacion;
   int nroCuenta;
   bool paraLLevar;
+  bool productoDisgregado;
   DetalleComanda({
     this.idComandaDetalle,
     this.idProducto,
@@ -38,6 +39,7 @@ class DetalleComanda {
     this.observacion,
     this.nroCuenta,
     this.paraLLevar,
+    this.productoDisgregado,
   });
 
   Map<String, dynamic> toJson() => {
@@ -48,5 +50,6 @@ class DetalleComanda {
         "observacion": observacion,
         "nroCuenta": nroCuenta,
         "paraLLevar": paraLLevar,
+        "productoDisgregado": productoDisgregado,
       };
 }

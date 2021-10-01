@@ -282,6 +282,7 @@ class _DisgregarProductoTabletState extends State<DisgregarProductoTablet> {
                                       carrito.idMesa = widget.carrito.idMesa;
                                       carrito.nombreMesa = widget.carrito.nombreMesa;
                                       carrito.idLocacion = widget.carrito.idLocacion;
+                                      carrito.productoDisgregacion = '1';
                                       carrito.idComandaDetalle = widget.carrito.idComandaDetalle;
                                       await carritoDatabase.updateCarritoPorIdComandaDetalle(carrito);
 
@@ -320,6 +321,7 @@ class _DisgregarProductoTabletState extends State<DisgregarProductoTablet> {
                                       carrito.idMesa = widget.carrito.idMesa;
                                       carrito.nombreMesa = widget.carrito.nombreMesa;
                                       carrito.idLocacion = widget.carrito.idLocacion;
+                                      carrito.productoDisgregacion = '0';
                                       carrito.idComandaDetalle = widget.carrito.idComandaDetalle;
                                       await carritoDatabase.updateCarritoPorIdComandaDetalle(carrito);
 
@@ -334,10 +336,14 @@ class _DisgregarProductoTabletState extends State<DisgregarProductoTablet> {
                                       carrito2.idMesa = widget.carrito.idMesa;
                                       carrito2.nombreMesa = widget.carrito.nombreMesa;
                                       carrito2.idLocacion = widget.carrito.idLocacion;
+                                      carrito.productoDisgregacion = '1';
                                       carrito2.idComandaDetalle = '0';
                                       await carritoDatabase.insertarCarito(carrito2);
 
-                                      final res = await comandaApi.enviarComanda(widget.carrito.idMesa, int.parse(widget.mesas.cantidadPersonas));
+                                      final res = await comandaApi.enviarComanda(
+                                        widget.carrito.idMesa,
+                                        int.parse(widget.mesas.cantidadPersonas),
+                                      );
 
                                       if (res.resultadoPeticion) {
                                         showToast2('Se ha actualizado la cuenta', Colors.green);
@@ -349,6 +355,7 @@ class _DisgregarProductoTabletState extends State<DisgregarProductoTablet> {
                                       final mesasApi = MesasApi();
                                       await mesasApi.obtenerMesasPorLocacion(widget.mesas.locacionId);
 
+                                      mesabloc.obtenerMesasPorLocacionSinApi(widget.carrito.idMesa);
                                       mesabloc.obtenerMesasPorIdAgregar(widget.carrito.idMesa);
                                       mesabloc.obtenerMesasPorIdDisgregar(widget.carrito.idMesa);
 

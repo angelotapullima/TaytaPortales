@@ -23,7 +23,6 @@ class IndexBlocListener with ChangeNotifier {
   ValueNotifier<bool> _cargandoDisgregacion = ValueNotifier(false);
   ValueNotifier<bool> get cargandoDisgregacion => this._cargandoDisgregacion;
 
-
   IndexBlocListener() {
     _init();
   }
@@ -34,11 +33,14 @@ class IndexBlocListener with ChangeNotifier {
 
     mesabloc.obtenerMesasPorLocacion(preferences.locacionId);
 
-    
     _page.value = EnumIndex.mesas;
     notifyListeners();
   }
 
+  void changeToMesa2(BuildContext context) {
+    _page.value = EnumIndex.mesas;
+    notifyListeners();
+  }
 
   void changeToProductos() {
     _page.value = EnumIndex.productos;

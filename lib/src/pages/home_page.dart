@@ -232,7 +232,7 @@ class VistaTablet extends StatelessWidget {
                                         child: Stack(
                                           children: [
                                             MesasWidget(),
-                                            StreamBuilder(
+                                            /* StreamBuilder(
                                               stream: mesasBloc.errorMesaStream,
                                               builder: (BuildContext context, AsyncSnapshot<ApiModel> errorMesas) {
                                                 if (errorMesas.hasData) {
@@ -251,7 +251,7 @@ class VistaTablet extends StatelessWidget {
                                                 }
                                               },
                                             ),
-                                          ],
+                                           */],
                                         ),
                                       ),
                                       Container(

@@ -39,6 +39,7 @@ class ComandaApi {
             detalleComanda.observacion = carrito[i].observacion;
             detalleComanda.nroCuenta = int.parse(carrito[i].nroCuenta);
             detalleComanda.paraLLevar = (carrito[i].paraLLevar == '1') ? true:false;
+            detalleComanda.productoDisgregado = (carrito[i].productoDisgregacion == '1') ? true:false;
             detallesList.add(detalleComanda);
           }
         }
@@ -54,6 +55,7 @@ class ComandaApi {
             detalleComanda.precioUnitario = double.parse(carritoNuevo[i].precioVenta);
             detalleComanda.observacion = carritoNuevo[i].observacion;
             detalleComanda.nroCuenta = int.parse(carritoNuevo[i].nroCuenta);
+            detalleComanda.productoDisgregado = (carritoNuevo[i].productoDisgregacion == '1') ? true:false;
             detalleComanda.paraLLevar = (carritoNuevo[i].paraLLevar == '1') ? true:false;
             detallesList.add(detalleComanda);
           }

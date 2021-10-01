@@ -87,6 +87,7 @@ class MesasApi {
                 carritoModel.idMesa = decodedData[i]['mesaId'].toString();
                 carritoModel.idLocacion = idLocacion.toString();
                 carritoModel.estado = '1';
+                carritoModel.productoDisgregacion = '0';
                 listCarrito.add(carritoModel);
 
                 await carritoDatabase.insertarCarito(carritoModel);
