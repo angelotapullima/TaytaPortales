@@ -13,8 +13,8 @@ import 'src/bloc/provider.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  final prefs = new Preferences(); 
-  await prefs.initPrefs(); 
+  final prefs = new Preferences();
+  await prefs.initPrefs();
 
   runApp(MyApp());
 }
@@ -32,11 +32,18 @@ class MyApp extends StatelessWidget {
         ],
         child: ScreenUtilInit(
           designSize: Size(1024, 768),
-          builder: () => MaterialApp(
+          builder: (
+            BuildContext context,
+            Widget widget,
+          ) =>
+              MaterialApp(
             builder: (BuildContext context, Widget child) {
               final MediaQueryData data = MediaQuery.of(context);
               return MediaQuery(
-                data: data.copyWith(textScaleFactor: data.textScaleFactor > 2.0 ? 1.2 : data.textScaleFactor),
+                data: data.copyWith(
+                    textScaleFactor: data.textScaleFactor > 2.0
+                        ? 1.2
+                        : data.textScaleFactor),
                 child: child,
               );
             },

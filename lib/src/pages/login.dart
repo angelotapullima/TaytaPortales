@@ -152,7 +152,7 @@ class _LoginPageState extends State<LoginPage>  {
         if (snapshot.hasData) {
           if (snapshot.data.length > 0) {
             if (cantItems == 0) {
-              listTiendas = List<String>();
+              listTiendas = [];
 
               listTiendas.add('Seleccionar Tienda');
               for (int i = 0; i < snapshot.data.length; i++) {

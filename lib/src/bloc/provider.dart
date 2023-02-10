@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:tayta_restaurant/src/bloc/carrito_bloc.dart';
-import 'package:tayta_restaurant/src/bloc/error_api_bloc.dart';
 import 'package:tayta_restaurant/src/bloc/familias_bloc.dart';
 import 'package:tayta_restaurant/src/bloc/locacion_bloc.dart';
 import 'package:tayta_restaurant/src/bloc/login_bloc.dart';

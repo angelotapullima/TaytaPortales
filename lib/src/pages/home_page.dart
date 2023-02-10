@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
-import 'package:tayta_restaurant/src/bloc/error_api_bloc.dart';
 import 'package:tayta_restaurant/src/bloc/index_bloc.dart';
 import 'package:tayta_restaurant/src/bloc/provider.dart';
 import 'package:tayta_restaurant/src/database/carrito_database.dart';
@@ -10,7 +9,6 @@ import 'package:tayta_restaurant/src/database/locacion_database.dart';
 import 'package:tayta_restaurant/src/database/mesas_database.dart';
 import 'package:tayta_restaurant/src/database/pedido_user_database.dart';
 import 'package:tayta_restaurant/src/database/productos_database.dart';
-import 'package:tayta_restaurant/src/models/api_model.dart';
 import 'package:tayta_restaurant/src/models/mesas_model.dart';
 import 'package:tayta_restaurant/src/pages/pedidos_usuario.dart';
 import 'package:tayta_restaurant/src/pages/tablet/carrito_por_mesa.dart';
